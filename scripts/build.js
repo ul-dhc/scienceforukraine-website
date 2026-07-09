@@ -24,7 +24,7 @@ const PAGES = [
     slug: '',
     name: 'home',
     title: 'Home',
-    description: "#ScienceForUkraine supports the Ukrainian academic community in surviving Russia's war and helps ensure the continuity of Ukrainian science.",
+    description: "#ScienceForUkraine supports the Ukrainian academic community in surviving Russia's war and helps ensure the continuity of Ukrainian research.",
     template: 'home'
   },
   { slug: 'help', name: 'help', title: 'How You Can Help', description: 'Ways to support the Ukrainian academic community: become a member, donate, or submit a support offer.' },
@@ -133,7 +133,7 @@ function homeContentHtml () {
           <div class="card__header">
             <div class="icon-badge icon-badge--warm">${icon('users')}</div>
             <div class="card__title">For Ukrainian researchers and students</div>
-            <div class="card__subtitle">Find opportunities, funding, and other support.</div>
+            
           </div>
           <div class="card__links">
             ${actionLink({ href: '/listings', iconName: 'search', label: 'View all support listings' })}
@@ -146,7 +146,7 @@ function homeContentHtml () {
           <div class="card__header">
             <div class="icon-badge icon-badge--cool">${icon('handHeart')}</div>
             <div class="card__title">For International research community</div>
-            <div class="card__subtitle">Help the community by contributing your time, skills, or resources.</div>
+            
           </div>
           <div class="card__links">
             ${actionLink({ href: '/help', iconName: 'users', label: 'How can you help?', highlight: true })}
@@ -159,8 +159,8 @@ function homeContentHtml () {
         <div class="card card--cool">
           <div class="card__header">
             <div class="icon-badge icon-badge--cool">${icon('info')}</div>
-            <div class="card__title">About Us</div>
-            <div class="card__subtitle">Learn more about our mission, activities, and partners.</div>
+            <div class="card__title">About NGO Science for Ukraine</div>
+            
           </div>
           <div class="card__links">
             ${actionLink({ href: '/about', iconName: 'info', label: 'Our mission' })}
