@@ -209,6 +209,8 @@ function newsContentHtml () {
     const openAttr = item.pinned ? ' open' : ''
     const pinnedLabel = item.pinned ? `<span class="update-card__pin-label" title="Pinned update" aria-label="Pinned update">${icon('pin')}</span>` : ''
     const bodyParagraphs = item.body.split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('')
+    const bodyImage = item.image ? `<img class="update-card__image" src="${item.image}" alt="">` : ''
+    const readMoreLink = item.link ? `<a class="update-card__external-link" href="${item.link}" target="_blank" rel="noopener">Read more ${icon('arrowRight')}</a>` : ''
 
     return `
         <details class="update-card${pinnedClass}" id="${item.slug}"${openAttr}>
@@ -226,7 +228,7 @@ function newsContentHtml () {
               <span class="update-card__toggle">${icon('chevronDown')}</span>
             </div>
           </summary>
-          <div class="update-card__body">${bodyParagraphs}</div>
+          <div class="update-card__body">${bodyImage}${bodyParagraphs}${readMoreLink}</div>
         </details>`
   }).join('')
 
