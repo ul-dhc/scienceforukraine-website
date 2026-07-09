@@ -23,7 +23,8 @@
       e.stopPropagation()
 
       var slug = btn.getAttribute('data-slug')
-      var url = window.location.origin + '/news/#' + slug
+      var basePath = document.body.getAttribute('data-base-path') || ''
+      var url = window.location.origin + basePath + '/news/#' + slug
       var originalHtml = btn.innerHTML
 
       function showCopied () {
@@ -59,5 +60,19 @@
       target.open = true
       target.scrollIntoView({ block: 'start' })
     }
+  }
+
+  // highlight the current page's nav link (mirrors Vue Router's .router-link-active)
+  var current = document.body.getAttribute('data-page')
+  if (current) {
+    document.querySelectorAll('[data-nav="' + current + '"]').forEach(function (el) {
+      el.classList.add('active')
+    })
+  }
+
+  // keep the footer's copyright year current
+  var yearEl = document.getElementById('footer-year')
+  if (yearEl) {
+    yearEl.textContent = String(new Date().getFullYear())
   }
 })()
