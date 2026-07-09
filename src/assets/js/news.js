@@ -52,25 +52,11 @@
     })
   })
 
-
   if (window.location.hash) {
     var target = document.querySelector(window.location.hash)
     if (target && target.classList.contains('update-card')) {
       target.open = true
       target.scrollIntoView({ block: 'start' })
     }
-  }
-
-  var current = document.body.getAttribute('data-page')
-  if (current) {
-    document.querySelectorAll('[data-nav="' + current + '"]').forEach(function (el) {
-      el.classList.add('active')
-    })
-  }
-
-
-  var yearEl = document.getElementById('footer-year')
-  if (yearEl) {
-    yearEl.textContent = String(new Date().getFullYear())
   }
 })()
