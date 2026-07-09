@@ -208,7 +208,7 @@ function newsContentHtml () {
     const pinnedClass = item.pinned ? ' update-card--pinned' : ''
     const openAttr = ''
     const pinnedLabel = item.pinned ? `<span class="update-card__pin-label" title="Pinned update" aria-label="Pinned update">${icon('pin')}</span>` : ''
-    const bodyParagraphs = item.body.split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('')
+    const bodyParagraphs = item.body.split('\n\n').map(p => `<p>${escapeHtml(p).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>`).join('')
     const bodyImage = item.image ? `<img class="update-card__image" src="${item.image}" alt="">` : ''
     const readMoreLink = item.link ? `<a class="update-card__external-link" href="${item.link}" target="_blank" rel="noopener">Read more ${icon('arrowRight')}</a>` : ''
 
