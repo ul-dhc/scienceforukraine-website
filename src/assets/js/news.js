@@ -15,8 +15,7 @@
     })
   }
 
-  // copy-link buttons: copy a direct URL to this update, without also
-  // triggering the <summary>'s native open/close toggle
+
   document.querySelectorAll('.update-card__copy-link').forEach(function (btn) {
     btn.addEventListener('click', function (e) {
       e.preventDefault()
@@ -53,7 +52,7 @@
     })
   })
 
-  // deep-linking: /news#some-update-slug opens and scrolls to that item
+
   if (window.location.hash) {
     var target = document.querySelector(window.location.hash)
     if (target && target.classList.contains('update-card')) {
@@ -62,7 +61,6 @@
     }
   }
 
-  // highlight the current page's nav link (mirrors Vue Router's .router-link-active)
   var current = document.body.getAttribute('data-page')
   if (current) {
     document.querySelectorAll('[data-nav="' + current + '"]').forEach(function (el) {
@@ -70,7 +68,7 @@
     })
   }
 
-  // keep the footer's copyright year current
+
   var yearEl = document.getElementById('footer-year')
   if (yearEl) {
     yearEl.textContent = String(new Date().getFullYear())
