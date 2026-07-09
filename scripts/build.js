@@ -206,7 +206,7 @@ function newsContentHtml () {
 
   const cardsHtml = items.map((item, i) => {
     const pinnedClass = item.pinned ? ' update-card--pinned' : ''
-    const openAttr = item.pinned ? ' open' : ''
+    const openAttr = ''
     const pinnedLabel = item.pinned ? `<span class="update-card__pin-label" title="Pinned update" aria-label="Pinned update">${icon('pin')}</span>` : ''
     const bodyParagraphs = item.body.split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('')
     const bodyImage = item.image ? `<img class="update-card__image" src="${item.image}" alt="">` : ''
