@@ -1,7 +1,7 @@
 {
-  "name": "scienceforukraine-static",
-  "version": "1.0.0",
-  "description": "Static site build for scienceforukraine.eu informational pages",
+  "name": "scienceforukraine-website",
+  "version": "3.0.0",
+  "description": "scienceforukraine.eu",
   "private": true,
   "scripts": {
     "build": "node scripts/build.js"
