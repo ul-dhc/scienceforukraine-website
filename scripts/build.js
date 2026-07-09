@@ -120,7 +120,7 @@ function homeContentHtml () {
       <section class="hero">
         <div class="hero__inner">
           <h1 class="hero__title">Supporting Ukrainian research.<br>Today and for the future.</h1>
-          <p class="hero__subtitle">#ScienceForUkraine supports the Ukrainian academic community in surviving Russia&rsquo;s war and helps ensure the continuity of Ukrainian science and its presence in the international arena.</p>
+          <p class="hero__subtitle">Since 26 February 2022, #ScienceForUkraine supports the Ukrainian academic community in surviving Russia&rsquo;s war and helps ensure the continuity of Ukrainian science and its presence in the international arena.</p>
           <div class="hero__actions">
             <a class="btn btn-primary" href="/listings">${icon('handHeart')} Find support</a>
             <a class="btn btn-secondary" href="/donate">${icon('heart')} Donate</a>
@@ -159,7 +159,7 @@ function homeContentHtml () {
         <div class="card card--cool">
           <div class="card__header">
             <div class="icon-badge icon-badge--cool">${icon('info')}</div>
-            <div class="card__title">About NGO Science for Ukraine</div>
+            <div class="card__title">About NGO<br>Science for Ukraine</div>
             
           </div>
           <div class="card__links">
