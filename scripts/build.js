@@ -26,10 +26,10 @@ const PAGES = [
     slug: '',
     name: 'home',
     title: 'Home',
-    description: "#ScienceForUkraine supports the Ukrainian academic community in surviving Russia's war and helps ensure the continuity of Ukrainian research.",
+    description: "#ScienceForUkraine supports the Ukrainian academic community in surviving Russia's war and helps ensure the continuity of Ukrainian science.",
     template: 'home'
   },
-  { slug: 'help', name: 'help', title: 'How You Can Help', description: 'Ways to support the Ukrainian academic community: donate, or submit a support offer.' },
+  { slug: 'help', name: 'help', title: 'How You Can Help', description: 'Ways to support the Ukrainian academic community: become a member, donate, or submit a support offer.' },
   { slug: 'support', name: 'support', title: 'Funding Programmes and Other Support', description: 'A country-by-country list of funding programmes and support initiatives for Ukrainian researchers and students.' },
   { slug: 'about', name: 'about', title: 'About Us', description: 'Who we are, our mission, and the people behind #ScienceForUkraine.' },
   { slug: 'press', name: 'press', title: 'Press & Media', description: 'Press releases, media coverage, and press materials for #ScienceForUkraine.' },
@@ -116,7 +116,7 @@ function homeContentHtml () {
   const updatesHtml = latest.map(item => `
         <div class="updates-strip__item">
           <span class="updates-strip__item-date">${formatDate(item.date)}</span>
-          <div class="updates-strip__item-title">${escapeHtml(item.title)}</div>
+          <div class="updates-strip__item-title">${escapeHtml(item.title || '')}</div>
           <a class="read-more" href="/news#${item.slug}">Read more ${icon('arrowRight')}</a>
         </div>`).join('')
 
@@ -124,7 +124,7 @@ function homeContentHtml () {
       <section class="hero">
         <div class="hero__inner">
           <h1 class="hero__title">Supporting Ukrainian research.<br>Today and for the future.</h1>
-          <p class="hero__subtitle">Since 26 February 2022, #ScienceForUkraine supports the Ukrainian academic community in surviving Russia&rsquo;s war and helps ensure the continuity of Ukrainian research and its presence in the international scholarly community.</p>
+          <p class="hero__subtitle">#ScienceForUkraine supports the Ukrainian academic community in surviving Russia&rsquo;s war and helps ensure the continuity of Ukrainian science and its presence in the international arena.</p>
           <div class="hero__actions">
             <a class="btn btn-primary" href="/listings">${icon('handHeart')} Find support</a>
             <a class="btn btn-secondary" href="/donate">${icon('heart')} Donate</a>
@@ -137,7 +137,7 @@ function homeContentHtml () {
           <div class="card__header">
             <div class="icon-badge icon-badge--warm">${icon('users')}</div>
             <div class="card__title">For Ukrainian researchers and students</div>
-         
+            <div class="card__subtitle">Find opportunities, funding, and other support.</div>
           </div>
           <div class="card__links">
             ${actionLink({ href: '/listings', iconName: 'search', label: 'View all support listings' })}
@@ -149,8 +149,8 @@ function homeContentHtml () {
         <div class="card card--cool">
           <div class="card__header">
             <div class="icon-badge icon-badge--cool">${icon('handHeart')}</div>
-            <div class="card__title">For international research community</div>
-    
+            <div class="card__title">For International research community</div>
+            <div class="card__subtitle">Help the community by contributing your time, skills, or resources.</div>
           </div>
           <div class="card__links">
             ${actionLink({ href: '/help', iconName: 'users', label: 'How can you help?', highlight: true })}
@@ -163,8 +163,8 @@ function homeContentHtml () {
         <div class="card card--cool">
           <div class="card__header">
             <div class="icon-badge icon-badge--cool">${icon('info')}</div>
-            <div class="card__title">About NGO<br>Science for Ukraine</div>
-            
+            <div class="card__title">About Us</div>
+            <div class="card__subtitle">Learn more about our mission, activities, and partners.</div>
           </div>
           <div class="card__links">
             ${actionLink({ href: '/about', iconName: 'info', label: 'Our mission' })}
@@ -201,7 +201,9 @@ function readNewsByDate () {
 }
 
 function formatDate (isoDate) {
+  if (!isoDate) return ''
   const d = new Date(isoDate + 'T00:00:00Z')
+  if (isNaN(d.getTime())) return ''
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })
 }
 
@@ -212,9 +214,10 @@ function newsContentHtml () {
     const pinnedClass = item.pinned ? ' update-card--pinned' : ''
     const openAttr = ''
     const pinnedLabel = item.pinned ? `<span class="update-card__pin-label" title="Pinned update" aria-label="Pinned update">${icon('pin')}</span>` : ''
-    const bodyParagraphs = item.body.split('\n\n').map(p => `<p>${escapeHtml(p).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>`).join('')
+    const bodyParagraphs = (item.body || '').split('\n\n').filter(Boolean).map(p => `<p>${escapeHtml(p).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>`).join('')
     const bodyImage = item.image ? `<img class="update-card__image" src="${item.image}" alt="">` : ''
     const readMoreLink = item.link ? `<a class="update-card__external-link" href="${item.link}" target="_blank" rel="noopener">Read more ${icon('arrowRight')}</a>` : ''
+    const excerptHtml = item.excerpt ? `<div class="update-card__excerpt">${escapeHtml(item.excerpt)}</div>` : ''
 
     return `
         <details class="update-card${pinnedClass}" id="${item.slug}"${openAttr}>
@@ -222,10 +225,10 @@ function newsContentHtml () {
             <div class="update-card__main">
               ${pinnedLabel}
               <div class="update-card__title-row">
-                <span class="update-card__title">${escapeHtml(item.title)}</span>
+                <span class="update-card__title">${escapeHtml(item.title || '')}</span>
                 <button type="button" class="update-card__copy-link" data-slug="${item.slug}" aria-label="Copy link to this update" title="Copy link to this update">${icon('link')}</button>
               </div>
-              <div class="update-card__excerpt">${escapeHtml(item.excerpt)}</div>
+              ${excerptHtml}
               <span class="update-card__date">${formatDate(item.date)}</span>
             </div>
             <div class="update-card__toggle-group">
@@ -263,9 +266,10 @@ function build () {
 
   for (const page of PAGES) {
     const url = `${SITE_URL}/${page.slug}`
+    const fullTitle = page.slug === '' ? '#ScienceForUkraine' : `${page.title} – #ScienceForUkraine`
     const html = renderShell({
       page: page.name,
-      title: page.title,
+      title: fullTitle,
       description: page.description,
       url,
       contentHtml: contentForPage(page),
