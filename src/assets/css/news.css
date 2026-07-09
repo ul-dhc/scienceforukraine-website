@@ -194,6 +194,24 @@
   line-height: 1.6;
 }
 
+.update-card__image {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  border-radius: var(--radius-m);
+  margin-bottom: var(--spacing-l);
+}
+
+.update-card__external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: var(--spacing);
+  font-weight: 700;
+  color: var(--accent-1);
+}
+
 .update-card__body p + p {
   margin-top: 0.8em;
 }
