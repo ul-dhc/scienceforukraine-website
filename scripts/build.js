@@ -1,5 +1,3 @@
-
-
 const fs = require('fs')
 const path = require('path')
 const { marked } = require('marked')
@@ -12,9 +10,7 @@ const DIST = path.join(ROOT, 'dist')
 
 const SITE_URL = 'https://scienceforukraine.eu'
 
-
 const CUSTOM_DOMAIN = ''
-
 
 const BASE_PATH = '/scienceforukraine-website'
 
@@ -40,8 +36,6 @@ const PAGES = [
   { slug: 'mtg', name: 'mtg', title: 'Micro Travel Grant Programme', description: 'The #ScienceForUkraine Micro Travel Grant Programme for early-career scholars based in Ukraine.' },
   { slug: 'news', name: 'news', title: 'Latest Updates', description: 'News and announcements from #ScienceForUkraine.', template: 'news', extraScripts: ['/assets/js/news.js'] }
 ]
-
-// ---- helpers -------------------------------------------------------------
 
 function read (p) {
   return fs.readFileSync(p, 'utf8')
@@ -105,15 +99,11 @@ function writePage (slug, html) {
   fs.writeFileSync(path.join(dir, 'index.html'), applyBasePath(html))
 }
 
-// ---- shared UI fragments --------------------------------------------------
-
 function actionLink ({ href, iconName, label, external, highlight }) {
   const targetAttr = external ? ' target="_blank" rel="noopener"' : ''
   const cls = highlight ? 'action-link action-link--highlight' : 'action-link'
   return `<a class="${cls}" href="${href}"${targetAttr}>${icon(iconName)}<span class="action-link__label">${label}</span>${icon('chevronRight', 'action-link__chevron')}</a>`
 }
-
-// ---- home page content ----------------------------------------------------
 
 function homeContentHtml () {
   const newsByDate = readNewsByDate()
@@ -193,8 +183,6 @@ function homeContentHtml () {
       </div>`
 }
 
-// ---- news page content ------------------------------------------------
-
 function readNews () {
   const items = JSON.parse(read(path.join(PUBLIC, 'pages', 'news.json')))
   return items.slice().sort((a, b) => {
@@ -203,8 +191,6 @@ function readNews () {
   })
 }
 
-// homepage widget: purely chronological (no pinned-first override) —
-// pinned-first ordering is specific to the /news page itself
 function readNewsByDate () {
   const items = JSON.parse(read(path.join(PUBLIC, 'pages', 'news.json')))
   return items.slice().sort((a, b) => new Date(b.date) - new Date(a.date))
@@ -221,7 +207,7 @@ function newsContentHtml () {
   const cardsHtml = items.map((item, i) => {
     const pinnedClass = item.pinned ? ' update-card--pinned' : ''
     const openAttr = item.pinned ? ' open' : ''
-    const pinnedLabel = item.pinned ? '<span class="update-card__pin-label">Pinned update</span>' : ''
+    const pinnedLabel = item.pinned ? `<span class="update-card__pin-label" title="Pinned update" aria-label="Pinned update">${icon('pin')}</span>` : ''
     const bodyParagraphs = item.body.split('\n\n').map(p => `<p>${escapeHtml(p)}</p>`).join('')
 
     return `
@@ -259,8 +245,6 @@ function newsContentHtml () {
       </div>`
 }
 
-// ---- build ----------------------------------------------------------------
-
 function contentForPage (page) {
   if (page.template === 'home') return homeContentHtml()
   if (page.template === 'news') return newsContentHtml()
@@ -285,7 +269,6 @@ function build () {
     console.log(`built /${page.slug}`)
   }
 
-  // static assets
   copyDir(path.join(SRC, 'assets'), path.join(DIST, 'assets'))
   copyDir(path.join(PUBLIC, 'media'), path.join(DIST, 'media'))
   fs.copyFileSync(path.join(PUBLIC, 'favicon.ico'), path.join(DIST, 'favicon.ico'))
