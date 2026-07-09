@@ -1,6 +1,4 @@
-/* ==========================================================================
-   #ScienceForUkraine — rendered markdown content (About, Help, Support, etc.)
-   ========================================================================== */
+
 
 .markdown {
   display: flex;
@@ -16,9 +14,7 @@
   width: 100%;
 }
 
-/* vertical rhythm: paragraphs/lists get generous breathing room,
-   consecutive list items stay tight to each other so a list still
-   reads as one group rather than a series of separate paragraphs */
+
 .markdown p,
 .markdown ul,
 .markdown ol,
@@ -78,8 +74,7 @@
   font-size: var(--font-size);
 }
 
-/* headings should feel closely bound to the text that follows them,
-   and not carry a large gap down to it */
+
 .markdown h1 + p,
 .markdown h2 + p,
 .markdown h3 + p,
