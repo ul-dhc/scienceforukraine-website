@@ -1,7 +1,3 @@
-/* ==========================================================================
-   #ScienceForUkraine — News page
-   ========================================================================== */
-
 .news-header {
   padding: var(--spacing-xl) var(--spacing-l) 0;
 }
@@ -63,8 +59,6 @@
   padding: 0 var(--spacing-l) var(--spacing-xl);
 }
 
-/* each update is a native <details> element: works with zero JS,
-   the toolbar buttons above just set/remove the `open` attribute */
 .update-card {
   border: 1px solid var(--light-gray);
   border-radius: var(--radius-m);
@@ -93,13 +87,14 @@
 }
 
 .update-card__pin-label {
-  display: block;
+  display: inline-flex;
   color: var(--tint-warm-icon);
-  font-size: var(--font-size-s);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.update-card__pin-label .icon {
+  width: 20px;
+  height: 20px;
 }
 
 .update-card__main {
@@ -163,9 +158,6 @@
   height: 18px;
 }
 
-/* revealed on hovering the title specifically — also stays visible on
-   keyboard focus and while showing copy feedback, so it's reachable
-   without a mouse */
 .update-card__title-row:hover .update-card__copy-link,
 .update-card__copy-link:focus-visible,
 .update-card__copy-link.is-copied {
