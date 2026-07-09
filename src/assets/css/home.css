@@ -1,0 +1,125 @@
+/* ==========================================================================
+   #ScienceForUkraine — homepage layout
+   ========================================================================== */
+
+.hero {
+  background-image: url("/assets/img/hero-bg.png");
+  background-repeat: no-repeat;
+  background-position: top right;
+  background-size: min(55%, 720px) auto;
+  padding: var(--spacing-xxl) var(--spacing-l);
+}
+
+.hero__inner {
+  max-width: 640px;
+}
+
+.hero__title {
+  color: var(--ink);
+  font-size: 40px;
+  line-height: 1.15;
+  font-weight: 700;
+  margin-bottom: var(--spacing-l);
+}
+
+.hero__subtitle {
+  color: var(--ink-soft);
+  font-size: var(--font-size);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-xl);
+  max-width: 520px;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing);
+}
+
+@media (max-width: 550px) {
+  .hero__title {
+    font-size: 30px;
+  }
+}
+
+/* ---- three-card grid ------------------------------------------------- */
+
+.home-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-l);
+  padding: var(--spacing-xl) var(--spacing-l);
+}
+
+@media (min-width: 900px) {
+  .home-cards {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+  }
+}
+
+/* ---- latest updates strip --------------------------------------------- */
+
+.updates-strip {
+  margin: 0 var(--spacing-l) var(--spacing-xl);
+  padding: var(--spacing-l);
+  border-radius: var(--radius-l);
+  border: 1px solid var(--light-gray);
+  background: var(--background);
+  box-shadow: var(--shadow-s);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-l);
+  align-items: flex-start;
+}
+
+.updates-strip__heading {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
+  min-width: 200px;
+}
+
+.updates-strip__heading-text h2 {
+  font-size: var(--font-size-l);
+  margin-bottom: 2px;
+}
+
+.updates-strip__heading-text a {
+  font-size: var(--font-size-s);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.updates-strip__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xl);
+  flex: 1;
+}
+
+.updates-strip__item {
+  min-width: 220px;
+  flex: 1;
+}
+
+.updates-strip__item-date {
+  color: var(--accent-1);
+  font-weight: 700;
+  font-size: var(--font-size-s);
+  margin-bottom: 4px;
+  display: block;
+}
+
+.updates-strip__item-title {
+  font-size: var(--font-size-s);
+  margin-bottom: 4px;
+}
+
+.updates-strip__item a.read-more {
+  font-size: var(--font-size-s);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}

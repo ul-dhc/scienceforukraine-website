@@ -1,0 +1,87 @@
+/* ==========================================================================
+   #ScienceForUkraine — footer
+   ========================================================================== */
+
+.site-footer {
+  width: 100%;
+  margin-top: var(--spacing-xxl);
+}
+
+.site-footer__top {
+  background: var(--tint-cool);
+  border-top: 1px solid var(--tint-cool-border);
+}
+
+.site-footer__top-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-l);
+  padding: var(--spacing-l);
+}
+
+.site-footer__logo {
+  display: flex;
+  align-items: center;
+  align-self: center;
+}
+
+.site-footer__logo img {
+  display: block;
+  height: 44px;
+}
+
+.site-footer__tagline {
+  flex: 1;
+  min-width: 240px;
+  color: var(--ink-soft);
+  font-size: var(--font-size-s);
+  line-height: 1.5;
+}
+
+.site-footer__social {
+  display: flex;
+  gap: var(--spacing-s);
+}
+
+.site-footer__social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-1);
+  color: var(--accent-1);
+  transition: background var(--transition), color var(--transition);
+}
+
+.site-footer__social a:hover {
+  background: var(--accent-1);
+  color: var(--background);
+}
+
+.site-footer__bottom {
+  background: var(--accent-1);
+  color: var(--background);
+  text-align: center;
+  font-size: var(--font-size-s);
+  padding: var(--spacing) var(--spacing-l);
+}
+
+.site-footer__bottom a {
+  color: var(--background);
+  text-decoration: underline;
+}
+
+.site-footer__divider {
+  margin: 0 var(--spacing-s);
+  opacity: 0.6;
+}
+
+@media (max-width: 550px) {
+  .site-footer__top-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+}

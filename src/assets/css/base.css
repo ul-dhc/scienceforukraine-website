@@ -1,0 +1,142 @@
+/* ==========================================================================
+   #ScienceForUkraine — base styles
+   Design tokens + resets + typography.
+   Ported 1:1 from the original Vue app's base.scss so the visual identity
+   stays identical.
+   ========================================================================== */
+
+@font-face {
+  font-family: 'Inter';
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+  src: url("../fonts/Inter-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+  src: url("../fonts/Inter-Bold.woff2") format("woff2");
+}
+
+:root {
+  --narrow: 360px;
+  --medium: 720px;
+  --wide: 1080px;
+
+  --max-width: 1280px;
+
+  --spacing: 10px;
+  --spacing-xs: 2.5px;
+  --spacing-s: 5px;
+  --spacing-m: var(--spacing);
+  --spacing-l: 20px;
+  --spacing-xl: 40px;
+  --spacing-xxl: 60px;
+
+  --font-family: 'Inter', sans-serif;
+  --font-size: 16px;
+  --font-size-s: 12px;
+  --font-size-l: 20px;
+  --font-size-xl: 32px;
+
+  --regular: 400;
+  --bold: 600;
+
+  --text: #000;
+  --light-text: #96A7B9;
+  --background: #FFF;
+  --pale-gray: #F1F4F7;
+  --light-gray: #E1E8EE;
+  --gray: #7c8c9e;
+  --dark-gray: #515f6e;
+  --accent-1: #0057B7;
+  --accent-2: #FFD700;
+
+  /* redesign tokens: card tints, radii, shadows (kept alongside the
+     original tokens above so every visual style still lives in base.css) */
+  --tint-warm: #FDF9EE;
+  --tint-warm-border: #F1E3BA;
+  --tint-warm-icon: #C9971C;
+  --tint-cool: #F2F6FC;
+  --tint-cool-border: #DCE7F7;
+  --tint-cool-icon: var(--accent-1);
+  --ink: #0B0F1E;
+  --ink-soft: #3A3F4D;
+
+  --radius-s: 8px;
+  --radius-m: 14px;
+  --radius-l: 20px;
+  --radius-pill: 999px;
+
+  --shadow-s: 0 1px 2px rgba(11, 15, 30, 0.06);
+  --shadow-m: 0 6px 20px rgba(11, 15, 30, 0.08);
+
+  --transition: .2s;
+}
+
+* , *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font: var(--regular) var(--font-size)/1.3 var(--font-family);
+  background: var(--background);
+  color: var(--text);
+  scroll-padding-top: 60px;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+::selection {
+  background: var(--accent-2);
+}
+
+h1 {
+  font-size: 1.4em;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.2em;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: var(--font-size-s);
+  font-weight: 400;
+}
+
+a {
+  color: var(--accent-1);
+  text-decoration: none;
+}
+
+code {
+  font-family: ui-monospace, monospace;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background: var(--accent-1);
+}
+
+.max-width {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+}
+
+.max-width > .max-width-inner {
+  width: 100%;
+  max-width: var(--max-width);
+}

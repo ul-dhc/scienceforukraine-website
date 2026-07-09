@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="Light abstract ScienceForUkraine background with hexagons and network lines">
+  <defs>
+    <style>
+      :root {
+        --sfu-blue: #0057B8;
+        --sfu-yellow: #FFD700;
+        --sfu-pale-blue: #DCEEFF;
+        --sfu-pale-yellow: #FFF5B8;
+      }
+      .hex-blue { fill: none; stroke: var(--sfu-blue); stroke-width: 2.2; opacity: .18; }
+      .hex-blue-soft { fill: none; stroke: var(--sfu-pale-blue); stroke-width: 5; opacity: .58; }
+      .hex-yellow { fill: none; stroke: var(--sfu-yellow); stroke-width: 2; opacity: .20; }
+      .hex-yellow-soft { fill: var(--sfu-pale-yellow); stroke: none; opacity: .24; }
+      .node-blue { fill: var(--sfu-blue); opacity: .20; }
+      .node-yellow { fill: var(--sfu-yellow); opacity: .22; }
+      .path-blue { fill: none; stroke: var(--sfu-blue); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; opacity: .14; }
+      .path-yellow { fill: none; stroke: var(--sfu-yellow); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; opacity: .13; }
+      .path-blue-thin { fill: none; stroke: var(--sfu-blue); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: .11; }
+      .path-yellow-thin { fill: none; stroke: var(--sfu-yellow); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: .10; }
+    </style>
+    <symbol id="hex" viewBox="-50 -44 100 88">
+      <polygon points="0,-42 36,-21 36,21 0,42 -36,21 -36,-21" />
+    </symbol>
+    <radialGradient id="softBlue" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#CFE7FF" stop-opacity="0.42"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="softYellow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#FFF2A0" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="#FFFFFF"/>
+
+  <!-- Very subtle corner glows keep the center readable. -->
+  <circle cx="235" cy="610" r="260" fill="url(#softBlue)" opacity=".32"/>
+  <circle cx="1340" cy="300" r="300" fill="url(#softBlue)" opacity=".24"/>
+  <circle cx="320" cy="315" r="220" fill="url(#softYellow)" opacity=".18"/>
+  <circle cx="1295" cy="680" r="240" fill="url(#softYellow)" opacity=".16"/>
+
+  <!-- Left-side molecular / circuit motif. -->
+  <path class="path-blue" d="M158 248 L268 312 L268 470 L360 523 L360 625"/>
+  <circle class="node-blue" cx="158" cy="248" r="14"/>
+  <circle class="node-blue" cx="268" cy="470" r="10"/>
+  <circle class="node-blue" cx="360" cy="625" r="10"/>
+  <path class="path-yellow" d="M82 612 L82 702 L186 762"/>
+  <circle class="node-yellow" cx="82" cy="612" r="10"/>
+  <circle class="node-yellow" cx="186" cy="762" r="10"/>
+  <path class="path-blue-thin" d="M268 410 L190 455 L112 500"/>
+  <path class="path-yellow-thin" d="M268 338 L196 383"/>
+
+  <use href="#hex" class="hex-blue" x="122" y="450" transform="scale(2.05)"/>
+  <use href="#hex" class="hex-blue-soft" x="260" y="640" transform="scale(1.35)"/>
+  <use href="#hex" class="hex-yellow" x="315" y="365" transform="scale(1.55)"/>
+  <use href="#hex" class="hex-blue" x="420" y="370" transform="scale(.72)"/>
+  <use href="#hex" class="hex-blue-soft" x="540" y="180" transform="scale(.75)"/>
+  <use href="#hex" class="hex-yellow" x="470" y="700" transform="scale(.88)"/>
+  <use href="#hex" class="hex-blue-soft" x="138" y="145" transform="scale(1.15)"/>
+  <use href="#hex" class="hex-blue" x="612" y="510" transform="scale(.92)"/>
+  <use href="#hex" class="hex-yellow-soft" x="400" y="118" transform="scale(.42)"/>
+  <use href="#hex" class="hex-yellow-soft" x="540" y="755" transform="scale(.35)"/>
+
+  <!-- Center sparse shapes, kept very quiet for text overlays. -->
+  <use href="#hex" class="hex-blue" x="790" y="235" transform="scale(.80)"/>
+  <use href="#hex" class="hex-blue-soft" x="705" y="430" transform="scale(.85)"/>
+  <use href="#hex" class="hex-yellow" x="882" y="475" transform="scale(.95)"/>
+  <use href="#hex" class="hex-yellow-soft" x="825" y="325" transform="scale(.35)"/>
+  <path class="path-blue-thin" d="M760 145 L760 255"/>
+  <path class="path-blue-thin" d="M760 145 L866 88"/>
+  <circle class="node-blue" cx="760" cy="255" r="11"/>
+  <circle class="node-blue" cx="866" cy="88" r="12"/>
+
+  <!-- Right-side molecular / circuit motif. -->
+  <path class="path-blue" d="M1124 252 L1220 185 L1220 112 L1340 45"/>
+  <path class="path-blue" d="M1220 185 L1380 276 L1380 386"/>
+  <circle class="node-blue" cx="1124" cy="252" r="12"/>
+  <circle class="node-blue" cx="1340" cy="45" r="14"/>
+  <circle class="node-blue" cx="1380" cy="386" r="12"/>
+  <path class="path-blue" d="M1038 635 L1038 520 L1190 430"/>
+  <circle class="node-blue" cx="1038" cy="635" r="10"/>
+  <circle class="node-blue" cx="1190" cy="430" r="11"/>
+  <path class="path-yellow" d="M1138 725 L1138 610 L1265 535 L1384 600"/>
+  <circle class="node-yellow" cx="1138" cy="725" r="10"/>
+  <circle class="node-yellow" cx="1384" cy="600" r="10"/>
+
+  <use href="#hex" class="hex-blue" x="1325" y="220" transform="scale(1.35)"/>
+  <use href="#hex" class="hex-blue-soft" x="1400" y="620" transform="scale(1.25)"/>
+  <use href="#hex" class="hex-blue" x="1220" y="620" transform="scale(1.2)"/>
+  <use href="#hex" class="hex-yellow" x="1288" y="720" transform="scale(.95)"/>
+  <use href="#hex" class="hex-blue" x="1052" y="385" transform="scale(.64)"/>
+  <use href="#hex" class="hex-blue-soft" x="1010" y="225" transform="scale(.85)"/>
+  <use href="#hex" class="hex-yellow" x="1118" y="154" transform="scale(.5)"/>
+  <use href="#hex" class="hex-yellow" x="1456" y="476" transform="scale(.83)"/>
+  <use href="#hex" class="hex-yellow-soft" x="1270" y="102" transform="scale(.42)"/>
+  <use href="#hex" class="hex-blue-soft" x="1512" y="88" transform="scale(.40)"/>
+  <use href="#hex" class="hex-blue" x="1095" y="705" transform="scale(.58)"/>
+
+  <!-- Small floating details -->
+  <use href="#hex" class="hex-blue" x="42" y="600" transform="scale(.30)"/>
+  <use href="#hex" class="hex-yellow" x="60" y="520" transform="scale(.48)"/>
+  <use href="#hex" class="hex-blue" x="355" y="240" transform="scale(.42)"/>
+  <use href="#hex" class="hex-yellow-soft" x="152" y="320" transform="scale(.35)"/>
+  <use href="#hex" class="hex-blue-soft" x="1500" y="760" transform="scale(.45)"/>
+  <use href="#hex" class="hex-yellow-soft" x="1475" y="650" transform="scale(.38)"/>
+</svg>

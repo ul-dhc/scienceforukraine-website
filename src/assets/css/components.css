@@ -1,0 +1,187 @@
+/* ==========================================================================
+   #ScienceForUkraine — shared components
+   Buttons, cards, icon badges, and pill/action links used by the homepage,
+   the News page, and the footer. Page-specific files (home.css, news.css)
+   only contain layout/positioning — the visual language itself lives here.
+   ========================================================================== */
+
+.icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+/* ---- buttons (hero CTAs) ------------------------------------------------ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  padding: 14px 22px;
+  border-radius: var(--radius-s);
+  font-weight: var(--bold);
+  font-size: var(--font-size);
+  border: 2px solid transparent;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-m);
+}
+
+.btn-primary {
+  background: var(--accent-1);
+  color: var(--background);
+}
+
+.btn-secondary {
+  background: var(--accent-2);
+  color: var(--accent-1);
+}
+
+/* ---- cards --------------------------------------------------------------- */
+
+.card {
+  border-radius: var(--radius-l);
+  padding: var(--spacing-l);
+  border: 1px solid var(--light-gray);
+  background: var(--background);
+}
+
+.card--warm {
+  background: var(--tint-warm);
+  border-color: var(--tint-warm-border);
+}
+
+.card--cool {
+  background: var(--tint-cool);
+  border-color: var(--tint-cool-border);
+}
+
+.card__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--spacing-s);
+  margin-bottom: var(--spacing-l);
+}
+
+.card__title {
+  color: var(--accent-1);
+  font-size: var(--font-size-l);
+  font-weight: 700;
+}
+
+.card__subtitle {
+  color: var(--ink-soft);
+  font-size: var(--font-size-s);
+  line-height: 1.5;
+}
+
+.card__links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-s);
+}
+
+/* ---- icon badge (circular icon used on cards / updates bar) ------------- */
+
+.icon-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--background);
+  box-shadow: var(--shadow-s);
+  flex-shrink: 0;
+}
+
+.icon-badge .icon {
+  width: 26px;
+  height: 26px;
+}
+
+.icon-badge--warm {
+  color: var(--tint-warm-icon);
+}
+
+.icon-badge--cool {
+  color: var(--tint-cool-icon);
+}
+
+/* ---- action link (pill-shaped row link with icon + chevron) ------------- */
+
+.action-link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
+  padding: 12px var(--spacing-l);
+  border-radius: var(--radius-pill);
+  background: var(--background);
+  border: 1px solid var(--light-gray);
+  color: var(--ink);
+  box-shadow: var(--shadow-s);
+  transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.action-link:hover {
+  border-color: var(--accent-1);
+  transform: translateX(2px);
+  box-shadow: var(--shadow-m);
+}
+
+.action-link--highlight {
+  border-width: 1.5px;
+}
+
+.card--warm .action-link--highlight {
+  border-color: var(--accent-2);
+}
+
+.card--cool .action-link--highlight {
+  border-color: var(--accent-1);
+}
+
+.action-link .icon {
+  color: var(--tint-cool-icon);
+}
+
+.card--warm .action-link .icon {
+  color: var(--tint-warm-icon);
+}
+
+.action-link__label {
+  flex: 1;
+  font-size: var(--font-size-s);
+  line-height: 1.35;
+}
+
+.action-link__chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--gray);
+  flex-shrink: 0;
+}
+
+/* ---- section eyebrow / heading conventions shared across pages --------- */
+
+.section-title {
+  color: var(--accent-1);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+}
+
+.section-subtitle {
+  color: var(--ink-soft);
+  font-size: var(--font-size);
+}
