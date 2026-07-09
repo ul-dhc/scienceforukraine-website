@@ -26,10 +26,10 @@ const PAGES = [
     slug: '',
     name: 'home',
     title: 'Home',
-    description: "#ScienceForUkraine supports the Ukrainian academic community in surviving Russia's war and helps ensure the continuity of Ukrainian science.",
+    description: "#ScienceForUkraine supports the Ukrainian academic community in surviving Russia's war and helps ensure the continuity of Ukrainian research.",
     template: 'home'
   },
-  { slug: 'help', name: 'help', title: 'How You Can Help', description: 'Ways to support the Ukrainian academic community: become a member, donate, or submit a support offer.' },
+  { slug: 'help', name: 'help', title: 'How You Can Help', description: 'Ways to support the Ukrainian academic community: donate, or submit a support offer.' },
   { slug: 'support', name: 'support', title: 'Funding Programmes and Other Support', description: 'A country-by-country list of funding programmes and support initiatives for Ukrainian researchers and students.' },
   { slug: 'about', name: 'about', title: 'About Us', description: 'Who we are, our mission, and the people behind #ScienceForUkraine.' },
   { slug: 'press', name: 'press', title: 'Press & Media', description: 'Press releases, media coverage, and press materials for #ScienceForUkraine.' },
