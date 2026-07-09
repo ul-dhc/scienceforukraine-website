@@ -14,6 +14,8 @@ const CUSTOM_DOMAIN = ''
 
 const BASE_PATH = '/scienceforukraine-website'
 
+const DEPLOY_URL = BASE_PATH ? 'https://ul-dhc.github.io' + BASE_PATH : SITE_URL
+
 function applyBasePath (html) {
   if (!BASE_PATH) return html
   return html.replace(/(href|src)="\/(?!\/)/g, `$1="${BASE_PATH}/`)
@@ -24,7 +26,7 @@ const PAGES = [
     slug: '',
     name: 'home',
     title: 'Home',
-    description: "#ScienceForUkraine supports the Ukrainian academic community in surviving Russia's war and helps ensure the continuity of Ukrainian research.",
+    description: "#ScienceForUkraine supports the Ukrainian academic community in surviving Russia's war and helps ensure the continuity of Ukrainian science.",
     template: 'home'
   },
   { slug: 'help', name: 'help', title: 'How You Can Help', description: 'Ways to support the Ukrainian academic community: become a member, donate, or submit a support offer.' },
@@ -80,12 +82,14 @@ function renderShell ({ page, title, description, url, contentHtml, extraScripts
   const extraScriptsHtml = (extraScripts || [])
     .map(src => `  <script src="${src}"></script>`)
     .join('\n')
+  const ogImage = `${DEPLOY_URL}/media/ScienceForUkraine-1128x191px-blue.png`
 
   return pageTemplate
     .replaceAll('{{TITLE}}', title)
     .replaceAll('{{DESCRIPTION}}', description)
     .replaceAll('{{URL}}', url)
     .replaceAll('{{PAGE}}', page)
+    .replaceAll('{{OG_IMAGE}}', ogImage)
     .replace('{{HEADER}}', headerHtml)
     .replace('{{FOOTER}}', footerHtml)
     .replace('{{CONTENT}}', contentHtml)
@@ -120,7 +124,7 @@ function homeContentHtml () {
       <section class="hero">
         <div class="hero__inner">
           <h1 class="hero__title">Supporting Ukrainian research.<br>Today and for the future.</h1>
-          <p class="hero__subtitle">Since 26 February 2022, #ScienceForUkraine supports the Ukrainian academic community in surviving Russia&rsquo;s war and helps ensure the continuity of Ukrainian research and its presence in the international scholarly community.</p>
+          <p class="hero__subtitle">#ScienceForUkraine supports the Ukrainian academic community in surviving Russia&rsquo;s war and helps ensure the continuity of Ukrainian science and its presence in the international arena.</p>
           <div class="hero__actions">
             <a class="btn btn-primary" href="/listings">${icon('handHeart')} Find support</a>
             <a class="btn btn-secondary" href="/donate">${icon('heart')} Donate</a>
@@ -133,7 +137,7 @@ function homeContentHtml () {
           <div class="card__header">
             <div class="icon-badge icon-badge--warm">${icon('users')}</div>
             <div class="card__title">For Ukrainian researchers and students</div>
-            
+            <div class="card__subtitle">Find opportunities, funding, and other support.</div>
           </div>
           <div class="card__links">
             ${actionLink({ href: '/listings', iconName: 'search', label: 'View all support listings' })}
@@ -146,7 +150,7 @@ function homeContentHtml () {
           <div class="card__header">
             <div class="icon-badge icon-badge--cool">${icon('handHeart')}</div>
             <div class="card__title">For International research community</div>
-            
+            <div class="card__subtitle">Help the community by contributing your time, skills, or resources.</div>
           </div>
           <div class="card__links">
             ${actionLink({ href: '/help', iconName: 'users', label: 'How can you help?', highlight: true })}
@@ -159,8 +163,8 @@ function homeContentHtml () {
         <div class="card card--cool">
           <div class="card__header">
             <div class="icon-badge icon-badge--cool">${icon('info')}</div>
-            <div class="card__title">About NGO<br>Science for Ukraine</div>
-            
+            <div class="card__title">About Us</div>
+            <div class="card__subtitle">Learn more about our mission, activities, and partners.</div>
           </div>
           <div class="card__links">
             ${actionLink({ href: '/about', iconName: 'info', label: 'Our mission' })}
