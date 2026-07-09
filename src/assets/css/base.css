@@ -1,9 +1,4 @@
-/* ==========================================================================
-   #ScienceForUkraine — base styles
-   Design tokens + resets + typography.
-   Ported 1:1 from the original Vue app's base.scss so the visual identity
-   stays identical.
-   ========================================================================== */
+
 
 @font-face {
   font-family: 'Inter';
@@ -55,8 +50,7 @@
   --accent-1: #0057B7;
   --accent-2: #FFD700;
 
-  /* redesign tokens: card tints, radii, shadows (kept alongside the
-     original tokens above so every visual style still lives in base.css) */
+
   --tint-warm: #FDF9EE;
   --tint-warm-border: #F1E3BA;
   --tint-warm-icon: #C9971C;
