@@ -1,16 +1,4 @@
-// Static site builder for #ScienceForUkraine informational pages.
-//
-// This is deliberately dependency-light: markdown content lives in
-// public/pages/*.md (same files/format the old Vue app used, so content
-// editing workflow doesn't change), and gets rendered into static HTML
-// at build time using the same 'marked' library the Vue app used.
-// News/updates content lives in public/pages/news.json (see that file).
-//
-// NOTE: this build currently only produces the informational pages
-// (home, about, help, support, donate, mtg, press, partners, news).
-// /listings, /institutions, /d/:id and /i/:id (the Google-Sheet-backed
-// "database" pages) are intentionally NOT part of this script yet —
-// that's the next phase.
+
 
 const fs = require('fs')
 const path = require('path')
@@ -24,8 +12,17 @@ const DIST = path.join(ROOT, 'dist')
 
 const SITE_URL = 'https://scienceforukraine.eu'
 
-// ---- config: one entry per informational page --------------------------
-// `slug: ''` means the site root (index.html at /)
+
+const CUSTOM_DOMAIN = ''
+
+
+const BASE_PATH = '/scienceforukraine-website'
+
+function applyBasePath (html) {
+  if (!BASE_PATH) return html
+  return html.replace(/(href|src)="\/(?!\/)/g, `$1="${BASE_PATH}/`)
+}
+
 const PAGES = [
   {
     slug: '',
@@ -61,6 +58,9 @@ function copyDir (from, to) {
     const dest = path.join(to, entry.name)
     if (entry.isDirectory()) {
       copyDir(src, dest)
+    } else if (BASE_PATH && entry.name.endsWith('.css')) {
+      const css = read(src).replace(/url\("\/(?!\/)/g, `url("${BASE_PATH}/`)
+      fs.writeFileSync(dest, css)
     } else {
       fs.copyFileSync(src, dest)
     }
@@ -96,12 +96,13 @@ function renderShell ({ page, title, description, url, contentHtml, extraScripts
     .replace('{{FOOTER}}', footerHtml)
     .replace('{{CONTENT}}', contentHtml)
     .replace('{{EXTRA_SCRIPTS}}', extraScriptsHtml)
+    .replace('{{BASE_PATH}}', BASE_PATH)
 }
 
 function writePage (slug, html) {
   const dir = slug === '' ? DIST : path.join(DIST, slug)
   mkdirp(dir)
-  fs.writeFileSync(path.join(dir, 'index.html'), html)
+  fs.writeFileSync(path.join(dir, 'index.html'), applyBasePath(html))
 }
 
 // ---- shared UI fragments --------------------------------------------------
@@ -288,6 +289,11 @@ function build () {
   copyDir(path.join(SRC, 'assets'), path.join(DIST, 'assets'))
   copyDir(path.join(PUBLIC, 'media'), path.join(DIST, 'media'))
   fs.copyFileSync(path.join(PUBLIC, 'favicon.ico'), path.join(DIST, 'favicon.ico'))
+
+  if (CUSTOM_DOMAIN) {
+    fs.writeFileSync(path.join(DIST, 'CNAME'), CUSTOM_DOMAIN)
+    console.log(`CNAME written for ${CUSTOM_DOMAIN}`)
+  }
 
   console.log('\nDone. Output in /dist')
 }
