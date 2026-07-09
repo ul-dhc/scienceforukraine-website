@@ -1,9 +1,4 @@
-/* ==========================================================================
-   #ScienceForUkraine — shared components
-   Buttons, cards, icon badges, and pill/action links used by the homepage,
-   the News page, and the footer. Page-specific files (home.css, news.css)
-   only contain layout/positioning — the visual language itself lives here.
-   ========================================================================== */
+
 
 .icon {
   display: inline-block;
