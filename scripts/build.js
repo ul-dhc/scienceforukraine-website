@@ -287,9 +287,12 @@ function listingsContentHtml (openListings, closedListings) {
   const dataJson = JSON.stringify({ open: openListings, closed: closedListings }).replace(/</g, '\\u003c')
 
   return `
+      <div class="listings-header">
+        <h1 class="listings-header__title">Support Offers</h1>
+        <p class="listings-header__note">#ScienceForUkraine cannot guarantee that any given opportunity is still open, or that the host institution will respond. If you are affiliated with a listing and would like it corrected or removed, please contact <a href="mailto:data@scienceforukraine.eu">data@scienceforukraine.eu</a>. Know of an opportunity that should be listed? <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0a7SOe1BeSbZsI2py43gaC2MgpuaaiAcl5cqmskCxzeuHvg/viewform" target="_blank" rel="noopener">Submit a listing</a>.</p>
+      </div>
       <div class="listings-page">
         <aside class="listings-filters" id="listings-filters">
-          <h1 class="listings-filters__title">Support Offers</h1>
           <input type="search" id="lf-search" class="listings-search" placeholder="Search">
 
           <div class="filter-group">
