@@ -21,7 +21,7 @@
   var clearBtn = document.getElementById('lf-clear')
   var sortSelect = document.getElementById('lf-sort')
 
-  var state = { category: '', discipline: '', openFor: '', country: '', search: '', remote: false, accommodation: false, sort: 'newest' }
+  var state = { category: [], discipline: [], openFor: [], country: '', search: '', remote: false, accommodation: false, sort: 'newest' }
 
   var DISCIPLINE_LABELS = {
     naturalSciences: 'Natural sciences',
@@ -46,10 +46,10 @@
   }
 
   function matches (listing) {
-    if (state.category && listing.category !== state.category) return false
+    if (state.category.length && state.category.indexOf(listing.category) === -1) return false
     if (state.country && listing.country !== state.country) return false
-    if (state.discipline && !listing.disciplines[state.discipline]) return false
-    if (state.openFor && !listing.openFor[state.openFor]) return false
+    if (state.discipline.length && !state.discipline.some(function (d) { return listing.disciplines[d] })) return false
+    if (state.openFor.length && !state.openFor.some(function (o) { return listing.openFor[o] })) return false
     if (state.remote && !listing.remote) return false
     if (state.accommodation && !listing.accommodation.available) return false
     if (state.search) {
@@ -174,9 +174,22 @@
     btn.addEventListener('click', function () {
       var group = btn.getAttribute('data-filter')
       var value = btn.getAttribute('data-value')
-      state[group] = value
+      var selected = state[group]
+
+      if (value === '') {
+        selected.length = 0
+      } else {
+        var i = selected.indexOf(value)
+        if (i === -1) {
+          selected.push(value)
+        } else {
+          selected.splice(i, 1)
+        }
+      }
+
       document.querySelectorAll('.filter-pill[data-filter="' + group + '"]').forEach(function (b) {
-        b.classList.toggle('is-active', b === btn)
+        var v = b.getAttribute('data-value')
+        b.classList.toggle('is-active', v === '' ? selected.length === 0 : selected.indexOf(v) !== -1)
       })
       renderList()
     })
@@ -208,7 +221,7 @@
   })
 
   clearBtn.addEventListener('click', function () {
-    state = { category: '', discipline: '', openFor: '', country: '', search: '', remote: false, accommodation: false, sort: 'newest' }
+    state = { category: [], discipline: [], openFor: [], country: '', search: '', remote: false, accommodation: false, sort: 'newest' }
     searchInput.value = ''
     countrySelect.value = ''
     remoteToggle.checked = false
