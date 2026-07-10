@@ -141,10 +141,36 @@
   min-width: 280px;
 }
 
+.listings-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing);
+  margin-bottom: var(--spacing);
+}
+
 .listings-count {
   color: var(--light-text);
   font-size: var(--font-size-s);
-  margin-bottom: var(--spacing);
+}
+
+.listings-sort {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  font-size: var(--font-size-s);
+  color: var(--light-text);
+}
+
+.listings-sort select {
+  padding: 6px 10px;
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-s);
+  font-family: var(--font-family);
+  font-size: var(--font-size-s);
+  background: var(--background);
+  color: var(--ink);
 }
 
 .listings-list {
