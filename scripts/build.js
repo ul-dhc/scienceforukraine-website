@@ -13,7 +13,7 @@ const SITE_URL = 'https://scienceforukraine.eu'
 
 const CUSTOM_DOMAIN = ''
 
-const BASE_PATH = '/scienceforukraine-website'
+const BASE_PATH = ''
 
 const DEPLOY_URL = BASE_PATH ? 'https://ul-dhc.github.io' + BASE_PATH : SITE_URL
 
@@ -331,7 +331,18 @@ function listingsContentHtml (openListings, closedListings) {
         </aside>
 
         <main class="listings-main">
-          <div class="listings-count" id="listings-count"></div>
+          <div class="listings-toolbar">
+            <div class="listings-count" id="listings-count"></div>
+            <label class="listings-sort">
+              <span>Sort by</span>
+              <select id="lf-sort">
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+                <option value="institution">Institution A&ndash;Z</option>
+                <option value="country">Country A&ndash;Z</option>
+              </select>
+            </label>
+          </div>
           <div class="listings-list" id="listings-list"></div>
         </main>
 
