@@ -3,6 +3,8 @@ const path = require('path')
 const { marked } = require('marked')
 const { icon } = require('./icons')
 const { fetchListings } = require('./listings')
+const { fetchProgrammes } = require('./funding-programmes')
+const { generateWorldMap } = require('./world-map')
 
 const ROOT = path.join(__dirname, '..')
 const SRC = path.join(ROOT, 'src')
@@ -31,7 +33,7 @@ const PAGES = [
     template: 'home'
   },
   { slug: 'help', name: 'help', title: 'How You Can Help', description: 'Ways to support the Ukrainian academic community: donate, or submit a support offer.' },
-  { slug: 'support', name: 'support', title: 'Funding Programmes and Other Support', description: 'A country-by-country list of funding programmes and support initiatives for Ukrainian researchers and students.' },
+  { slug: 'support', name: 'support', title: 'Funding Programmes and Other Support', description: 'A curated archive of funding programmes, fellowships, grants, and support opportunities for Ukrainian researchers and students.', template: 'programmes', extraScripts: ['/assets/js/programmes.js'] },
   { slug: 'about', name: 'about', title: 'About Us', description: 'Who we are, our mission, and the people behind #ScienceForUkraine.' },
   { slug: 'press', name: 'press', title: 'Press & Media', description: 'Press releases, media coverage, and press materials for #ScienceForUkraine.' },
   { slug: 'partners', name: 'partners', title: 'Our Partners', description: 'Organisations, institutions and companies supporting #ScienceForUkraine.' },
@@ -351,10 +353,105 @@ function listingsContentHtml (openListings, closedListings) {
       <script id="listings-data" type="application/json">${dataJson}</script>`
 }
 
-function contentForPage (page, listingsData) {
+const DISCIPLINE_LABELS_P = [
+  ['naturalSciences', 'Natural sciences'],
+  ['socialSciences', 'Social sciences'],
+  ['humanitiesAndTheArts', 'Humanities & the arts'],
+  ['engineeringAndTechnology', 'Engineering & technology'],
+  ['medicalAndHealthSciences', 'Medical & health sciences'],
+  ['agriculturalAndVeterinarySciences', 'Agricultural & veterinary sciences']
+]
+const OPEN_FOR_LABELS_P = [
+  ['doctoralStudents', 'Doctoral students'],
+  ['researchers', 'Researchers'],
+  ['students', 'Students'],
+  ['institutions', 'Institutions']
+]
+
+function programmesContentHtml (programmes) {
+  const countries = [...new Set(programmes.map(p => p.country).filter(Boolean))].sort()
+  const types = [...new Set(programmes.flatMap(p => p.types))].sort()
+  const countryOptions = countries.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('')
+  const disciplineOptions = DISCIPLINE_LABELS_P.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')
+  const openForOptions = OPEN_FOR_LABELS_P.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')
+  const typeOptions = types.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('')
+  const dataJson = JSON.stringify(programmes).replace(/</g, '\\u003c')
+
+  const map = generateWorldMap(programmes)
+  const topCountriesHtml = map.topCountries.map(([country, count]) => `
+        <button type="button" class="programmes-top-countries__item" data-country="${escapeHtml(country)}">
+          <span>${escapeHtml(country)}</span>
+          <span class="programmes-top-countries__count">${count}</span>
+        </button>`).join('')
+
+  return `
+      <div class="programmes-header">
+        <h1 class="programmes-header__title">General funding programmes</h1>
+        <p class="programmes-header__subtitle">A curated archive of funding programmes, fellowships, grants, and support opportunities for Ukrainian researchers and students.</p>
+        <div class="programmes-stats">
+          <div class="programmes-stat">${icon('users')}<span class="programmes-stat__value">${programmes.length}</span><span class="programmes-stat__label">archive listings</span></div>
+          <div class="programmes-stat">${icon('info')}<span class="programmes-stat__value">${countries.length}</span><span class="programmes-stat__label">countries represented</span></div>
+          <div class="programmes-stat">${icon('send')}<span class="programmes-stat__value">Rolling</span><span class="programmes-stat__label">new listings added regularly</span></div>
+        </div>
+        <div class="programmes-banner">
+          ${icon('info')}
+          <p><strong>This archive is updated on a rolling basis.</strong> Listings accumulate over time, and deadlines or programme status may change. Please check the original source for the latest information.</p>
+        </div>
+        <div class="programmes-crosslink">
+          ${icon('arrowRight')}
+          <span>Looking for individual positions, mentorship, and other direct opportunities? <a href="/listings">Browse the Support Offers database &rarr;</a></span>
+        </div>
+      </div>
+
+      <div class="programmes-page">
+        <div class="programmes-toolbar">
+          <input type="search" id="pf-search" class="programmes-search" placeholder="Search programmes, institutions, keywords...">
+          <select id="pf-country" class="programmes-select"><option value="">Country</option>${countryOptions}</select>
+          <select id="pf-discipline" class="programmes-select"><option value="">Discipline</option>${disciplineOptions}</select>
+          <select id="pf-open-for" class="programmes-select"><option value="">Open for</option>${openForOptions}</select>
+          <select id="pf-type" class="programmes-select"><option value="">Type</option>${typeOptions}</select>
+          <label class="programmes-sort">
+            <span>Sort by</span>
+            <select id="pf-sort" class="programmes-select">
+              <option value="newest">Newest added</option>
+              <option value="oldest">Oldest added</option>
+              <option value="title">Title A&ndash;Z</option>
+              <option value="country">Country A&ndash;Z</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="programmes-map-section">
+          <div class="programmes-map">
+            <div class="programmes-map__heading">Where opportunities are available</div>
+            <div class="programmes-map__subheading">Programmes in <strong>${map.countryCount} countries</strong></div>
+            ${map.svg}
+          </div>
+          <div class="programmes-top-countries">
+            <div class="programmes-top-countries__heading">Top countries by archive listings</div>
+            <div class="programmes-top-countries__list">${topCountriesHtml}
+            </div>
+            <button type="button" class="programmes-top-countries__view-all" id="pf-view-all-countries">View all countries &rarr;</button>
+          </div>
+        </div>
+        <div class="programmes-map-tooltip" id="programmes-map-tooltip"></div>
+
+        <div class="programmes-count" id="programmes-count"></div>
+        <div class="programmes-grid" id="programmes-grid"></div>
+
+        <div class="programmes-submit-banner">
+          <p>Do you represent an institution with an open opportunity for Ukrainian researchers?</p>
+          <a class="btn btn-primary" href="https://docs.google.com/forms/d/e/1FAIpQLSe0a7SOe1BeSbZsI2py43gaC2MgpuaaiAcl5cqmskCxzeuHvg/viewform" target="_blank" rel="noopener">Submit a programme</a>
+        </div>
+      </div>
+      <script id="programmes-data" type="application/json">${dataJson}</script>`
+}
+
+function contentForPage (page, listingsData, programmesData) {
   if (page.template === 'home') return homeContentHtml()
   if (page.template === 'news') return newsContentHtml()
   if (page.template === 'listings') return listingsContentHtml(listingsData.open, listingsData.closed)
+  if (page.template === 'programmes') return programmesContentHtml(programmesData)
   return `      <div class="markdown">${renderMarkdownFile(page.name)}</div>`
 }
 
@@ -366,6 +463,10 @@ async function build () {
   const listingsData = await fetchListings(fetch)
   console.log(`Listings: ${listingsData.open.length} open, ${listingsData.closed.length} closed`)
 
+  console.log('Fetching funding programmes data...')
+  const programmesData = await fetchProgrammes(fetch)
+  console.log(`Programmes: ${programmesData.length}`)
+
   for (const page of PAGES) {
     const url = `${SITE_URL}/${page.slug}`
     const fullTitle = page.slug === '' ? '#ScienceForUkraine' : `${page.title} – #ScienceForUkraine`
@@ -374,7 +475,7 @@ async function build () {
       title: fullTitle,
       description: page.description,
       url,
-      contentHtml: contentForPage(page, listingsData),
+      contentHtml: contentForPage(page, listingsData, programmesData),
       extraScripts: page.extraScripts
     })
     writePage(page.slug, html)
