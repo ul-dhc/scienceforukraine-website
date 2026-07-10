@@ -264,6 +264,7 @@
 
 .listing-detail {
   width: 100%;
+  text-align: left;
 }
 
 .listing-detail__back {
@@ -295,20 +296,6 @@
   font-size: var(--font-size-xl);
   font-weight: 700;
   margin-bottom: var(--spacing);
-}
-
-.listing-detail__disclaimer {
-  color: var(--light-text);
-  font-size: var(--font-size-s);
-  line-height: 1.5;
-  padding: var(--spacing) var(--spacing-l);
-  background: var(--pale-gray);
-  border-radius: var(--radius-s);
-  margin-bottom: var(--spacing-l);
-}
-
-.listing-detail__disclaimer a {
-  color: var(--accent-1);
 }
 
 .listing-detail__tags {
