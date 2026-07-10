@@ -16,6 +16,10 @@
   top: 90px;
 }
 
+.listings-filters[hidden] {
+  display: none;
+}
+
 .listings-filters__title {
   font-size: var(--font-size-l);
   font-weight: 700;
@@ -133,6 +137,13 @@
   color: var(--light-text);
   font-size: var(--font-size-s);
   float: right;
+  text-align: right;
+}
+
+.listing-card__id {
+  display: block;
+  color: var(--light-text);
+  font-size: var(--font-size-s);
 }
 
 .listing-card__institution {
@@ -215,11 +226,31 @@
   font-size: var(--font-size-s);
 }
 
+.listing-detail__id {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  float: right;
+}
+
 .listing-detail__institution {
   color: var(--accent-1);
   font-size: var(--font-size-xl);
   font-weight: 700;
   margin-bottom: var(--spacing);
+}
+
+.listing-detail__disclaimer {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  line-height: 1.5;
+  padding: var(--spacing) var(--spacing-l);
+  background: var(--pale-gray);
+  border-radius: var(--radius-s);
+  margin-bottom: var(--spacing-l);
+}
+
+.listing-detail__disclaimer a {
+  color: var(--accent-1);
 }
 
 .listing-detail__tags {
