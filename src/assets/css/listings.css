@@ -28,9 +28,14 @@
 .listings-page {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-l);
+  gap: var(--spacing-xl);
   padding: var(--spacing-l);
   align-items: flex-start;
+}
+
+.listings-filters {
+  border-right: 1px solid var(--light-gray);
+  padding-right: var(--spacing-l);
 }
 
 .listings-filters {
@@ -358,5 +363,9 @@
   .listings-filters {
     width: 100%;
     position: static;
+    border-right: none;
+    padding-right: 0;
+    padding-bottom: var(--spacing-l);
+    border-bottom: 1px solid var(--light-gray);
   }
 }
