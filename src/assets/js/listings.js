@@ -84,7 +84,7 @@
     }
     return '' +
       '<a class="listing-card" href="#' + encodeURIComponent(listing.id) + '">' +
-        '<span class="listing-card__country">' + escapeHtml(listing.country) + '</span>' +
+        '<span class="listing-card__country">' + escapeHtml(listing.country) + '<span class="listing-card__id">' + escapeHtml(listing.id) + '</span></span>' +
         '<div class="listing-card__institution">' + escapeHtml(listing.institution) + '</div>' +
         '<div class="listing-card__description">' + escapeHtml(listing.description) + '</div>' +
         meta +
@@ -109,6 +109,7 @@
     } else if (listing.archived) {
       detailEl.innerHTML = '' +
         '<button type="button" class="listing-detail__back" id="detail-back">&larr; All listings</button>' +
+        '<span class="listing-detail__id">' + escapeHtml(listing.id) + '</span>' +
         '<div class="listing-detail__closed-banner">This opportunity has closed</div>' +
         '<div class="listing-detail__country">' + escapeHtml(listing.country || '') + '</div>' +
         '<div class="listing-detail__institution">' + escapeHtml(listing.institution) + '</div>' +
@@ -123,9 +124,11 @@
 
       detailEl.innerHTML = '' +
         '<button type="button" class="listing-detail__back" id="detail-back">&larr; All listings</button>' +
+        '<span class="listing-detail__id">' + escapeHtml(listing.id) + '</span>' +
         '<div class="listing-detail__country">' + escapeHtml(listing.country || '') + '</div>' +
         '<div class="listing-detail__institution">' + escapeHtml(listing.institution) + '</div>' +
         '<div class="listing-detail__tags">' + tagsHtml(listing) + '</div>' +
+        '<p class="listing-detail__disclaimer">#ScienceForUkraine cannot guarantee that this opportunity is still open, or that the host institution will respond. If you are affiliated with this listing and would like it corrected or removed, please contact <a href="mailto:data@scienceforukraine.eu">data@scienceforukraine.eu</a>.</p>' +
         '<p class="listing-detail__description">' + escapeHtml(listing.description) + '</p>' +
         (listing.researchFocus ? '<div class="listing-detail__field-label">Research Focus / Keywords</div><div class="listing-detail__field-value">' + escapeHtml(listing.researchFocus) + '</div>' : '') +
         (listing.supportPeriod ? '<div class="listing-detail__field-label">Support Period</div><div class="listing-detail__field-value">' + escapeHtml(listing.supportPeriod) + '</div>' : '') +
