@@ -19,8 +19,9 @@
   var remoteToggle = document.getElementById('lf-remote')
   var accommodationToggle = document.getElementById('lf-accommodation')
   var clearBtn = document.getElementById('lf-clear')
+  var sortSelect = document.getElementById('lf-sort')
 
-  var state = { category: '', discipline: '', openFor: '', country: '', search: '', remote: false, accommodation: false }
+  var state = { category: '', discipline: '', openFor: '', country: '', search: '', remote: false, accommodation: false, sort: 'newest' }
 
   var DISCIPLINE_LABELS = {
     naturalSciences: 'Natural sciences',
@@ -92,8 +93,15 @@
       '</a>'
   }
 
+  var SORTERS = {
+    newest: function (a, b) { return b.order - a.order },
+    oldest: function (a, b) { return a.order - b.order },
+    institution: function (a, b) { return (a.institution || '').localeCompare(b.institution || '') },
+    country: function (a, b) { return (a.country || '').localeCompare(b.country || '') }
+  }
+
   function renderList () {
-    var results = openListings.filter(matches)
+    var results = openListings.filter(matches).sort(SORTERS[state.sort] || SORTERS.newest)
     countEl.textContent = results.length + ' listing' + (results.length === 1 ? '' : 's')
     listEl.innerHTML = results.length
       ? results.map(cardHtml).join('')
@@ -194,12 +202,18 @@
     renderList()
   })
 
+  sortSelect.addEventListener('change', function () {
+    state.sort = sortSelect.value
+    renderList()
+  })
+
   clearBtn.addEventListener('click', function () {
-    state = { category: '', discipline: '', openFor: '', country: '', search: '', remote: false, accommodation: false }
+    state = { category: '', discipline: '', openFor: '', country: '', search: '', remote: false, accommodation: false, sort: 'newest' }
     searchInput.value = ''
     countrySelect.value = ''
     remoteToggle.checked = false
     accommodationToggle.checked = false
+    sortSelect.value = 'newest'
     document.querySelectorAll('.filter-pill').forEach(function (b) {
       b.classList.toggle('is-active', b.getAttribute('data-value') === '')
     })
