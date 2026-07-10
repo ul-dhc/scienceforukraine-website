@@ -1,98 +1,212 @@
-const Papa = require('papaparse')
+(function () {
+  var dataEl = document.getElementById('listings-data')
+  if (!dataEl) return
 
-const LISTINGS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSztgSncrgS2WaCm8J4SRqL0FU4czD8xzV_yIXa-ldc0uHM9-1RK8sp_rpEXLhjHmaFFI0hFWNngOW6/pub?gid=0&single=true&output=csv'
+  var data = JSON.parse(dataEl.textContent)
+  var openListings = data.open
+  var closedListings = data.closed
+  var byId = {}
+  openListings.forEach(function (l) { byId[l.id] = l })
+  closedListings.forEach(function (l) { byId[l.id] = l })
 
-const CATEGORY_SLUGS = {
-  Position: 'position',
-  Scholarship: 'scholarship',
-  'Joint application': 'joint-application',
-  Resources: 'resources',
-  Mentoring: 'mentoring',
-  'Academic transfer': 'academic-transfer'
-}
+  var filtersEl = document.getElementById('listings-filters')
+  var mainEl = document.querySelector('.listings-main')
+  var detailEl = document.getElementById('listing-detail')
+  var listEl = document.getElementById('listings-list')
+  var countEl = document.getElementById('listings-count')
+  var searchInput = document.getElementById('lf-search')
+  var countrySelect = document.getElementById('lf-country')
+  var remoteToggle = document.getElementById('lf-remote')
+  var accommodationToggle = document.getElementById('lf-accommodation')
+  var clearBtn = document.getElementById('lf-clear')
 
-function isYes (v) {
-  if (!v) return false
-  return /^y/i.test(String(v).trim())
-}
+  var state = { category: '', discipline: '', openFor: '', country: '', search: '', remote: false, accommodation: false }
 
-function clean (v) {
-  if (v === undefined || v === null) return ''
-  return String(v).trim()
-}
+  var DISCIPLINE_LABELS = {
+    naturalSciences: 'Natural sciences',
+    socialSciences: 'Social sciences',
+    humanitiesAndTheArts: 'Humanities & the arts',
+    engineeringAndTechnology: 'Engineering & technology',
+    medicalAndHealthSciences: 'Medical & health sciences',
+    agriculturalAndVeterinarySciences: 'Agricultural & veterinary sciences',
+    unspecified: 'Unspecified'
+  }
+  var OPEN_FOR_LABELS = {
+    researchers: 'Researchers',
+    doctoralStudents: 'Doctoral students',
+    students: 'Students',
+    others: 'Others'
+  }
 
-function parseDate (v) {
-  const s = clean(v)
-  if (!s) return null
-  const d = new Date(s)
-  if (isNaN(d.getTime())) return null
-  return d.toISOString().slice(0, 10)
-}
+  function escapeHtml (str) {
+    var div = document.createElement('div')
+    div.textContent = str == null ? '' : String(str)
+    return div.innerHTML
+  }
 
-function normalizeRow (row) {
-  const id = clean(row.ID)
-  if (!id) return null
+  function matches (listing) {
+    if (state.category && listing.category !== state.category) return false
+    if (state.country && listing.country !== state.country) return false
+    if (state.discipline && !listing.disciplines[state.discipline]) return false
+    if (state.openFor && !listing.openFor[state.openFor]) return false
+    if (state.remote && !listing.remote) return false
+    if (state.accommodation && !listing.accommodation.available) return false
+    if (state.search) {
+      var q = state.search.toLowerCase()
+      var haystack = [listing.institution, listing.description, listing.researchFocus].join(' ').toLowerCase()
+      if (haystack.indexOf(q) === -1) return false
+    }
+    return true
+  }
 
-  const archivedRaw = clean(row.Archived)
-  const accommodationRaw = clean(row.Accommodation)
-  const accommodationIsPlainYes = /^y/i.test(accommodationRaw)
+  function tagsHtml (listing) {
+    var tags = []
+    if (listing.category) tags.push('<span class="listing-tag listing-tag--category">' + escapeHtml(listing.category) + '</span>')
+    Object.keys(DISCIPLINE_LABELS).forEach(function (key) {
+      if (listing.disciplines[key]) tags.push('<span class="listing-tag listing-tag--attr">' + DISCIPLINE_LABELS[key] + '</span>')
+    })
+    Object.keys(OPEN_FOR_LABELS).forEach(function (key) {
+      if (listing.openFor[key]) tags.push('<span class="listing-tag listing-tag--attr">' + OPEN_FOR_LABELS[key] + '</span>')
+    })
+    return tags.join('')
+  }
 
-  return {
-    id,
-    slug: id,
-    archived: Boolean(archivedRaw),
-    category: clean(row.Category) || null,
-    categorySlug: CATEGORY_SLUGS[clean(row.Category)] || null,
-    institution: clean(row.Institution) || null,
-    country: clean(row.Country) || null,
-    description: clean(row.Description) || null,
-    contact: clean(row.Contact) || null,
-    link: clean(row.Link) || null,
-    researchFocus: clean(row['Research focus']) || null,
-    applicationDeadline: parseDate(row['Application deadline']),
-    supportPeriod: clean(row['Support period']) || null,
-    additionalSupport: clean(row['Additional support']) || null,
-    remote: isYes(row.Remote),
-    accommodation: accommodationRaw
-      ? { available: true, note: accommodationIsPlainYes ? null : accommodationRaw }
-      : { available: false, note: null },
-    openFor: {
-      researchers: isYes(row.Researchers),
-      doctoralStudents: isYes(row['Doctoral students']),
-      students: isYes(row.Students),
-      others: isYes(row.Others)
-    },
-    disciplines: {
-      naturalSciences: isYes(row['Natural sciences']),
-      socialSciences: isYes(row['Social sciences']),
-      humanitiesAndTheArts: isYes(row['Humanities and the arts']),
-      engineeringAndTechnology: isYes(row['Engineering and technology']),
-      medicalAndHealthSciences: isYes(row['Medical and health sciences']),
-      agriculturalAndVeterinarySciences: isYes(row['Agricultural and veterinary sciences']),
-      unspecified: isYes(row.Unspecified)
+  function cardHtml (listing) {
+    var meta = ''
+    if (listing.researchFocus) {
+      meta += '<div class="listing-card__meta-label">Research Focus / Keywords</div><div class="listing-card__meta-value">' + escapeHtml(listing.researchFocus) + '</div>'
+    }
+    if (listing.supportPeriod) {
+      meta += '<div class="listing-card__meta-label">Support Period</div><div class="listing-card__meta-value">' + escapeHtml(listing.supportPeriod) + '</div>'
+    }
+    if (listing.applicationDeadline) {
+      meta += '<div class="listing-card__meta-label">Application Deadline</div><div class="listing-card__meta-value">' + escapeHtml(listing.applicationDeadline) + '</div>'
+    }
+    return '' +
+      '<a class="listing-card" href="#' + encodeURIComponent(listing.id) + '">' +
+        '<span class="listing-card__country">' + escapeHtml(listing.country) + '<span class="listing-card__id">' + escapeHtml(listing.id) + '</span></span>' +
+        '<div class="listing-card__institution">' + escapeHtml(listing.institution) + '</div>' +
+        '<div class="listing-card__description">' + escapeHtml(listing.description) + '</div>' +
+        meta +
+        '<div class="listing-card__tags">' + tagsHtml(listing) + '</div>' +
+      '</a>'
+  }
+
+  function renderList () {
+    var results = openListings.filter(matches)
+    countEl.textContent = results.length + ' listing' + (results.length === 1 ? '' : 's')
+    listEl.innerHTML = results.length
+      ? results.map(cardHtml).join('')
+      : '<div class="listings-empty">No listings match your filters.</div>'
+  }
+
+  function renderDetail (id) {
+    var listing = byId[id]
+
+    if (!listing) {
+      detailEl.innerHTML = '<button type="button" class="listing-detail__back" id="detail-back">&larr; All listings</button>' +
+        '<div class="listing-detail__not-found">This listing could not be found.</div>'
+    } else if (listing.archived) {
+      detailEl.innerHTML = '' +
+        '<button type="button" class="listing-detail__back" id="detail-back">&larr; All listings</button>' +
+        '<span class="listing-detail__id">' + escapeHtml(listing.id) + '</span>' +
+        '<div class="listing-detail__closed-banner">This opportunity has closed</div>' +
+        '<div class="listing-detail__country">' + escapeHtml(listing.country || '') + '</div>' +
+        '<div class="listing-detail__institution">' + escapeHtml(listing.institution) + '</div>' +
+        '<div class="listing-detail__tags">' + (listing.category ? '<span class="listing-tag listing-tag--category">' + escapeHtml(listing.category) + '</span>' : '') + '</div>' +
+        '<div class="listing-detail__blurred">' +
+          '<p class="listing-detail__description">This listing\u2019s details are no longer shown, to avoid contacting institutions after an opportunity has ended.</p>' +
+        '</div>'
+    } else {
+      var accommodationText = listing.accommodation.available
+        ? (listing.accommodation.note || 'Available')
+        : null
+
+      detailEl.innerHTML = '' +
+        '<button type="button" class="listing-detail__back" id="detail-back">&larr; All listings</button>' +
+        '<span class="listing-detail__id">' + escapeHtml(listing.id) + '</span>' +
+        '<div class="listing-detail__country">' + escapeHtml(listing.country || '') + '</div>' +
+        '<div class="listing-detail__institution">' + escapeHtml(listing.institution) + '</div>' +
+        '<div class="listing-detail__tags">' + tagsHtml(listing) + '</div>' +
+        '<p class="listing-detail__description">' + escapeHtml(listing.description) + '</p>' +
+        (listing.researchFocus ? '<div class="listing-detail__field-label">Research Focus / Keywords</div><div class="listing-detail__field-value">' + escapeHtml(listing.researchFocus) + '</div>' : '') +
+        (listing.supportPeriod ? '<div class="listing-detail__field-label">Support Period</div><div class="listing-detail__field-value">' + escapeHtml(listing.supportPeriod) + '</div>' : '') +
+        (listing.applicationDeadline ? '<div class="listing-detail__field-label">Application Deadline</div><div class="listing-detail__field-value">' + escapeHtml(listing.applicationDeadline) + '</div>' : '') +
+        (accommodationText ? '<div class="listing-detail__field-label">Accommodation</div><div class="listing-detail__field-value">' + escapeHtml(accommodationText) + '</div>' : '') +
+        (listing.additionalSupport ? '<div class="listing-detail__field-label">Additional Support</div><div class="listing-detail__field-value">' + escapeHtml(listing.additionalSupport) + '</div>' : '') +
+        (listing.contact ? '<div class="listing-detail__field-label">Contact</div><div class="listing-detail__field-value">' + escapeHtml(listing.contact) + '</div>' : '') +
+        (listing.link ? '<div class="listing-detail__field-label">Link</div><div class="listing-detail__field-value"><a href="' + escapeHtml(listing.link) + '" target="_blank" rel="noopener">' + escapeHtml(listing.link) + '</a></div>' : '')
+    }
+
+    var backBtn = document.getElementById('detail-back')
+    if (backBtn) {
+      backBtn.addEventListener('click', function () {
+        window.location.hash = ''
+      })
     }
   }
-}
 
-function toMinimal (listing) {
-  return {
-    id: listing.id,
-    archived: true,
-    category: listing.category,
-    categorySlug: listing.categorySlug,
-    institution: listing.institution,
-    country: listing.country
+  function syncView () {
+    var id = decodeURIComponent(window.location.hash.replace(/^#/, ''))
+    if (id) {
+      filtersEl.hidden = true
+      mainEl.hidden = true
+      detailEl.hidden = false
+      renderDetail(id)
+      window.scrollTo(0, 0)
+    } else {
+      filtersEl.hidden = false
+      mainEl.hidden = false
+      detailEl.hidden = true
+    }
   }
-}
 
-async function fetchListings (fetchImpl) {
-  const res = await fetchImpl(LISTINGS_CSV_URL)
-  const csvText = await res.text()
-  const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true })
-  const all = parsed.data.map(normalizeRow).filter(Boolean)
-  const open = all.filter(l => !l.archived)
-  const closed = all.filter(l => l.archived).map(toMinimal)
-  return { open, closed }
-}
+  document.querySelectorAll('.filter-pill').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var group = btn.getAttribute('data-filter')
+      var value = btn.getAttribute('data-value')
+      state[group] = value
+      document.querySelectorAll('.filter-pill[data-filter="' + group + '"]').forEach(function (b) {
+        b.classList.toggle('is-active', b === btn)
+      })
+      renderList()
+    })
+  })
 
-module.exports = { fetchListings, normalizeRow, LISTINGS_CSV_URL }
+  searchInput.addEventListener('input', function () {
+    state.search = searchInput.value.trim()
+    renderList()
+  })
+
+  countrySelect.addEventListener('change', function () {
+    state.country = countrySelect.value
+    renderList()
+  })
+
+  remoteToggle.addEventListener('change', function () {
+    state.remote = remoteToggle.checked
+    renderList()
+  })
+
+  accommodationToggle.addEventListener('change', function () {
+    state.accommodation = accommodationToggle.checked
+    renderList()
+  })
+
+  clearBtn.addEventListener('click', function () {
+    state = { category: '', discipline: '', openFor: '', country: '', search: '', remote: false, accommodation: false }
+    searchInput.value = ''
+    countrySelect.value = ''
+    remoteToggle.checked = false
+    accommodationToggle.checked = false
+    document.querySelectorAll('.filter-pill').forEach(function (b) {
+      b.classList.toggle('is-active', b.getAttribute('data-value') === '')
+    })
+    renderList()
+  })
+
+  window.addEventListener('hashchange', syncView)
+
+  renderList()
+  syncView()
+})()
