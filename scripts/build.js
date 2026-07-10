@@ -360,7 +360,8 @@ const DISCIPLINE_LABELS_P = [
   ['humanitiesAndTheArts', 'Humanities & the arts'],
   ['engineeringAndTechnology', 'Engineering & technology'],
   ['medicalAndHealthSciences', 'Medical & health sciences'],
-  ['agriculturalAndVeterinarySciences', 'Agricultural & veterinary sciences']
+  ['agriculturalAndVeterinarySciences', 'Agricultural & veterinary sciences'],
+  ['unspecified', 'Discipline unspecified']
 ]
 const OPEN_FOR_LABELS_P = [
   ['doctoralStudents', 'Doctoral students'],
@@ -379,11 +380,6 @@ function programmesContentHtml (programmes) {
   const dataJson = JSON.stringify(programmes).replace(/</g, '\\u003c')
 
   const map = generateWorldMap(programmes)
-  const topCountriesHtml = map.topCountries.map(([country, count]) => `
-        <button type="button" class="programmes-top-countries__item" data-country="${escapeHtml(country)}">
-          <span>${escapeHtml(country)}</span>
-          <span class="programmes-top-countries__count">${count}</span>
-        </button>`).join('')
 
   return `
       <div class="programmes-header">
@@ -422,23 +418,39 @@ function programmesContentHtml (programmes) {
           </label>
         </div>
 
-        <div class="programmes-map-section">
-          <div class="programmes-map">
-            <div class="programmes-map__heading">Where opportunities are available</div>
-            <div class="programmes-map__subheading">Programmes in <strong>${map.countryCount} countries</strong></div>
-            ${map.svg}
-          </div>
-          <div class="programmes-top-countries">
-            <div class="programmes-top-countries__heading">Top countries by archive listings</div>
-            <div class="programmes-top-countries__list">${topCountriesHtml}
+        <div class="programmes-recent-toggles">
+          <button type="button" class="programmes-chip-toggle" id="pf-recently-added">Recently added <span class="programmes-chip-toggle__hint">(last 2 months)</span></button>
+        </div>
+
+        <div class="programmes-map-section" id="programmes-map-section">
+          <button type="button" class="programmes-map-collapse" id="pf-map-collapse"><span class="programmes-map-collapse__label">Collapse map</span> ${icon('chevronDown')}</button>
+          <div class="programmes-map-section__body" id="programmes-map-body">
+            <div class="programmes-map">
+              <div class="programmes-map__heading">Where opportunities are available</div>
+              <div class="programmes-map__subheading">Programmes in <strong id="programmes-map-country-count">${countries.length} countries</strong></div>
+              ${map.svg}
             </div>
-            <button type="button" class="programmes-top-countries__view-all" id="pf-view-all-countries">View all countries &rarr;</button>
+            <div class="programmes-top-countries">
+              <div class="programmes-top-countries__heading">Top countries by archive listings</div>
+              <div class="programmes-top-countries__list" id="programmes-top-countries-list"></div>
+              <button type="button" class="programmes-top-countries__view-all" id="pf-view-all-countries">View all countries &rarr;</button>
+            </div>
           </div>
         </div>
         <div class="programmes-map-tooltip" id="programmes-map-tooltip"></div>
 
-        <div class="programmes-count" id="programmes-count"></div>
+        <div class="programmes-results-bar">
+          <div class="programmes-count" id="programmes-count"></div>
+          <div class="programmes-view-toggle">
+            <button type="button" class="programmes-view-toggle__btn is-active" id="pf-view-grid">${icon('gift')} Grid</button>
+            <button type="button" class="programmes-view-toggle__btn" id="pf-view-list">${icon('newspaper')} List</button>
+          </div>
+        </div>
+        <div class="programmes-active-filters" id="programmes-active-filters"></div>
+
         <div class="programmes-grid" id="programmes-grid"></div>
+
+        <div class="programme-detail" id="programme-detail" hidden></div>
 
         <div class="programmes-submit-banner">
           <p>Do you represent an institution with an open opportunity for Ukrainian researchers?</p>
