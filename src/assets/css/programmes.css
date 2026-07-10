@@ -99,14 +99,10 @@
 }
 
 .programmes-map-section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-xl);
   padding: var(--spacing-l);
   border: 1px solid var(--light-gray);
   border-radius: var(--radius-l);
   margin-bottom: var(--spacing-l);
-  align-items: center;
 }
 
 .programmes-map {
@@ -208,6 +204,195 @@
   border: none;
   font-family: var(--font-family);
   padding: 0;
+}
+
+.world-map__country {
+  fill: #F1F4F7;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+
+.world-map__marker {
+  fill: #F1F4F7;
+  stroke: #ffffff;
+  stroke-width: 1.5;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+
+.world-map__country:hover,
+.world-map__marker:hover {
+  opacity: 0.75;
+}
+
+.programmes-map-collapse {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: var(--spacing-s);
+  background: none;
+  border: none;
+  color: var(--accent-1);
+  font-weight: 700;
+  font-size: var(--font-size-s);
+  cursor: pointer;
+  font-family: var(--font-family);
+  padding: 0;
+}
+
+.programmes-map-section__body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xl);
+  align-items: center;
+}
+
+.programmes-recent-toggles {
+  display: flex;
+  gap: var(--spacing-s);
+  margin-bottom: var(--spacing);
+}
+
+.programmes-chip-toggle {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--light-gray);
+  background: var(--background);
+  font-size: var(--font-size-s);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+.programmes-chip-toggle__hint {
+  color: var(--light-text);
+}
+
+.programmes-chip-toggle.is-active {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
+  color: var(--background);
+}
+
+.programmes-chip-toggle.is-active .programmes-chip-toggle__hint {
+  color: var(--background);
+  opacity: 0.8;
+}
+
+.programmes-results-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-s);
+}
+
+.programmes-view-toggle {
+  display: flex;
+  gap: 4px;
+}
+
+.programmes-view-toggle__btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-s);
+  background: var(--background);
+  font-size: var(--font-size-s);
+  color: var(--light-text);
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+.programmes-view-toggle__btn.is-active {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+
+.programmes-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--spacing);
+}
+
+.programmes-active-filters__label {
+  font-size: var(--font-size-s);
+  color: var(--light-text);
+}
+
+.programmes-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--tint-cool);
+  color: var(--accent-1);
+  font-size: var(--font-size-s);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+.programmes-filter-chip--clear-all {
+  background: none;
+  color: var(--light-text);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.programmes-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.programme-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
+  padding: var(--spacing-s) 0;
+  border-bottom: 1px solid var(--light-gray);
+  color: var(--ink);
+}
+
+.programme-row__title {
+  color: var(--accent-1);
+  font-weight: 700;
+  flex: 2;
+}
+
+.programme-row__country {
+  flex: 1;
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+}
+
+.programme-row__type {
+  flex: 1;
+  font-size: var(--font-size-s);
+}
+
+.programme-row__deadline {
+  flex: 1;
+  font-size: var(--font-size-s);
+  color: var(--light-text);
+  text-align: right;
+}
+
+.programme-row__spacer {
+  width: 40px;
+}
+
+.programme-detail {
+  padding: var(--spacing-l) 0;
+}
+
+@media (max-width: 800px) {
+  .programmes-map-section {
+    display: none;
+  }
 }
 
 .programmes-page {
