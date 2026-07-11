@@ -91,6 +91,7 @@
   border: 1px dashed var(--tint-warm-icon);
   border-radius: var(--radius-m);
   text-align: left;
+  font-size: var(--font-size-s);
 }
 
 .listings-crosslink .icon {
@@ -180,24 +181,33 @@
 }
 
 .filter-pill.is-active {
-  border-color: var(--accent-1);
-  border-width: var(--border-w-active);
+  background: var(--tint-cool);
+  border-color: transparent;
   color: var(--accent-1);
   font-weight: var(--bold);
 }
 
-/* group colors mirror the tag colors on listing cards: category = yellow,
-   discipline = mint, open-for = blue (the default above) */
-.filter-pill[data-filter="category"]:hover,
-.filter-pill[data-filter="category"].is-active {
-  border-color: var(--accent-2);
-  color: var(--accent-2);
+/* group colors mirror the tag colors on listing cards: category = blue
+   (the default above), discipline = mint, open-for = yellow background
+   with blue text (yellow-on-yellow isn't legible) */
+.filter-pill[data-filter="discipline"]:hover {
+  border-color: var(--mint);
 }
 
-.filter-pill[data-filter="discipline"]:hover,
 .filter-pill[data-filter="discipline"].is-active {
-  border-color: var(--mint);
+  background: var(--tint-mint-chip);
+  border-color: transparent;
   color: var(--mint);
+}
+
+.filter-pill[data-filter="openFor"]:hover {
+  border-color: var(--accent-2);
+}
+
+.filter-pill[data-filter="openFor"].is-active {
+  background: var(--tint-yellow-chip);
+  border-color: transparent;
+  color: var(--accent-1);
 }
 
 .listings-select {
@@ -326,28 +336,29 @@
   margin-top: var(--spacing-s);
 }
 
+/* filled chip — matches .programmes-filter-chip. Yellow chips keep blue
+   text rather than yellow-on-yellow, for legibility. */
 .listing-tag {
   display: inline-flex;
   padding: 4px 10px;
   border-radius: var(--radius-pill);
   font-size: var(--font-size-s);
   font-weight: 700;
-  background: transparent;
-  border: 1.5px solid transparent;
+  border: none;
 }
 
 .listing-tag--category {
-  border-color: var(--accent-2);
-  color: var(--accent-2);
+  background: var(--tint-cool);
+  color: var(--accent-1);
 }
 
 .listing-tag--discipline {
-  border-color: var(--mint);
+  background: var(--tint-mint-chip);
   color: var(--mint);
 }
 
 .listing-tag--attr {
-  border-color: var(--accent-1);
+  background: var(--tint-yellow-chip);
   color: var(--accent-1);
 }
 
