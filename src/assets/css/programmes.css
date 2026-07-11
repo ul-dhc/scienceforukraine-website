@@ -269,8 +269,10 @@
 }
 
 .world-map__marker--selected {
-  stroke: var(--accent-1);
-  stroke-width: 3;
+  fill: var(--accent-2) !important;
+  filter: none !important;
+  stroke: #B8860B;
+  stroke-width: 1.5;
 }
 
 .world-map__marker {
@@ -521,7 +523,7 @@
 
 .programme-row__title {
   color: var(--accent-1);
-  font-weight: 400;
+  font-weight: 600;
   margin-bottom: 2px;
 }
 
@@ -787,6 +789,10 @@
   stroke-width: 2;
   margin-right: 4px;
   vertical-align: -2px;
+}
+
+.programme-row__added {
+  color: var(--light-text);
 }
 
 .programme-card__added {
