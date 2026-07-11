@@ -5,6 +5,7 @@
   if (!input || !resultsEl || !wrapEl) return
 
   var BASE_PATH = document.body.getAttribute('data-base-path') || ''
+  var SEARCH_LOG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw0WHnAeTs4HA15oKqIWzB8GOSjfR6McZabFNsGRSNHWOqQIQFCb5BY8i8ECkuwvvJ0/exec'
   var TYPE_LABELS = {
     listing: 'Positions & support offers',
     programme: 'Funding programmes',
@@ -14,10 +15,26 @@
   var TYPE_ORDER = ['listing', 'programme', 'news', 'page']
   var MAX_PER_TYPE = 4
   var SNIPPET_RADIUS = 70
+  var LOG_DEBOUNCE_MS = 1500
 
   var index = null
   var indexPromise = null
   var debounceTimer = null
+  var logDebounceTimer = null
+  var lastLoggedQuery = ''
+
+  function logQuery (query) {
+    var trimmed = query.trim()
+    if (trimmed.length < 2 || trimmed === lastLoggedQuery) return
+    if (!SEARCH_LOG_ENDPOINT || SEARCH_LOG_ENDPOINT.indexOf('REPLACE_WITH') === 0) return
+    lastLoggedQuery = trimmed
+    fetch(SEARCH_LOG_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ query: trimmed, page: 'Homepage' })
+    }).catch(function () {})
+  }
 
   function loadIndex () {
     if (indexPromise) return indexPromise
@@ -115,6 +132,11 @@
     debounceTimer = setTimeout(function () {
       loadIndex().then(function () { render(value) })
     }, 120)
+
+    clearTimeout(logDebounceTimer)
+    logDebounceTimer = setTimeout(function () {
+      logQuery(value)
+    }, LOG_DEBOUNCE_MS)
   })
 
   input.addEventListener('focus', function () {
