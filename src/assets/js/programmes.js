@@ -701,21 +701,16 @@
 
       fetch(SUBMIT_ENDPOINT, {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
       })
-        .then(function (res) { return res.json() })
-        .then(function (data) {
+        .then(function () {
           submitButton.disabled = false
-          if (data && data.ok) {
-            submitStatus.textContent = 'Thank you — we\u2019ll take a look!'
-            submitStatus.className = 'programmes-submit-form__status programmes-submit-form__status--success'
-            submitForm.reset()
-            setTimeout(function () { submitForm.hidden = true; submitStatus.textContent = '' }, 2500)
-          } else {
-            submitStatus.textContent = (data && data.error) || 'Something went wrong. Please try again.'
-            submitStatus.className = 'programmes-submit-form__status programmes-submit-form__status--error'
-          }
+          submitStatus.textContent = 'Thank you — we\u2019ll take a look!'
+          submitStatus.className = 'programmes-submit-form__status programmes-submit-form__status--success'
+          submitForm.reset()
+          setTimeout(function () { submitForm.hidden = true; submitStatus.textContent = '' }, 2500)
         })
         .catch(function () {
           submitButton.disabled = false
