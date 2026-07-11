@@ -35,13 +35,13 @@
 }
 
 .listings-stat .icon {
-  color: var(--tint-warm-icon);
+  color: var(--accent-2);
   width: 26px;
   height: 26px;
 }
 
 .listings-stat__value {
-  color: var(--tint-warm-icon);
+  color: var(--accent-2);
   font-size: var(--font-size-l);
   font-weight: 700;
 }
@@ -186,6 +186,20 @@
   font-weight: var(--bold);
 }
 
+/* group colors mirror the tag colors on listing cards: category = yellow,
+   discipline = mint, open-for = blue (the default above) */
+.filter-pill[data-filter="category"]:hover,
+.filter-pill[data-filter="category"].is-active {
+  border-color: var(--accent-2);
+  color: var(--accent-2);
+}
+
+.filter-pill[data-filter="discipline"]:hover,
+.filter-pill[data-filter="discipline"].is-active {
+  border-color: var(--mint);
+  color: var(--mint);
+}
+
 .listings-select {
   width: 100%;
   padding: 10px 14px;
@@ -323,13 +337,13 @@
 }
 
 .listing-tag--category {
-  border-color: var(--tint-warm-icon);
-  color: var(--tint-warm-icon);
+  border-color: var(--accent-2);
+  color: var(--accent-2);
 }
 
 .listing-tag--discipline {
-  border-color: #0B7A4B;
-  color: #0B7A4B;
+  border-color: var(--mint);
+  color: var(--mint);
 }
 
 .listing-tag--attr {
