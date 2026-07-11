@@ -20,6 +20,7 @@
   var accommodationToggle = document.getElementById('lf-accommodation')
   var clearBtn = document.getElementById('lf-clear')
   var sortSelect = document.getElementById('lf-sort')
+  var activeFiltersEl = document.getElementById('listings-active-filters')
 
   var state = { category: [], discipline: [], openFor: [], country: '', search: '', remote: false, accommodation: false, sort: 'newest', pageSize: 20, page: 1 }
 
@@ -68,12 +69,75 @@
     var tags = []
     if (listing.category) tags.push('<span class="listing-tag listing-tag--category">' + escapeHtml(listing.category) + '</span>')
     Object.keys(DISCIPLINE_LABELS).forEach(function (key) {
-      if (listing.disciplines[key]) tags.push('<span class="listing-tag listing-tag--attr">' + DISCIPLINE_LABELS[key] + '</span>')
+      if (listing.disciplines[key]) tags.push('<span class="listing-tag listing-tag--discipline">' + DISCIPLINE_LABELS[key] + '</span>')
     })
     Object.keys(OPEN_FOR_LABELS).forEach(function (key) {
       if (listing.openFor[key]) tags.push('<span class="listing-tag listing-tag--attr">' + OPEN_FOR_LABELS[key] + '</span>')
     })
     return tags.join('')
+  }
+
+  function syncFilterPills () {
+    document.querySelectorAll('.filter-pill').forEach(function (b) {
+      var group = b.getAttribute('data-filter')
+      var v = b.getAttribute('data-value')
+      var selected = state[group]
+      b.classList.toggle('is-active', v === '' ? selected.length === 0 : selected.indexOf(v) !== -1)
+    })
+  }
+
+  function removeFromArray (arr, value) {
+    var i = arr.indexOf(value)
+    if (i !== -1) arr.splice(i, 1)
+  }
+
+  function activeFilterChips () {
+    var chips = []
+    state.category.forEach(function (c) {
+      chips.push({ key: 'category', value: c, label: c })
+    })
+    state.discipline.forEach(function (d) {
+      chips.push({ key: 'discipline', value: d, label: 'Discipline: ' + (DISCIPLINE_LABELS[d] || d) })
+    })
+    state.openFor.forEach(function (o) {
+      chips.push({ key: 'openFor', value: o, label: 'Open for: ' + (OPEN_FOR_LABELS[o] || o) })
+    })
+    if (state.country) chips.push({ key: 'country', value: state.country, label: state.country })
+    if (state.remote) chips.push({ key: 'remote', value: '', label: 'Remote' })
+    if (state.accommodation) chips.push({ key: 'accommodation', value: '', label: 'Accommodation' })
+    if (state.search) chips.push({ key: 'search', value: '', label: 'Search: "' + state.search + '"' })
+    return chips
+  }
+
+  function clearFilterChip (key, value) {
+    if (key === 'category') removeFromArray(state.category, value)
+    if (key === 'discipline') removeFromArray(state.discipline, value)
+    if (key === 'openFor') removeFromArray(state.openFor, value)
+    if (key === 'country') { state.country = ''; countrySelect.value = '' }
+    if (key === 'remote') { state.remote = false; remoteToggle.checked = false }
+    if (key === 'accommodation') { state.accommodation = false; accommodationToggle.checked = false }
+    if (key === 'search') { state.search = ''; searchInput.value = '' }
+    syncFilterPills()
+    state.page = 1
+    renderList()
+  }
+
+  function renderActiveFilters () {
+    if (!activeFiltersEl) return
+    var chips = activeFilterChips()
+    if (!chips.length) { activeFiltersEl.innerHTML = ''; return }
+    activeFiltersEl.innerHTML = '' +
+      '<span class="programmes-active-filters__label">Active filters:</span>' +
+      chips.map(function (c) {
+        return '<button type="button" class="programmes-filter-chip" data-clear="' + c.key + '" data-clear-value="' + escapeHtml(c.value) + '">' + escapeHtml(c.label) + ' &times;</button>'
+      }).join('') +
+      '<button type="button" class="programmes-filter-chip programmes-filter-chip--clear-all" id="lf-clear-all">Clear all</button>'
+
+    activeFiltersEl.querySelectorAll('[data-clear]').forEach(function (btn) {
+      btn.addEventListener('click', function () { clearFilterChip(btn.getAttribute('data-clear'), btn.getAttribute('data-clear-value')) })
+    })
+    var clearAllBtn = document.getElementById('lf-clear-all')
+    if (clearAllBtn) clearAllBtn.addEventListener('click', function () { clearBtn.click() })
   }
 
   function cardHtml (listing) {
@@ -139,6 +203,7 @@
       ? pageResults.map(cardHtml).join('')
       : '<div class="listings-empty">No listings match your filters.</div>'
     renderPagination(results.length)
+    renderActiveFilters()
   }
 
   function renderDetail (id) {
