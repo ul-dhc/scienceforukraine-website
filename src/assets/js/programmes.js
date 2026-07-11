@@ -364,6 +364,27 @@
     })
   }
 
+  function updateFilterBadge (key, count) {
+    var badge = document.getElementById('pf-' + key + '-badge')
+    var wrap = badge ? badge.closest('.programmes-select-wrap') : null
+    if (!badge || !wrap) return
+    if (count > 0) {
+      badge.textContent = count
+      badge.hidden = false
+      wrap.classList.add('has-selection')
+    } else {
+      badge.hidden = true
+      wrap.classList.remove('has-selection')
+    }
+  }
+
+  function updateFilterBadges () {
+    updateFilterBadge('country', state.country.length)
+    updateFilterBadge('discipline', state.discipline.length)
+    updateFilterBadge('open-for', state.openFor.length)
+    updateFilterBadge('type', state.type.length)
+  }
+
   function render () {
     var results = programmes.filter(matches).sort(SORTERS[state.sort] || SORTERS.newest)
     countEl.textContent = results.length + ' programme' + (results.length === 1 ? '' : 's')
@@ -380,6 +401,7 @@
     renderPagination(results.length)
     updateMap()
     renderActiveFilters()
+    updateFilterBadges()
   }
 
   function renderDetail (id) {
