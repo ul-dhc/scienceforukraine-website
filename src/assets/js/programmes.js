@@ -549,6 +549,18 @@
     }
   })
 
+  var MOBILE_BREAKPOINT = 700
+  function enforceGridOnMobile () {
+    if (window.innerWidth <= MOBILE_BREAKPOINT && state.view === 'list') {
+      state.view = 'grid'
+      viewGridBtn.classList.add('is-active')
+      viewListBtn.classList.remove('is-active')
+      render()
+    }
+  }
+  window.addEventListener('resize', enforceGridOnMobile)
+  enforceGridOnMobile()
+
   window.addEventListener('hashchange', syncView)
 
   render()
