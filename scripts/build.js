@@ -134,14 +134,14 @@ function homeContentHtml () {
           <h1 class="hero__title">Supporting Ukrainian research.<br>Today and for the future.</h1>
           <p class="hero__subtitle">Since 26 February 2022, #ScienceForUkraine supports the Ukrainian academic community in surviving Russia&rsquo;s war and helps ensure the continuity of Ukrainian research and its presence in the international scholarly community.</p>
           <div class="hero__actions">
-            <a class="btn btn-primary" href="/listings">${icon('handHeart')} Find support</a>
+            <a class="btn btn-primary" href="#support-options">${icon('handHeart')} Find support</a>
             <a class="btn btn-secondary" href="/donate">${icon('heart')} Donate</a>
           </div>
         </div>
       </section>
 
       <div class="home-cards">
-        <div class="card card--warm">
+        <div class="card card--warm" id="support-options">
           <div class="card__header">
             <div class="icon-badge icon-badge--warm">${icon('users')}</div>
             <div class="card__title">For Ukrainian researchers and students</div>
