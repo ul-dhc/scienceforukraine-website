@@ -254,7 +254,7 @@
 }
 
 .world-map__country {
-  fill: #F1F4F7;
+  fill: #D9DEE5;
   cursor: default;
   stroke: none;
 }
@@ -637,6 +637,64 @@
 .programmes-select-wrap.has-selection .programmes-select {
   border-color: var(--accent-2);
   border-width: 2px;
+}
+
+.programmes-multiselect {
+  position: relative;
+  display: inline-block;
+}
+
+.programmes-multiselect__button {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.programmes-multiselect.has-selection .programmes-multiselect__button {
+  border-color: var(--accent-2);
+  border-width: 2px;
+}
+
+.programmes-multiselect__panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 20;
+  min-width: 220px;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: var(--spacing-s);
+  background: var(--background);
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-s);
+  box-shadow: var(--shadow-m);
+}
+
+.programmes-multiselect__panel[hidden] {
+  display: none;
+}
+
+.programmes-multiselect__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px;
+  font-size: var(--font-size-s);
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.programmes-multiselect__option:hover {
+  background: var(--tint-cool);
+  border-radius: var(--radius-s);
+}
+
+.programmes-multiselect__option input {
+  accent-color: var(--accent-1);
+  width: 15px;
+  height: 15px;
 }
 
 .programmes-select-badge {
