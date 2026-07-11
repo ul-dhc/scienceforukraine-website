@@ -15,6 +15,22 @@
   var sortSelect = document.getElementById('pf-sort')
   var recentlyAddedBtn = document.getElementById('pf-recently-added')
   var activeFiltersEl = document.getElementById('programmes-active-filters')
+
+  var SEARCH_LOG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw0WHnAeTs4HA15oKqIWzB8GOSjfR6McZabFNsGRSNHWOqQIQFCb5BY8i8ECkuwvvJ0/exec'
+  var searchLogDebounceTimer = null
+  var lastLoggedSearch = ''
+
+  function logSearchQuery (query) {
+    var trimmed = query.trim()
+    if (trimmed.length < 2 || trimmed === lastLoggedSearch) return
+    lastLoggedSearch = trimmed
+    fetch(SEARCH_LOG_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ query: trimmed, page: 'Funding programmes' })
+    }).catch(function () {})
+  }
   var viewGridBtn = document.getElementById('pf-view-grid')
   var viewListBtn = document.getElementById('pf-view-list')
   var mapSection = document.getElementById('programmes-map-section')
@@ -477,7 +493,15 @@
 
   var pageSizeSelect = document.getElementById('pf-page-size')
 
-  searchInput.addEventListener('input', function () { state.search = searchInput.value.trim(); state.page = 1; render() })
+  searchInput.addEventListener('input', function () {
+    state.search = searchInput.value.trim()
+    state.page = 1
+    render()
+
+    var value = searchInput.value
+    clearTimeout(searchLogDebounceTimer)
+    searchLogDebounceTimer = setTimeout(function () { logSearchQuery(value) }, 1500)
+  })
   function closeAllPanels (exceptId) {
     Object.keys(MULTISELECT_FILTERS).forEach(function (filterId) {
       if (filterId === exceptId) return
