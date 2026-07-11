@@ -88,6 +88,7 @@ html {
   background: var(--background);
   color: var(--text);
   scroll-padding-top: 60px;
+  scroll-behavior: smooth;
 }
 
 body {
