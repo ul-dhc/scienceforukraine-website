@@ -11,7 +11,6 @@
 }
 
 
-
 .btn {
   display: inline-flex;
   align-items: center;
@@ -69,6 +68,16 @@
 .card--cool {
   background: var(--tint-cool);
   border-color: var(--tint-cool-border);
+}
+
+
+:target.card {
+  animation: card-target-highlight 2s ease-out;
+}
+
+@keyframes card-target-highlight {
+  0% { box-shadow: 0 0 0 4px var(--accent-2); }
+  100% { box-shadow: 0 0 0 4px transparent; }
 }
 
 .card__header {
