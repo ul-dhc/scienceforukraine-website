@@ -70,7 +70,7 @@ Our main activities include:
 - **Sanita Reinsone**, University of Latvia (Latvia)
 - **Oleksandra Ivaschenko**, University Medical Center Groningen (The Netherlands)
 - **Ekaterina Kutafina**, Institute for Biomedical Informatics, Uniklinik Cologne (Germany)
-- **Igor Potapov**, University of Liverpool (UK)
+- **Igor Potapov**, University of Liverpool (UK), leading UK #ScienceForUkraine
 - **Galyna Ryabukha**, BETA Technological Centre of the University of Vic-Central University of Catalonia (Spain)
 - **Michael E. Rose**, Max Planck Institute for Innovation and Competition (Germany)
 
