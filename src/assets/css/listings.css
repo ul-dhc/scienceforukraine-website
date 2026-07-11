@@ -281,8 +281,22 @@
 }
 
 .listing-detail__country {
-  color: var(--light-text);
-  font-size: var(--font-size-s);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ink-soft);
+  font-weight: 700;
+  font-size: var(--font-size);
+  margin-bottom: var(--spacing-s);
+}
+
+.listing-detail__pin-icon {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  flex-shrink: 0;
 }
 
 .listing-detail__id {
