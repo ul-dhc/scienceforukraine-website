@@ -111,24 +111,31 @@
 
   function cardHtml (p) {
     return '' +
-      '<div class="programme-card">' +
+      '<a class="programme-card" href="#' + encodeURIComponent(p.id) + '">' +
         '<div class="programme-card__top">' +
           (isNew(p) ? '<span class="programme-card__new">NEW</span>' : '<span></span>') +
+          '<span class="programme-card__id">' + escapeHtml(p.id) + '</span>' +
         '</div>' +
         '<div class="programme-card__title">' + escapeHtml(p.title) + '</div>' +
-        (p.country ? '<div class="programme-card__country">' + escapeHtml(p.country) + '</div>' : '<div class="programme-card__country">International</div>') +
+        '<div class="programme-card__country">' + icon_pin() + escapeHtml(p.country || 'International') + '</div>' +
         '<div class="programme-card__description">' + escapeHtml(p.description || '') + '</div>' +
         '<div class="programme-card__meta-label">Discipline</div><div class="programme-card__meta-value">' + escapeHtml(disciplineLabel(p)) + '</div>' +
         (p.deadline ? '<div class="programme-card__meta-label">Deadline</div><div class="programme-card__meta-value">' + escapeHtml(p.deadline) + '</div>' : '') +
         '<div class="programme-card__tags">' + tagsHtml(p) + '</div>' +
-        '<a class="programme-card__link" href="#' + encodeURIComponent(p.id) + '">View details &rarr;</a>' +
-      '</div>'
+        (p.dateAdded ? '<div class="programme-card__added">Added ' + escapeHtml(p.dateAdded) + '</div>' : '') +
+        '<span class="programme-card__link">View details &rarr;</span>' +
+      '</a>'
+  }
+
+  function icon_pin () {
+    return '<svg class="programme-card__pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>'
   }
 
   function listRowHtml (p) {
     return '' +
       '<a class="programme-row" href="#' + encodeURIComponent(p.id) + '">' +
         (isNew(p) ? '<span class="programme-card__new">NEW</span>' : '<span class="programme-row__spacer"></span>') +
+        '<span class="programme-row__id">' + escapeHtml(p.id) + '</span>' +
         '<span class="programme-row__title">' + escapeHtml(p.title) + '</span>' +
         '<span class="programme-row__country">' + escapeHtml(p.country || 'International') + '</span>' +
         '<span class="programme-row__type">' + escapeHtml(p.primaryType) + '</span>' +
@@ -199,13 +206,13 @@
       var country = path.getAttribute('data-country')
       var count = counts[country] || 0
       path.setAttribute('data-count', count)
-      path.setAttribute('fill', colorForCount(count))
+      path.style.fill = colorForCount(count)
     })
 
     var marker = document.querySelector('.world-map__marker')
     if (marker) {
       marker.setAttribute('data-count', result.intlCount)
-      marker.setAttribute('fill', colorForCount(result.intlCount))
+      marker.style.fill = colorForCount(result.intlCount)
     }
 
     var countriesWithData = Object.keys(counts).filter(function (c) { return counts[c] > 0 })
