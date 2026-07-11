@@ -415,7 +415,7 @@ function programmesContentHtml (programmes) {
             <div class="programmes-map">
               <div class="programmes-map__heading">Countries covered in this archive</div>
               <div class="programmes-map__subheading">Programmes in <strong id="programmes-map-country-count">${countries.length} countries</strong> (past and present)</div>
-              <div class="world-map-viewport" id="world-map-viewport">
+              <div class="world-map-viewport" id="world-map-viewport" data-default-scale="${map.defaultZoom.scale}" data-default-x="${map.defaultZoom.x}" data-default-y="${map.defaultZoom.y}">
                 <div class="world-map-zoom-controls">
                   <button type="button" id="pf-map-zoom-in" aria-label="Zoom in">+</button>
                   <button type="button" id="pf-map-zoom-out" aria-label="Zoom out">&minus;</button>
