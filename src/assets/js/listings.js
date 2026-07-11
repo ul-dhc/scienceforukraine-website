@@ -21,7 +21,7 @@
   var clearBtn = document.getElementById('lf-clear')
   var sortSelect = document.getElementById('lf-sort')
 
-  var state = { category: [], discipline: [], openFor: [], country: '', search: '', remote: false, accommodation: false, sort: 'newest' }
+  var state = { category: [], discipline: [], openFor: [], country: '', search: '', remote: false, accommodation: false, sort: 'newest', pageSize: 20, page: 1 }
 
   var DISCIPLINE_LABELS = {
     naturalSciences: 'Natural sciences',
@@ -89,7 +89,7 @@
     }
     return '' +
       '<a class="listing-card" href="#' + encodeURIComponent(listing.id) + '">' +
-        '<span class="listing-card__country">' + escapeHtml(listing.country) + '<span class="listing-card__id">' + escapeHtml(listing.id) + '</span></span>' +
+        '<span class="listing-card__country">' + pinIcon() + escapeHtml(listing.country) + '<span class="listing-card__id">' + escapeHtml(listing.id) + '</span></span>' +
         '<div class="listing-card__institution">' + escapeHtml(listing.institution) + '</div>' +
         '<div class="listing-card__description">' + escapeHtml(listing.description) + '</div>' +
         meta +
@@ -104,12 +104,41 @@
     country: function (a, b) { return (a.country || '').localeCompare(b.country || '') }
   }
 
+  function paginate (results) {
+    if (state.pageSize === 'all') return results
+    var totalPages = Math.max(1, Math.ceil(results.length / state.pageSize))
+    if (state.page > totalPages) state.page = totalPages
+    var start = (state.page - 1) * state.pageSize
+    return results.slice(start, start + state.pageSize)
+  }
+
+  function renderPagination (totalCount) {
+    var container = document.getElementById('listings-pagination-controls')
+    if (!container) return
+    if (state.pageSize === 'all' || totalCount === 0) { container.innerHTML = ''; return }
+    var totalPages = Math.max(1, Math.ceil(totalCount / state.pageSize))
+    var html = ''
+    html += '<button type="button" class="programmes-page-btn" data-page="' + (state.page - 1) + '"' + (state.page <= 1 ? ' disabled' : '') + '>&larr; Prev</button>'
+    html += '<span class="programmes-page-status">Page ' + state.page + ' of ' + totalPages + '</span>'
+    html += '<button type="button" class="programmes-page-btn" data-page="' + (state.page + 1) + '"' + (state.page >= totalPages ? ' disabled' : '') + '>Next &rarr;</button>'
+    container.innerHTML = html
+    container.querySelectorAll('[data-page]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.page = parseInt(btn.getAttribute('data-page'), 10)
+        renderList()
+        listEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    })
+  }
+
   function renderList () {
     var results = openListings.filter(matches).sort(SORTERS[state.sort] || SORTERS.newest)
     countEl.textContent = results.length + ' listing' + (results.length === 1 ? '' : 's')
-    listEl.innerHTML = results.length
-      ? results.map(cardHtml).join('')
+    var pageResults = paginate(results)
+    listEl.innerHTML = pageResults.length
+      ? pageResults.map(cardHtml).join('')
       : '<div class="listings-empty">No listings match your filters.</div>'
+    renderPagination(results.length)
   }
 
   function renderDetail (id) {
@@ -194,27 +223,32 @@
         var v = b.getAttribute('data-value')
         b.classList.toggle('is-active', v === '' ? selected.length === 0 : selected.indexOf(v) !== -1)
       })
+      state.page = 1
       renderList()
     })
   })
 
   searchInput.addEventListener('input', function () {
     state.search = searchInput.value.trim()
+    state.page = 1
     renderList()
   })
 
   countrySelect.addEventListener('change', function () {
     state.country = countrySelect.value
+    state.page = 1
     renderList()
   })
 
   remoteToggle.addEventListener('change', function () {
     state.remote = remoteToggle.checked
+    state.page = 1
     renderList()
   })
 
   accommodationToggle.addEventListener('change', function () {
     state.accommodation = accommodationToggle.checked
+    state.page = 1
     renderList()
   })
 
@@ -223,13 +257,23 @@
     renderList()
   })
 
+  var pageSizeSelect = document.getElementById('lf-page-size')
+  if (pageSizeSelect) {
+    pageSizeSelect.addEventListener('change', function () {
+      state.pageSize = pageSizeSelect.value === 'all' ? 'all' : parseInt(pageSizeSelect.value, 10)
+      state.page = 1
+      renderList()
+    })
+  }
+
   clearBtn.addEventListener('click', function () {
-    state = { category: [], discipline: [], openFor: [], country: '', search: '', remote: false, accommodation: false, sort: 'newest' }
+    state = { category: [], discipline: [], openFor: [], country: '', search: '', remote: false, accommodation: false, sort: 'newest', pageSize: 20, page: 1 }
     searchInput.value = ''
     countrySelect.value = ''
     remoteToggle.checked = false
     accommodationToggle.checked = false
     sortSelect.value = 'newest'
+    if (pageSizeSelect) pageSizeSelect.value = '20'
     document.querySelectorAll('.filter-pill').forEach(function (b) {
       b.classList.toggle('is-active', b.getAttribute('data-value') === '')
     })
