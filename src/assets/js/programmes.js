@@ -449,7 +449,16 @@
 
   function syncView () {
     var id = decodeURIComponent(window.location.hash.replace(/^#/, ''))
-    if (id) {
+    if (id === 'submit-programme') {
+      resultsAreaEl.hidden = false
+      if (headerExtra1) headerExtra1.hidden = false
+      if (headerExtra2) headerExtra2.hidden = false
+      detailEl.hidden = true
+      if (submitForm) {
+        submitForm.hidden = false
+        submitForm.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    } else if (id) {
       resultsAreaEl.hidden = true
       if (headerExtra1) headerExtra1.hidden = true
       if (headerExtra2) headerExtra2.hidden = true
