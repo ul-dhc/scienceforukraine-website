@@ -52,6 +52,7 @@ function normalizeRow (row) {
     description: clean(row.description) || null,
     link: clean(row.link) || null,
     dateAdded: parseDate(row.date_added),
+    dateUpdated: parseDate(row.date_updated),
     deadline: parseDate(row.deadline),
     types: [...new Set([clean(row.primary_type), ...clean(row.other_types).split(',').map(t => t.trim())].filter(Boolean))],
     primaryType: clean(row.primary_type) || 'Other',
