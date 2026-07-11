@@ -32,7 +32,8 @@ const PAGES = [
     name: 'home',
     title: 'Home',
     description: "#ScienceForUkraine supports the Ukrainian academic community in surviving Russia's war and helps ensure the continuity of Ukrainian research.",
-    template: 'home'
+    template: 'home',
+    extraScripts: ['/assets/js/home.js']
   },
   { slug: 'help', name: 'help', title: 'How You Can Help', description: 'Ways to support the Ukrainian academic community: donate, or submit a support offer.' },
   { slug: 'support', name: 'support', title: 'Funding Programmes and Other Support', description: 'A country-by-country list of funding programmes and support initiatives for Ukrainian researchers and students.' },
@@ -191,6 +192,23 @@ function homeContentHtml () {
           </div>
         </div>
         <div class="updates-strip__items">${updatesHtml}
+        </div>
+      </div>
+
+      <div class="updates-strip search-strip" id="site-search">
+        <div class="updates-strip__heading">
+          <div class="icon-badge icon-badge--cool">${icon('search')}</div>
+          <div class="updates-strip__heading-text">
+            <h2>Search the website</h2>
+            <p class="search-strip__subtitle">Search pages, support offers, funding programmes, and updates.</p>
+          </div>
+        </div>
+        <div class="search-strip__input-area">
+          <div class="search-strip__input-wrap">
+            ${icon('search')}
+            <input type="search" id="site-search-input" class="search-strip__input" placeholder="Search the full website..." autocomplete="off">
+          </div>
+          <div class="search-strip__results" id="site-search-results" hidden></div>
         </div>
       </div>`
 }
@@ -569,6 +587,53 @@ function programmesContentHtml (programmes) {
       <script id="programmes-data" type="application/json">${dataJson}</script>`
 }
 
+function stripHtml (html) {
+  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim()
+}
+
+function buildSearchIndex (listingsData, programmesData) {
+  const index = []
+
+  listingsData.open.forEach(l => {
+    index.push({
+      type: 'listing',
+      title: l.institution || l.id,
+      snippet: l.description || l.category || '',
+      url: `/listings#${encodeURIComponent(l.id)}`
+    })
+  })
+
+  programmesData.forEach(p => {
+    index.push({
+      type: 'programme',
+      title: p.title,
+      snippet: p.description || p.country || '',
+      url: `/funding-programmes#${encodeURIComponent(p.id)}`
+    })
+  })
+
+  readNews().forEach(n => {
+    index.push({
+      type: 'news',
+      title: n.title || '',
+      snippet: n.excerpt || '',
+      url: `/news#${n.slug}`
+    })
+  })
+
+  PAGES.filter(p => !p.template).forEach(p => {
+    const text = stripHtml(renderMarkdownFile(p.name))
+    index.push({
+      type: 'page',
+      title: p.title,
+      snippet: text.slice(0, 220),
+      url: `/${p.slug}`
+    })
+  })
+
+  return index
+}
+
 function contentForPage (page, listingsData, programmesData) {
   if (page.template === 'home') return homeContentHtml()
   if (page.template === 'news') return newsContentHtml()
@@ -603,6 +668,10 @@ async function build () {
     writePage(page.slug, html)
     console.log(`built /${page.slug}`)
   }
+
+  const searchIndex = buildSearchIndex(listingsData, programmesData)
+  fs.writeFileSync(path.join(DIST, 'search-index.json'), JSON.stringify(searchIndex))
+  console.log(`built search index: ${searchIndex.length} entries`)
 
   copyDir(path.join(SRC, 'assets'), path.join(DIST, 'assets'))
   copyDir(path.join(PUBLIC, 'media'), path.join(DIST, 'media'))
