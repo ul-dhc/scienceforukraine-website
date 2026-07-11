@@ -200,13 +200,13 @@ function homeContentHtml () {
           <div class="icon-badge icon-badge--cool">${icon('search')}</div>
           <div class="updates-strip__heading-text">
             <h2>Search the website</h2>
-            <p class="search-strip__subtitle">Positions, funding programmes, pages, and updates — all in one place.</p>
+            <p class="search-strip__subtitle">Positions, funding programmes, pages, and updates.</p>
           </div>
         </div>
         <div class="search-strip__input-area">
           <div class="search-strip__input-wrap">
             ${icon('search')}
-            <input type="search" id="site-search-input" class="search-strip__input" placeholder="e.g. tuition waiver, DAAD, mentoring..." autocomplete="off">
+            <input type="search" id="site-search-input" class="search-strip__input" placeholder="...type what you are looking for..." autocomplete="off">
           </div>
           <div class="search-strip__results" id="site-search-results" hidden></div>
         </div>
