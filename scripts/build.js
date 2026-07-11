@@ -222,7 +222,15 @@ function newsContentHtml () {
     const pinnedClass = item.pinned ? ' update-card--pinned' : ''
     const openAttr = ''
     const pinnedLabel = item.pinned ? `<span class="update-card__pin-label" title="Pinned update" aria-label="Pinned update">${icon('pin')}</span>` : ''
-    const bodyParagraphs = (item.body || '').split('\n\n').filter(Boolean).map(p => `<p>${escapeHtml(p).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</p>`).join('')
+    const bodyParagraphs = (item.body || '').split('\n\n').filter(Boolean).map(p => {
+      const withBold = escapeHtml(p).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      const withLinks = withBold.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, label, url) => {
+        const external = /^https?:\/\//.test(url)
+        const targetAttr = external ? ' target="_blank" rel="noopener"' : ''
+        return `<a href="${url}"${targetAttr}>${label}</a>`
+      })
+      return `<p>${withLinks}</p>`
+    }).join('')
     const bodyImage = item.image ? `<img class="update-card__image" src="${item.image}" alt="">` : ''
     const readMoreLink = item.link ? `<a class="update-card__external-link" href="${item.link}" target="_blank" rel="noopener">Read more ${icon('arrowRight')}</a>` : ''
     const excerptHtml = item.excerpt ? `<div class="update-card__excerpt">${escapeHtml(item.excerpt)}</div>` : ''
