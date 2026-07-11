@@ -362,6 +362,7 @@ function listingsContentHtml (openListings, closedListings) {
               </select>
             </label>
           </div>
+          <div class="programmes-active-filters" id="listings-active-filters"></div>
           <div class="listings-list" id="listings-list"></div>
           <div class="programmes-pagination" id="listings-pagination">
             <label class="programmes-page-size">
