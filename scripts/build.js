@@ -641,6 +641,47 @@ function contentForPage (page, listingsData, programmesData) {
   return `      <div class="markdown">${renderMarkdownFile(page.name)}</div>`
 }
 
+function truncateText (str, max) {
+  if (!str) return ''
+  if (str.length <= max) return str
+  return str.slice(0, max).replace(/\s+\S*$/, '') + '…'
+}
+
+function writeShareRedirect (sectionSlug, id, title, description) {
+  const safeId = String(id).replace(/[^A-Za-z0-9_-]/g, '-')
+  if (!safeId) return
+
+  const redirectPath = `${BASE_PATH}/${sectionSlug}/#${encodeURIComponent(id)}`
+  const canonicalUrl = `${SITE_URL}/${sectionSlug}/#${encodeURIComponent(id)}`
+  const ogImage = `${DEPLOY_URL}/media/ScienceForUkraine-1128x191px-blue.png`
+  const safeTitle = escapeHtml(title || id)
+  const safeDescription = escapeHtml(truncateText(description || '', 200))
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url=${redirectPath}">
+<title>${safeTitle} – #ScienceForUkraine</title>
+<meta name="description" content="${safeDescription}">
+<meta property="og:title" content="${safeTitle}">
+<meta property="og:description" content="${safeDescription}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="${canonicalUrl}">
+<meta property="og:image" content="${ogImage}">
+<link rel="canonical" href="${redirectPath}">
+</head>
+<body>
+<p>Redirecting to <a href="${redirectPath}">${safeTitle}</a>…</p>
+</body>
+</html>
+`
+
+  const dir = path.join(DIST, sectionSlug, safeId)
+  mkdirp(dir)
+  fs.writeFileSync(path.join(dir, 'index.html'), html)
+}
+
 async function build () {
   fs.rmSync(DIST, { recursive: true, force: true })
   mkdirp(DIST)
@@ -667,6 +708,14 @@ async function build () {
     writePage(page.slug, html)
     console.log(`built /${page.slug}`)
   }
+
+  listingsData.open.forEach(l => {
+    writeShareRedirect('listings', l.id, l.institution || l.id, l.description || '')
+  })
+  programmesData.forEach(p => {
+    writeShareRedirect('funding-programmes', p.id, p.title, p.description || p.country || '')
+  })
+  console.log(`built ${listingsData.open.length + programmesData.length} share-preview pages`)
 
   const searchIndex = buildSearchIndex(listingsData, programmesData)
   fs.writeFileSync(path.join(DIST, 'search-index.json'), JSON.stringify(searchIndex))
