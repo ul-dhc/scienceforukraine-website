@@ -29,6 +29,12 @@
   box-shadow: var(--shadow-m);
 }
 
+.btn:focus-visible,
+.btn:active {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
 .btn-primary {
   background: var(--accent-1);
   color: var(--background);
