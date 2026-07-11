@@ -1,5 +1,3 @@
-
-
 @font-face {
   font-family: 'Inter';
   font-weight: 400;
@@ -48,7 +46,9 @@
   --gray: #7c8c9e;
   --dark-gray: #515f6e;
   --accent-1: #0057B7;
+  --accent-1-hover: #003D82;
   --accent-2: #FFD700;
+  --accent-2-hover: #D9B700;
 
 
   --tint-warm: #FDF9EE;
@@ -69,6 +69,10 @@
   --shadow-m: 0 6px 20px rgba(11, 15, 30, 0.08);
 
   --transition: .2s;
+
+  /* ---- interactive border weights (buttons & chips) --------------------- */
+  --border-w: 1.5px;
+  --border-w-active: 2px;
 }
 
 * , *::before, *::after {
