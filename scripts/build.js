@@ -500,7 +500,7 @@ function programmesContentHtml (programmes) {
 
         <div class="programmes-submit-banner">
           <p>Do you represent an institution with an open opportunity for Ukrainian researchers?</p>
-          <a class="btn btn-primary" href="https://docs.google.com/forms/d/e/1FAIpQLSe0a7SOe1BeSbZsI2py43gaC2MgpuaaiAcl5cqmskCxzeuHvg/viewform" target="_blank" rel="noopener">Submit a programme</a>
+          <a class="btn btn-outline" href="https://docs.google.com/forms/d/e/1FAIpQLSe0a7SOe1BeSbZsI2py43gaC2MgpuaaiAcl5cqmskCxzeuHvg/viewform" target="_blank" rel="noopener">Submit a programme</a>
         </div>
       </div>
       <script id="programmes-data" type="application/json">${dataJson}</script>`
