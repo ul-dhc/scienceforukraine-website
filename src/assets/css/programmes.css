@@ -211,13 +211,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 0;
+  padding: 6px 8px;
   border-bottom: 1px solid var(--light-gray);
   cursor: pointer;
   font-size: var(--font-size-s);
   background: none;
   border-left: none;
   border-right: none;
+  border-radius: var(--radius-s);
+}
+
+.programmes-top-countries__item.is-active {
+  background: #FFF8DC;
+  border-bottom-color: var(--accent-2);
+  font-weight: 700;
+}
   border-top: none;
   text-align: left;
   color: var(--ink);
@@ -248,7 +256,19 @@
 .world-map__country {
   fill: #F1F4F7;
   cursor: pointer;
+  stroke: #ffffff;
+  stroke-width: 0.5;
   transition: opacity var(--transition);
+}
+
+.world-map__country--selected {
+  stroke: var(--accent-2);
+  stroke-width: 3;
+}
+
+.world-map__marker--selected {
+  stroke: var(--accent-1);
+  stroke-width: 3;
 }
 
 .world-map__marker {
