@@ -373,6 +373,7 @@
       badge.hidden = false
       wrap.classList.add('has-selection')
     } else {
+      badge.textContent = ''
       badge.hidden = true
       wrap.classList.remove('has-selection')
     }
@@ -453,7 +454,6 @@
   function addToArrayFilter (arr, select) {
     var value = select.value
     if (value && arr.indexOf(value) === -1) arr.push(value)
-    select.value = ''
     state.page = 1
     render()
   }
