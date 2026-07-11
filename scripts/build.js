@@ -434,7 +434,7 @@ function programmesContentHtml (programmes) {
         </div>
         <div class="programmes-banner">
           ${icon('info')}
-          <p><strong>This archive is updated on a rolling basis.</strong> Listings accumulate over time, and deadlines or programme status may change. Please check the original source for the latest information.</p>
+          <p><strong>This archive is updated on a rolling basis.</strong> Listings accumulate over time, and deadlines or programme status may change. Please check the original source for the latest information. Know of a current or past funding programme that isn&rsquo;t listed here? <a href="#pf-submit-toggle">Submit a programme</a>.</p>
         </div>
         <div id="programmes-header-extra-2">
           <div class="programmes-crosslink">
