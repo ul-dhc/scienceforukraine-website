@@ -13,6 +13,11 @@
   margin-bottom: var(--spacing-s);
 }
 
+.listings-header__subtitle {
+  max-width: 640px;
+  color: var(--ink-soft);
+}
+
 .listings-stats {
   display: flex;
   flex-wrap: wrap;
