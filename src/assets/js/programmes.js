@@ -677,15 +677,15 @@
     submitForm.addEventListener('submit', function (e) {
       e.preventDefault()
 
-      var honeypot = submitForm.querySelector('input[name="website"]').value
-      if (honeypot) return // silently drop — a bot filled the hidden field
+      var honeypot = submitForm.querySelector('input[name="hp_extra_field_2847"]').value
+      if (honeypot) return
 
       var payload = {
         title: submitForm.querySelector('input[name="title"]').value.trim(),
         link: submitForm.querySelector('input[name="link"]').value.trim(),
         country: submitForm.querySelector('input[name="country"]').value.trim(),
         notes: submitForm.querySelector('textarea[name="notes"]').value.trim(),
-        website: honeypot,
+        hp_extra_field_2847: honeypot,
         loadedAt: formLoadedAt
       }
 
