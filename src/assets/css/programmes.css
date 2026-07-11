@@ -338,6 +338,12 @@
   gap: 4px;
 }
 
+@media (max-width: 700px) {
+  #pf-view-list {
+    display: none;
+  }
+}
+
 .programmes-view-toggle__btn {
   display: flex;
   align-items: center;
@@ -428,9 +434,9 @@
 }
 
 .programmes-table th.is-sortable.is-active-sort {
-  color: #92620A;
-  background: #FFF3CD;
-  border-bottom-color: var(--accent-2);
+  color: var(--accent-1);
+  font-weight: 700;
+  border-bottom: 3px solid var(--accent-2);
 }
 
 .programmes-table th.is-sortable.is-active-sort::after {
@@ -451,13 +457,44 @@
   background: var(--tint-cool);
 }
 
+.programmes-table th:nth-child(1),
+.programmes-table td:nth-child(1) {
+  width: 60px;
+}
+
+.programmes-table th:nth-child(2),
+.programmes-table td:nth-child(2) {
+  width: 60px;
+}
+
+.programmes-table th:nth-child(3),
+.programmes-table td:nth-child(3) {
+  width: auto;
+}
+
+.programmes-table th:nth-child(4),
+.programmes-table td:nth-child(4) {
+  width: 11%;
+}
+
+.programmes-table th:nth-child(5),
+.programmes-table td:nth-child(5) {
+  width: 11%;
+}
+
+.programmes-table th:nth-child(6),
+.programmes-table td:nth-child(6) {
+  width: 12%;
+}
+
+.programmes-table th:nth-child(7),
+.programmes-table td:nth-child(7) {
+  width: 11%;
+}
+
 .programme-row__id {
   color: var(--light-text);
   white-space: nowrap;
-}
-
-.programme-row__title-cell {
-  width: 40%;
 }
 
 .programme-row__title {
