@@ -13,6 +13,7 @@
   }
   var TYPE_ORDER = ['listing', 'programme', 'news', 'page']
   var MAX_PER_TYPE = 4
+  var SNIPPET_RADIUS = 70
 
   var index = null
   var indexPromise = null
@@ -33,14 +34,43 @@
     return div.innerHTML
   }
 
-  function truncate (str, max) {
-    if (!str || str.length <= max) return str || ''
-    return str.slice(0, max).replace(/\s+\S*$/, '') + '…'
+  function escapeRegExp (str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   }
 
   function matches (entry, tokens) {
-    var haystack = ((entry.title || '') + ' ' + (entry.snippet || '')).toLowerCase()
+    var haystack = ((entry.title || '') + ' ' + (entry.text || '')).toLowerCase()
     return tokens.every(function (t) { return haystack.indexOf(t) !== -1 })
+  }
+
+  function buildSnippet (entry, tokens) {
+    var text = entry.text || ''
+    var lower = text.toLowerCase()
+    var firstIndex = -1
+    tokens.forEach(function (t) {
+      var found = lower.indexOf(t)
+      if (found !== -1 && (firstIndex === -1 || found < firstIndex)) firstIndex = found
+    })
+
+    var start, excerpt
+    if (firstIndex === -1) {
+      start = 0
+      excerpt = text.slice(0, SNIPPET_RADIUS * 2)
+    } else {
+      start = Math.max(0, firstIndex - SNIPPET_RADIUS)
+      excerpt = text.slice(start, start + SNIPPET_RADIUS * 2)
+    }
+
+    var prefix = start > 0 ? '…' : ''
+    var suffix = start + excerpt.length < text.length ? '…' : ''
+    var escaped = escapeHtml(excerpt)
+
+    tokens.forEach(function (t) {
+      var re = new RegExp('(' + escapeRegExp(t) + ')', 'ig')
+      escaped = escaped.replace(re, '<mark>$1</mark>')
+    })
+
+    return prefix + escaped + suffix
   }
 
   function render (q) {
@@ -69,7 +99,7 @@
       group.forEach(function (entry) {
         html += '<a class="search-strip__result search-strip__result--' + type + '" href="' + BASE_PATH + entry.url + '">' +
           '<span class="search-strip__result-title">' + escapeHtml(entry.title) + '</span>' +
-          (entry.snippet ? '<span class="search-strip__result-snippet">' + escapeHtml(truncate(entry.snippet, 110)) + '</span>' : '') +
+          '<span class="search-strip__result-snippet">' + buildSnippet(entry, tokens) + '</span>' +
           '</a>'
       })
       html += '</div>'
