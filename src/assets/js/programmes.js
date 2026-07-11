@@ -69,11 +69,7 @@
     if (state.recentlyAdded && !isNew(p)) return false
     if (state.search) {
       var q = state.search.toLowerCase()
-      var searchFields = [p.title, p.description, p.country, p.region, p.primaryType, p.types.join(' ')]
-      searchFields.push(disciplineLabel(p))
-      var openForLabels = { doctoralStudents: 'Doctoral students', researchers: 'Researchers', students: 'Students', institutions: 'Institutions' }
-      Object.keys(openForLabels).forEach(function (k) { if (p.openFor[k]) searchFields.push(openForLabels[k]) })
-      var haystack = searchFields.join(' ').toLowerCase()
+      var haystack = [p.title, p.description].join(' ').toLowerCase()
       if (haystack.indexOf(q) === -1) return false
     }
     return true
@@ -348,7 +344,7 @@
     topCountriesListEl.querySelectorAll('.programmes-top-countries__item').forEach(function (btn) {
       btn.addEventListener('click', function () { toggleCountry(btn.getAttribute('data-country')) })
     })
-    viewAllCountriesBtn.textContent = showingAllCountries ? 'Show top 5 only' : 'View all countries (' + sorted.length + ') \u2192'
+    viewAllCountriesBtn.textContent = showingAllCountries ? 'Show top 5 only' : 'View all countries (' + countriesWithData.length + ') \u2192'
   }
 
   function toggleCountry (country) {
