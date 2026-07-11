@@ -255,11 +255,12 @@
 
 .world-map__country {
   fill: #F1F4F7;
-  cursor: pointer;
+  cursor: default;
   stroke: none;
-  transform-box: fill-box;
-  transform-origin: center;
-  transition: transform var(--transition);
+}
+
+.world-map__country--has-data {
+  cursor: pointer;
 }
 
 .world-map__country--selected {
@@ -285,9 +286,8 @@
   transform: scale(1.2);
 }
 
-.world-map__country:hover {
+.world-map__country--has-data:hover {
   fill: #FFE58A !important;
-  transform: scale(1.03);
 }
 
 .programmes-map-collapse {
