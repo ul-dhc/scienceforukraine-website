@@ -252,28 +252,34 @@
       detailEl.innerHTML = '' +
         '<button type="button" class="listing-detail__back" id="detail-back">&larr; All programmes</button>' +
         '<span class="listing-detail__id">' + escapeHtml(p.id) + '</span>' +
-        '<div class="listing-detail__country">' + escapeHtml(p.country || 'International') + '</div>' +
+        '<div class="programme-detail__country">' + icon_pin() + escapeHtml(p.country || 'International') + '</div>' +
         '<div class="listing-detail__institution">' + escapeHtml(p.title) + '</div>' +
-        '<div class="listing-detail__tags">' + tagsHtml(p) + '</div>' +
         '<p class="listing-detail__description">' + escapeHtml(p.description || '') + '</p>' +
         '<div class="listing-detail__field-label">Discipline</div><div class="listing-detail__field-value">' + escapeHtml(disciplineLabel(p)) + '</div>' +
         (p.deadline ? '<div class="listing-detail__field-label">Deadline</div><div class="listing-detail__field-value">' + escapeHtml(p.deadline) + '</div>' : '') +
-        (p.dateAdded ? '<div class="listing-detail__field-label">Added to archive</div><div class="listing-detail__field-value">' + escapeHtml(p.dateAdded) + '</div>' : '') +
-        (p.link ? '<div class="listing-detail__field-label">Source</div><div class="listing-detail__field-value"><a href="' + escapeHtml(p.link) + '" target="_blank" rel="noopener">' + escapeHtml(p.link) + '</a></div>' : '')
+        (p.dateAdded ? '<div class="listing-detail__field-label">Added to archive</div><div class="listing-detail__field-value listing-detail__field-value--muted">' + escapeHtml(p.dateAdded) + '</div>' : '') +
+        (p.link ? '<div class="listing-detail__field-label">Link</div><div class="listing-detail__field-value"><a href="' + escapeHtml(p.link) + '" target="_blank" rel="noopener">' + escapeHtml(p.link) + '</a></div>' : '')
     }
     var backBtn = document.getElementById('detail-back')
     if (backBtn) backBtn.addEventListener('click', function () { window.location.hash = '' })
   }
 
+  var headerExtra1 = document.getElementById('programmes-header-extra')
+  var headerExtra2 = document.getElementById('programmes-header-extra-2')
+
   function syncView () {
     var id = decodeURIComponent(window.location.hash.replace(/^#/, ''))
     if (id) {
       resultsAreaEl.hidden = true
+      if (headerExtra1) headerExtra1.hidden = true
+      if (headerExtra2) headerExtra2.hidden = true
       detailEl.hidden = false
       renderDetail(id)
       window.scrollTo(0, 0)
     } else {
       resultsAreaEl.hidden = false
+      if (headerExtra1) headerExtra1.hidden = false
+      if (headerExtra2) headerExtra2.hidden = false
       detailEl.hidden = true
     }
   }
