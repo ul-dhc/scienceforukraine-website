@@ -857,7 +857,7 @@
   padding: 3px 10px;
   border-radius: var(--radius-pill);
   background: #D9F5E8;
-  color: #0B7A4B;
+  color: var(--mint);
   font-weight: 400;
   font-size: var(--font-size-s);
 }
