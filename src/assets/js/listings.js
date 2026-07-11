@@ -45,6 +45,10 @@
     return div.innerHTML
   }
 
+  function pinIcon () {
+    return '<svg class="listing-detail__pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>'
+  }
+
   function matches (listing) {
     if (state.category.length && state.category.indexOf(listing.category) === -1) return false
     if (state.country && listing.country !== state.country) return false
@@ -119,7 +123,7 @@
         '<button type="button" class="listing-detail__back" id="detail-back">&larr; All listings</button>' +
         '<span class="listing-detail__id">' + escapeHtml(listing.id) + '</span>' +
         '<div class="listing-detail__closed-banner">This opportunity has closed</div>' +
-        '<div class="listing-detail__country">' + escapeHtml(listing.country || '') + '</div>' +
+        '<div class="listing-detail__country">' + pinIcon() + escapeHtml(listing.country || '') + '</div>' +
         '<div class="listing-detail__institution">' + escapeHtml(listing.institution) + '</div>' +
         '<div class="listing-detail__tags">' + (listing.category ? '<span class="listing-tag listing-tag--category">' + escapeHtml(listing.category) + '</span>' : '') + '</div>' +
         '<div class="listing-detail__blurred">' +
@@ -133,7 +137,7 @@
       detailEl.innerHTML = '' +
         '<button type="button" class="listing-detail__back" id="detail-back">&larr; All listings</button>' +
         '<span class="listing-detail__id">' + escapeHtml(listing.id) + '</span>' +
-        '<div class="listing-detail__country">' + escapeHtml(listing.country || '') + '</div>' +
+        '<div class="listing-detail__country">' + pinIcon() + escapeHtml(listing.country || '') + '</div>' +
         '<div class="listing-detail__institution">' + escapeHtml(listing.institution) + '</div>' +
         '<div class="listing-detail__tags">' + tagsHtml(listing) + '</div>' +
         '<p class="listing-detail__description">' + escapeHtml(listing.description) + '</p>' +
