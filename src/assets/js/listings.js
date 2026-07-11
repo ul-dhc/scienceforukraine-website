@@ -230,7 +230,7 @@
 
   function detailUrl (id) {
     var basePath = document.body.getAttribute('data-base-path') || ''
-    return window.location.origin + basePath + '/listings/#' + encodeURIComponent(id)
+    return window.location.origin + basePath + '/listings/' + encodeURIComponent(id) + '/'
   }
 
   function shareRowHtml (id, title) {
@@ -243,10 +243,6 @@
     return '' +
       '<div class="share-row">' +
         '<span class="share-row__label">Share this listing</span>' +
-        '<a class="share-row__link" href="https://wa.me/?text=' + text + '" target="_blank" rel="noopener">' +
-          '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>' +
-          '<span>WhatsApp</span>' +
-        '</a>' +
         '<a class="share-row__link" href="mailto:?subject=' + subject + '&body=' + body + '">' +
           '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>' +
           '<span>Email</span>' +
@@ -258,6 +254,10 @@
         '<a class="share-row__link" href="https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl + '" target="_blank" rel="noopener">' +
           '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>' +
           '<span>Facebook</span>' +
+        '</a>' +
+        '<a class="share-row__link" href="https://wa.me/?text=' + text + '" target="_blank" rel="noopener">' +
+          '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>' +
+          '<span>WhatsApp</span>' +
         '</a>' +
       '</div>'
   }
