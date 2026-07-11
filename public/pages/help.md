@@ -1,33 +1,101 @@
 # How You Can Help
 
-### Become a member!
+#ScienceForUkraine supports the Ukrainian academic community during Russia’s war and helps Ukrainian research remain connected to the international scholarly community.
 
-NGO “Science for Ukraine” comprises three member categories, *(Full) Members*, who are actively contributing and possess voting rights,*Associate Members*, who are like members with whose less personal data is processed, and *Supporting Members*, who support the NGO silently. The mimal membership fee is EUR 15 annually.
+There are several ways you can help directly through #ScienceForUkraine, as well as broader ways to support Ukrainian scholars, students, universities, laboratories, and research institutions.
 
-If you wish to become a member, fill out the **[application form](https://drive.google.com/file/d/1nVdS0kpecXxpEll1fVZploCiDFJTv1go/view?usp=sharing)** and proceed as described. We will respond to your application within a few days.
+## Support #ScienceForUkraine
 
-### Donate!
-If you want to support the #ScienceForUkraine organization or its established [Academic Micro Travel Grant program](https://scienceforukraine.eu/mtg), find donation details [here](https://scienceforukraine.eu/donate).
+### Donate to the Micro Travel Grant Programme
 
-### Submit a support offer!
+The **[#ScienceForUkraine Micro Travel Grant Programme](/mtg)** supports early-career scholars affiliated with Ukrainian academic institutions by helping cover travel and accommodation costs for international conferences, workshops, training events, research visits, and other academic activities.
 
-*   Please use this [form](https://docs.google.com/forms/d/e/1FAIpQLSdcyWM6L1ee-lI5ByMUDx6RBDskCLxvKDQ_yRqOr344wKAR9g/viewform).
-*   Additionally, post the information about the support on your website! Provide as many details as possible including email and other contact details, so where people in need can get in touch.
-*   For corrections or deletions please [send an email](mailto:data@scienceforukraine.eu).
+Your donation helps young Ukrainian scholars remain active in international science despite the war.
 
-We are collecting opportunities which were exclusively created for scientists affected by the war in Ukraine or those in which they are encouraged to apply. Industrial R&D or similar positions are also welcome. This includes positions that relate to _paid positions_ or other forms of support that normally _costs money_ and which are dedicated to scholars and students affiliated to an academic institution in Ukraine.
+We also welcome **targeted donations**. If your conference, organisation, research network, learned society, or academic community would like to support Ukrainian participation in a specific event or research field, we can open a dedicated MTG call linked to your donation. This can help Ukrainian scholars attend a particular conference, join a training school, or participate in activities within a specific academic area.
 
-Examples include:
+[Donate to the Micro Travel Grant Programme](/donate)
 
-*   Fellowship/scholarship
-*   Research visit
-*   Part time/full time employment
-*   Accommodation in a dormitory or institution guest quarters
-*   Support for accompanying family members
-*   Office space
-*   Computer with internet access
-*   Access to library and/or lab facilities
+---
 
-Possibilities for **remote work** are particularly relevant as well. Please see [this letter](https://scienceforukraine.eu/assets/YSC_letter.pdf) of the Young Scientists Council at the Ministry of Education and Science in Ukraine to the Polish National Science Center and #ScienceForUkraine [press release](https://drive.google.com/file/d/1KIO96sfir9oPkVOOKtxXzzx4iPr2_d_-/view) on remote work opportunities.
+### Submit a support offer
 
-Support for Ukrainians on all levels of scholarly career is welcome: students, PhD candidates, early career researchers and senior scholars.
+If your institution, project, laboratory, network, or organisation can offer support to Ukrainian scholars or students, please let us know.
+
+You can submit:
+
+- open academic positions that welcome Ukrainian applicants
+- research visits, fellowships, internships, or scholarships
+- support offers for Ukrainian researchers, students, or academic staff
+- opportunities especially relevant to Ukrainian scholars, for example research on Ukrainian history, language, culture, society, reconstruction, war impacts, or regional studies
+- fee waivers for training, summer schools, conferences, workshops, or schools
+- mentoring, supervision, career guidance, or publication support
+- access to laboratories, libraries, archives, datasets, equipment, or institutional resources
+- accommodation, workspace, or other practical support
+
+Submitted opportunities may be included in the [#ScienceForUkraine support database](/listings).
+
+[Submit a support offer](https://docs.google.com/forms/d/e/1FAIpQLSe0a7SOe1BeSbZsI2py43gaC2MgpuaaiAcl5cqmskCxzeuHvg/viewform)
+
+---
+
+### Submit a funding programme
+
+If you know of a funding programme, fellowship, grant, scholarship, mobility scheme, or other relevant opportunity that has not yet been noticed by our team, please send it to us.
+
+This can include programmes for:
+
+- Ukrainian researchers and students
+- displaced scholars
+- institutions in Ukraine
+- international collaboration with Ukrainian partners
+- research infrastructure, laboratories, archives, libraries, or equipment
+- reconstruction and recovery of Ukrainian science
+
+Submitted programmes may be added to our [general funding programmes archive](/funding-programmes).
+
+[Submit a funding programme](/funding-programmes#pf-submit-toggle)
+
+---
+
+## Other ways to support Ukrainian scholars and science
+
+Ukrainian scientists continue to teach, research, publish, supervise students, maintain laboratories, and participate in international projects under extremely difficult wartime conditions.
+
+At the same time, Russia’s war has caused severe damage to universities, research institutes, laboratories, libraries, museums, archives, collections, and scientific equipment across Ukraine. The destruction of scientific infrastructure affects not only Ukraine, but the global scientific community. Years of research, unique collections, datasets, equipment, and international collaborations are at risk.
+
+The international academic community can help in many ways.
+
+### Speak publicly in support of Ukrainian science
+
+Public statements matter. Universities, academies, learned societies, scholarly associations, journals, laboratories, and research networks can help by clearly condemning the destruction of Ukraine’s scientific infrastructure and expressing support for Ukrainian researchers, students, and institutions.
+
+### Document and monitor damage to scientific infrastructure
+
+Researchers, institutions, and international organisations can support efforts to document damage to Ukrainian universities, laboratories, archives, libraries, museums, collections, and research equipment. This is important for accountability, heritage protection, and future reconstruction.
+
+### Expand academic cooperation
+
+International partners can help by creating or expanding:
+
+- joint research projects with Ukrainian partners
+- visiting researcher schemes
+- remote collaboration opportunities
+- short-term fellowships and internships
+- doctoral and postdoctoral support
+- mentoring and grant-writing support
+- access to research infrastructure, data, equipment, and libraries
+
+### Support young researchers and students
+
+Students, PhD candidates, early-career researchers, and young scholars are among the most vulnerable groups in the academic system. Travel support, supervision, mentoring, conference access, summer schools, training opportunities, and small grants can make a significant difference.
+
+### Help rebuild Ukrainian science
+
+Long-term support will be needed to rebuild laboratories, research equipment, libraries, archives, collections, and academic infrastructure. International programmes, donor initiatives, institutional partnerships, and government-level support can all contribute to the recovery and future strength of Ukrainian science.
+
+## Contact us
+
+Have a question, correction, or suggestion?
+
+[Contact #ScienceForUkraine](mailto:info@scienceforukraine.eu)
