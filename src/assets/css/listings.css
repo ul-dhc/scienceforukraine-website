@@ -85,31 +85,28 @@
   gap: var(--spacing-xs);
 }
 
+/* chip (selector tier) — pill shape, border-only feedback, no solid fill.
+   Matches .programmes-view-toggle__btn / .programmes-chip-toggle. */
 .filter-pill {
   padding: 6px 12px;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--light-gray);
+  border: var(--border-w) solid var(--light-gray);
   background: var(--background);
   font-size: var(--font-size-s);
   color: var(--ink);
   cursor: pointer;
-  transition: all var(--transition);
+  transition: border-color var(--transition), border-width var(--transition), color var(--transition);
 }
 
 .filter-pill:hover {
   border-color: var(--accent-1);
 }
 
-.filter-pill.is-active[data-filter="category"] {
-  background: var(--accent-2);
-  border-color: var(--accent-2);
-  color: var(--ink);
-}
-
-.filter-pill.is-active:not([data-filter="category"]) {
-  background: var(--accent-1);
+.filter-pill.is-active {
   border-color: var(--accent-1);
-  color: var(--background);
+  border-width: var(--border-w-active);
+  color: var(--accent-1);
+  font-weight: var(--bold);
 }
 
 .listings-select {
