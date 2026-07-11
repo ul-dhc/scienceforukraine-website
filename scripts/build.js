@@ -296,7 +296,7 @@ function listingsContentHtml (openListings, closedListings) {
       <div class="listings-header">
         <h1 class="listings-header__title">Positions &amp; Support Offers</h1>
         <div class="listings-stats">
-          <div class="listings-stat">${icon('search')}<span class="listings-stat__value">${openListings.length}</span><span class="listings-stat__label">open listings</span></div>
+          <div class="listings-stat">${icon('search')}<span class="listings-stat__value">${openListings.length}</span><span class="listings-stat__label">listings</span></div>
           <div class="listings-stat">${icon('globePin')}<span class="listings-stat__value">${countries.length}</span><span class="listings-stat__label">countries represented</span></div>
           <div class="listings-stat">${icon('refresh')}<span class="listings-stat__value">Rolling</span><span class="listings-stat__label">new listings added regularly</span></div>
         </div>
