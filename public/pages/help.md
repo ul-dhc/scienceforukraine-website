@@ -8,7 +8,9 @@ There are several ways you can help directly through #ScienceForUkraine, as well
 
 ### Donate to the Micro Travel Grant Programme
 
-The **[#ScienceForUkraine Micro Travel Grant Programme](/mtg)** supports early-career scholars affiliated with Ukrainian academic institutions by helping cover travel and accommodation costs for international conferences, workshops, training events, research visits, and other academic activities.
+The **#ScienceForUkraine Micro Travel Grant Programme** supports early-career scholars affiliated with Ukrainian academic institutions by helping cover travel and accommodation costs for international conferences, workshops, training events, research visits, and other academic activities.
+
+[Learn more about the Micro Travel Grant Programme](/mtg)
 
 Your donation helps young Ukrainian scholars remain active in international science despite the war.
 
@@ -54,7 +56,7 @@ This can include programmes for:
 
 Submitted programmes may be added to our [general funding programmes archive](/funding-programmes).
 
-[Submit a funding programme](/funding-programmes#pf-submit-toggle)
+[Submit a funding programme](/funding-programmes#submit-programme)
 
 ---
 
@@ -98,4 +100,4 @@ Long-term support will be needed to rebuild laboratories, research equipment, li
 
 Have a question, correction, or suggestion?
 
-Contact #ScienceForUkraine: info@scienceforukraine.eu
+[Contact #ScienceForUkraine](mailto:info@scienceforukraine.eu)
