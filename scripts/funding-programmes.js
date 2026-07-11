@@ -14,9 +14,29 @@ function isTrue (v) {
 function parseDate (v) {
   const s = clean(v)
   if (!s) return null
-  const d = new Date(s)
-  if (isNaN(d.getTime())) return null
-  return d.toISOString().slice(0, 10)
+
+  // ISO format: YYYY-MM-DD (with an optional time component the sheet sometimes includes)
+  const iso = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/)
+  if (iso) {
+    const [, y, m, d] = iso
+    const date = new Date(Date.UTC(+y, +m - 1, +d))
+    if (!isNaN(date.getTime())) return date.toISOString().slice(0, 10)
+  }
+
+  // DD.MM.YYYY format (this dataset's usual convention) — must be parsed
+  // explicitly, since JS's native Date constructor assumes the American
+  // MM.DD.YYYY order and will silently produce the wrong date otherwise
+  const eu = s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})/)
+  if (eu) {
+    const [, d, m, y] = eu
+    const date = new Date(Date.UTC(+y, +m - 1, +d))
+    if (!isNaN(date.getTime())) return date.toISOString().slice(0, 10)
+  }
+
+  // last resort: native parsing (handles anything unusual, best-effort)
+  const fallback = new Date(s)
+  if (!isNaN(fallback.getTime())) return fallback.toISOString().slice(0, 10)
+  return null
 }
 
 function normalizeRow (row) {
