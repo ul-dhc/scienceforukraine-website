@@ -40,14 +40,14 @@ const PAGES = [
   },
   { slug: 'help', name: 'help', title: 'How You Can Help', description: 'Ways to support the Ukrainian academic community: donate, or submit a support offer.' },
   { slug: 'support', name: 'support', title: 'Funding Programmes and Other Support', description: 'A country-by-country list of funding programmes and support initiatives for Ukrainian researchers and students.' },
-  { slug: 'funding-programmes', name: 'funding-programmes', title: 'General Funding Programmes', description: 'A curated archive of funding programmes, fellowships, grants, and support opportunities for Ukrainian researchers and students.', template: 'programmes', extraScripts: ['/assets/js/programmes.js'] },
+  { slug: 'funding-programmes', name: 'funding-programmes', title: 'Funding & Support Programmes', description: 'A curated archive of funding programmes, fellowships, grants, and support opportunities for Ukrainian researchers and students.', template: 'programmes', extraScripts: ['/assets/js/programmes.js'] },
   { slug: 'about', name: 'about', title: 'About Us', description: 'Who we are, our mission, and the people behind #ScienceForUkraine.' },
   { slug: 'press', name: 'press', title: 'Press & Media', description: 'Press releases, media coverage, and press materials for #ScienceForUkraine.' },
   { slug: 'partners', name: 'partners', title: 'Our Partners', description: 'Organisations, institutions and companies supporting #ScienceForUkraine.' },
   { slug: 'donate', name: 'donate', title: 'Donate', description: 'Support #ScienceForUkraine and the Academic Micro Travel Grant programme.' },
   { slug: 'mtg', name: 'mtg', title: 'Micro Travel Grant Programme', description: 'The #ScienceForUkraine Micro Travel Grant Programme for early-career scholars based in Ukraine.' },
   { slug: 'news', name: 'news', title: 'Latest Updates', description: 'News and announcements from #ScienceForUkraine.', template: 'news', extraScripts: ['/assets/js/news.js'] },
-  { slug: 'listings', name: 'listings', title: 'Support Listings', description: 'Browse open funding, scholarship, position, and support listings for Ukrainian researchers and students.', template: 'listings', extraScripts: ['/assets/js/listings.js'] }
+  { slug: 'listings', name: 'listings', title: 'Positions & Support Offers', description: 'Browse open funding, scholarship, position, and support listings for Ukrainian researchers and students.', template: 'listings', extraScripts: ['/assets/js/listings.js'] }
 ]
 
 function read (p) {
@@ -298,7 +298,7 @@ function listingsContentHtml (openListings, closedListings) {
 
   return `
       <div class="listings-header">
-        <h1 class="listings-header__title">Support Offers</h1>
+        <h1 class="listings-header__title">Positions &amp; Support Offers</h1>
         <p class="listings-header__note">#ScienceForUkraine cannot guarantee that any given opportunity is still open, or that the host institution will respond. If you are affiliated with a listing and would like it corrected or removed, please contact <a href="mailto:data@scienceforukraine.eu">data@scienceforukraine.eu</a>. Know of an opportunity that should be listed? <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0a7SOe1BeSbZsI2py43gaC2MgpuaaiAcl5cqmskCxzeuHvg/viewform" target="_blank" rel="noopener">Submit a listing</a>.</p>
       </div>
       <div class="listings-page">
@@ -403,7 +403,7 @@ function programmesContentHtml (programmes) {
 
   return `
       <div class="programmes-header">
-        <h1 class="programmes-header__title">General funding programmes</h1>
+        <h1 class="programmes-header__title">Funding &amp; Support Programmes</h1>
         <div id="programmes-header-extra">
           <p class="programmes-header__subtitle">A curated archive of funding programmes, fellowships, grants, and support opportunities for Ukrainian researchers and students.</p>
           <div class="programmes-stats">
@@ -419,7 +419,7 @@ function programmesContentHtml (programmes) {
         <div id="programmes-header-extra-2">
           <div class="programmes-crosslink">
             ${icon('arrowRight')}
-            <span>Looking for individual positions, mentorship, and other direct opportunities? <a href="/listings">Browse the Support Offers database &rarr;</a></span>
+            <span>Looking for individual positions, mentorship, and other direct opportunities? <a href="/listings">Browse Positions &amp; Support Offers &rarr;</a></span>
           </div>
         </div>
       </div>
