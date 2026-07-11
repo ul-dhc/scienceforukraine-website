@@ -163,8 +163,7 @@
   gap: var(--spacing-xs);
 }
 
-/* chip (selector tier) — pill shape, border-only feedback, no solid fill.
-   Matches .programmes-view-toggle__btn / .programmes-chip-toggle. */
+
 .filter-pill {
   padding: 6px 12px;
   border-radius: var(--radius-pill);
@@ -187,9 +186,7 @@
   font-weight: var(--bold);
 }
 
-/* group colors mirror the tag colors on listing cards: category = blue
-   (the default above), discipline = mint, open-for = yellow background
-   with blue text (yellow-on-yellow isn't legible) */
+
 .filter-pill[data-filter="discipline"]:hover {
   border-color: var(--mint);
 }
@@ -336,14 +333,13 @@
   margin-top: var(--spacing-s);
 }
 
-/* filled chip — matches .programmes-filter-chip. Yellow chips keep blue
-   text rather than yellow-on-yellow, for legibility. */
+
 .listing-tag {
   display: inline-flex;
   padding: 4px 10px;
   border-radius: var(--radius-pill);
   font-size: var(--font-size-s);
-  font-weight: 700;
+  font-weight: var(--regular);
   border: none;
 }
 
@@ -358,6 +354,23 @@
 }
 
 .listing-tag--attr {
+  background: var(--tint-yellow-chip);
+  color: var(--accent-1);
+}
+
+/* active-filter chips above the list (reuses .programmes-filter-chip) —
+   color-coded the same way as the tags below each listing */
+#listings-active-filters .programmes-filter-chip[data-clear="category"] {
+  background: var(--tint-cool);
+  color: var(--accent-1);
+}
+
+#listings-active-filters .programmes-filter-chip[data-clear="discipline"] {
+  background: var(--tint-mint-chip);
+  color: var(--mint);
+}
+
+#listings-active-filters .programmes-filter-chip[data-clear="openFor"] {
   background: var(--tint-yellow-chip);
   color: var(--accent-1);
 }
