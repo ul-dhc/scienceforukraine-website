@@ -38,7 +38,7 @@ We gratefully acknowledge the following donors who have agreed to be listed publ
 **The European Council of Academies of Applied Sciences, Technologies and Engineering**  
 [https://www.euro-case.org](https://www.euro-case.org)
 
-**Ivars Ījabs, Member of the European Parliament**  
+**Ivars Ījabs, Member of the European Parliament** – continuous support since 2022
 [https://ijabs.eu](https://ijabs.eu)
 
 If you would like your name or institution to be publicly listed as a donor to #ScienceForUkraine, please contact us at [info@scienceforukraine.eu](mailto:info@scienceforukraine.eu).
