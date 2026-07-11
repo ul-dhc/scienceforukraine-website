@@ -98,4 +98,4 @@ Long-term support will be needed to rebuild laboratories, research equipment, li
 
 Have a question, correction, or suggestion?
 
-[Contact #ScienceForUkraine](mailto:info@scienceforukraine.eu)
+Contact #ScienceForUkraine: info@scienceforukraine.eu
