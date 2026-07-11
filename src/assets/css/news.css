@@ -27,27 +27,25 @@
   gap: var(--spacing-s);
 }
 
-/* action button (ghost tier) — see .btn-outline in components.css */
+/* blue action button — see .btn-primary in components.css */
 .news-toolbar__btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
   border-radius: var(--radius-s);
-  border: var(--border-w) solid var(--accent-1);
+  border: 2px solid var(--accent-1);
   color: var(--accent-1);
   font-size: var(--font-size-s);
   font-weight: var(--bold);
   background: var(--background);
   cursor: pointer;
   font-family: var(--font-family);
-  transition: border-color var(--transition), border-width var(--transition), color var(--transition);
+  transition: border-color var(--transition);
 }
 
 .news-toolbar__btn:hover {
-  border-color: var(--accent-1-hover);
-  border-width: var(--border-w-active);
-  color: var(--accent-1-hover);
+  border-color: var(--accent-2);
 }
 
 .news-toolbar__note {
