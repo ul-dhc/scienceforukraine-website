@@ -301,6 +301,7 @@
       path.setAttribute('data-count', count)
       path.style.fill = colorForCount(count)
       path.classList.toggle('world-map__country--selected', state.country.indexOf(country) !== -1)
+      path.classList.toggle('world-map__country--has-data', count > 0)
     })
 
     var marker = document.querySelector('.world-map__marker')
