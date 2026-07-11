@@ -391,19 +391,23 @@ function programmesContentHtml (programmes) {
   return `
       <div class="programmes-header">
         <h1 class="programmes-header__title">General funding programmes</h1>
-        <p class="programmes-header__subtitle">A curated archive of funding programmes, fellowships, grants, and support opportunities for Ukrainian researchers and students.</p>
-        <div class="programmes-stats">
-          <div class="programmes-stat">${icon('users')}<span class="programmes-stat__value">${programmes.length}</span><span class="programmes-stat__label">archive listings</span></div>
-          <div class="programmes-stat">${icon('info')}<span class="programmes-stat__value">${countries.length}</span><span class="programmes-stat__label">countries represented</span></div>
-          <div class="programmes-stat">${icon('send')}<span class="programmes-stat__value">Rolling</span><span class="programmes-stat__label">new listings added regularly</span></div>
+        <div id="programmes-header-extra">
+          <p class="programmes-header__subtitle">A curated archive of funding programmes, fellowships, grants, and support opportunities for Ukrainian researchers and students.</p>
+          <div class="programmes-stats">
+            <div class="programmes-stat">${icon('users')}<span class="programmes-stat__value">${programmes.length}</span><span class="programmes-stat__label">archive listings</span></div>
+            <div class="programmes-stat">${icon('info')}<span class="programmes-stat__value">${countries.length}</span><span class="programmes-stat__label">countries represented</span></div>
+            <div class="programmes-stat">${icon('send')}<span class="programmes-stat__value">Rolling</span><span class="programmes-stat__label">new listings added regularly</span></div>
+          </div>
         </div>
         <div class="programmes-banner">
           ${icon('info')}
           <p><strong>This archive is updated on a rolling basis.</strong> Listings accumulate over time, and deadlines or programme status may change. Please check the original source for the latest information.</p>
         </div>
-        <div class="programmes-crosslink">
-          ${icon('arrowRight')}
-          <span>Looking for individual positions, mentorship, and other direct opportunities? <a href="/listings">Browse the Support Offers database &rarr;</a></span>
+        <div id="programmes-header-extra-2">
+          <div class="programmes-crosslink">
+            ${icon('arrowRight')}
+            <span>Looking for individual positions, mentorship, and other direct opportunities? <a href="/listings">Browse the Support Offers database &rarr;</a></span>
+          </div>
         </div>
       </div>
 
