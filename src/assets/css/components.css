@@ -71,10 +71,10 @@
 
 @keyframes card-target-highlight {
   0%, 15% {
-    box-shadow: 0 0 0 3px var(--accent-2), 0 0 24px 4px rgba(255, 215, 0, 0.55);
+    box-shadow: 0 0 0 2px var(--accent-2), 0 0 24px 4px rgba(255, 215, 0, 0.55);
   }
   100% {
-    box-shadow: 0 0 0 3px transparent, 0 0 24px 4px rgba(255, 215, 0, 0);
+    box-shadow: 0 0 0 2px transparent, 0 0 24px 4px rgba(255, 215, 0, 0);
   }
 }
 
