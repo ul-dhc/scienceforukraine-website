@@ -655,16 +655,20 @@ function writeShareRedirect (sectionSlug, id, title, description) {
   const canonicalUrl = `${SITE_URL}/${sectionSlug}/#${encodeURIComponent(id)}`
   const ogImage = `${DEPLOY_URL}/media/ScienceForUkraine-1128x191px-blue.png`
   const safeTitle = escapeHtml(title || id)
-  const safeDescription = escapeHtml(truncateText(description || '', 200))
+  const fullTitle = `${safeTitle} – #ScienceForUkraine`
+  const descriptionSource = description && description.trim()
+    ? description
+    : 'A support opportunity for Ukrainian researchers and students, shared via #ScienceForUkraine.'
+  const safeDescription = escapeHtml(truncateText(descriptionSource, 200))
 
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="refresh" content="0; url=${redirectPath}">
-<title>${safeTitle} – #ScienceForUkraine</title>
+<title>${fullTitle}</title>
 <meta name="description" content="${safeDescription}">
-<meta property="og:title" content="${safeTitle}">
+<meta property="og:title" content="${fullTitle}">
 <meta property="og:description" content="${safeDescription}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="${canonicalUrl}">
