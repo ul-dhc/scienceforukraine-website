@@ -247,6 +247,10 @@
   align-items: center;
 }
 
+.programmes-map-section__body[hidden] {
+  display: none;
+}
+
 .programmes-recent-toggles {
   display: flex;
   gap: var(--spacing-s);
@@ -357,6 +361,12 @@
   color: var(--ink);
 }
 
+.programme-row__id {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  width: 50px;
+}
+
 .programme-row__title {
   color: var(--accent-1);
   font-weight: 700;
@@ -443,8 +453,20 @@
 
 .programmes-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--spacing-l);
+}
+
+@media (max-width: 1000px) {
+  .programmes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .programmes-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .programme-card {
@@ -455,6 +477,35 @@
   border-radius: var(--radius-m);
   background: var(--background);
   box-shadow: var(--shadow-s);
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow var(--transition), border-color var(--transition);
+}
+
+.programme-card:hover {
+  border-color: var(--accent-1);
+  box-shadow: var(--shadow-m);
+}
+
+.programme-card__id {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+}
+
+.programme-card__pin-icon {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  margin-right: 4px;
+  vertical-align: -2px;
+}
+
+.programme-card__added {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  margin-top: var(--spacing-s);
 }
 
 .programme-card__top {
@@ -468,10 +519,10 @@
   display: inline-flex;
   padding: 3px 10px;
   border-radius: var(--radius-pill);
-  background: var(--accent-2);
-  color: var(--ink);
+  background: #D9F5E8;
+  color: #0B7A4B;
+  font-weight: 400;
   font-size: var(--font-size-s);
-  font-weight: 700;
 }
 
 .programme-card__title {
@@ -485,7 +536,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--light-text);
+  color: var(--ink-soft);
+  font-weight: 700;
   font-size: var(--font-size-s);
   margin-bottom: var(--spacing-s);
 }
@@ -523,14 +575,15 @@
   padding: 3px 10px;
   border-radius: var(--radius-pill);
   font-size: var(--font-size-s);
-  font-weight: 700;
-  background: var(--accent-2);
-  color: var(--ink);
+  font-weight: 400;
+  background: none;
+  border: 1px solid var(--accent-1);
+  color: var(--accent-1);
 }
 
 .programme-tag--secondary {
-  background: var(--tint-cool);
-  color: var(--accent-1);
+  border-color: var(--light-gray);
+  color: var(--ink-soft);
 }
 
 .programme-card__link {
@@ -538,8 +591,9 @@
   align-items: center;
   gap: 4px;
   margin-top: var(--spacing);
-  font-weight: 700;
-  color: var(--accent-1);
+  font-weight: 400;
+  font-size: var(--font-size-s);
+  color: var(--light-text);
 }
 
 .programmes-empty {
