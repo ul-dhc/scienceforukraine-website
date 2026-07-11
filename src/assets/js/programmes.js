@@ -707,14 +707,14 @@
       })
         .then(function () {
           submitButton.disabled = false
-          submitStatus.textContent = 'Thank you — we\u2019ll take a look!'
+          submitStatus.textContent = 'Thank you – we will take a look!'
           submitStatus.className = 'programmes-submit-form__status programmes-submit-form__status--success'
           submitForm.reset()
           setTimeout(function () { submitForm.hidden = true; submitStatus.textContent = '' }, 2500)
         })
         .catch(function () {
           submitButton.disabled = false
-          submitStatus.textContent = 'Something went wrong. Please try again.'
+          submitStatus.textContent = 'Something went wrong. Please try again. If the issue persists, please contact us at info@scienceforukraine.eu.'
           submitStatus.className = 'programmes-submit-form__status programmes-submit-form__status--error'
         })
     })
