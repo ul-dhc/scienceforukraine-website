@@ -509,9 +509,44 @@ function programmesContentHtml (programmes) {
         <div class="programme-detail" id="programme-detail" hidden></div>
 
         <div class="programmes-submit-banner">
-          <p>Do you represent an institution with an open opportunity for Ukrainian researchers?</p>
-          <a class="btn btn-outline" href="https://docs.google.com/forms/d/e/1FAIpQLSe0a7SOe1BeSbZsI2py43gaC2MgpuaaiAcl5cqmskCxzeuHvg/viewform" target="_blank" rel="noopener">Submit a programme</a>
+          <p>Do you know of a programme that should be listed here?</p>
+          <button type="button" class="btn btn-outline" id="pf-submit-toggle">Submit a programme</button>
         </div>
+
+        <form id="pf-submit-form" class="programmes-submit-form" hidden>
+          <h3>Submit a programme</h3>
+          <p class="programmes-submit-form__note">Just the title and a link are enough — we'll fill in the rest.</p>
+
+          <label class="programmes-submit-form__field">
+            <span>Title <em>(required)</em></span>
+            <input type="text" name="title" required maxlength="200">
+          </label>
+
+          <label class="programmes-submit-form__field">
+            <span>Link <em>(required)</em></span>
+            <input type="url" name="link" required placeholder="https://" maxlength="500">
+          </label>
+
+          <label class="programmes-submit-form__field">
+            <span>Country <em>(optional)</em></span>
+            <input type="text" name="country" maxlength="100">
+          </label>
+
+          <label class="programmes-submit-form__field">
+            <span>Anything else we should know? <em>(optional)</em></span>
+            <textarea name="notes" rows="3" maxlength="1000"></textarea>
+          </label>
+
+          <label class="programmes-submit-form__honeypot" aria-hidden="true">
+            <span>Leave this field empty</span>
+            <input type="text" name="website" tabindex="-1" autocomplete="off">
+          </label>
+
+          <div class="programmes-submit-form__actions">
+            <button type="submit" class="btn btn-primary" id="pf-submit-button">Submit</button>
+            <span class="programmes-submit-form__status" id="pf-submit-status"></span>
+          </div>
+        </form>
       </div>
       <script id="programmes-data" type="application/json">${dataJson}</script>`
 }
