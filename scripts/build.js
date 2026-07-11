@@ -598,7 +598,7 @@ function buildSearchIndex (listingsData, programmesData) {
     index.push({
       type: 'listing',
       title: l.institution || l.id,
-      snippet: l.description || l.category || '',
+      text: [l.description, l.category, l.researchFocus].filter(Boolean).join(' — '),
       url: `/listings#${encodeURIComponent(l.id)}`
     })
   })
@@ -607,7 +607,7 @@ function buildSearchIndex (listingsData, programmesData) {
     index.push({
       type: 'programme',
       title: p.title,
-      snippet: p.description || p.country || '',
+      text: [p.description, p.country, (p.types || []).join(', ')].filter(Boolean).join(' — '),
       url: `/funding-programmes#${encodeURIComponent(p.id)}`
     })
   })
@@ -616,17 +616,16 @@ function buildSearchIndex (listingsData, programmesData) {
     index.push({
       type: 'news',
       title: n.title || '',
-      snippet: n.excerpt || '',
+      text: [n.excerpt, n.body].filter(Boolean).join(' — '),
       url: `/news#${n.slug}`
     })
   })
 
-  PAGES.filter(p => !p.template).forEach(p => {
-    const text = stripHtml(renderMarkdownFile(p.name))
+  PAGES.filter(p => !p.template && p.slug !== 'support').forEach(p => {
     index.push({
       type: 'page',
       title: p.title,
-      snippet: text.slice(0, 220),
+      text: stripHtml(renderMarkdownFile(p.name)),
       url: `/${p.slug}`
     })
   })
