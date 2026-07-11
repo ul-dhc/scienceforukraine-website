@@ -76,6 +76,11 @@
   line-height: 1.5;
 }
 
+.programmes-banner a {
+  color: var(--accent-1);
+  font-weight: 700;
+}
+
 .programmes-crosslink {
   display: flex;
   align-items: center;
