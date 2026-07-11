@@ -19,10 +19,6 @@ const BASE_PATH = '/scienceforukraine-website'
 
 const DEPLOY_URL = BASE_PATH ? 'https://ul-dhc.github.io' + BASE_PATH : SITE_URL
 
-// changes on every build — appended to CSS/JS URLs so browsers can't serve a
-// stale cached copy of an asset after a deploy (GitHub Pages doesn't change
-// filenames between builds, so without this, a browser could keep an old
-// cached script/stylesheet indefinitely even when the page itself is fresh)
 const BUILD_VERSION = Date.now()
 
 function applyBasePath (html) {
@@ -153,8 +149,8 @@ function homeContentHtml () {
           </div>
           <div class="card__links">
             ${actionLink({ href: '/listings', iconName: 'search', label: 'View all support listings' })}
-            ${actionLink({ href: '/support', iconName: 'gift', label: 'Funding programs and other support' })}
-            ${actionLink({ href: '/mtg', iconName: 'send', label: 'Micro travel grants', highlight: true })}
+            ${actionLink({ href: '/support', iconName: 'gift', label: 'Funding programmes and other support' })}
+            ${actionLink({ href: '/mtg', iconName: 'send', label: 'Micro Travel Grants', highlight: true })}
           </div>
         </div>
 
