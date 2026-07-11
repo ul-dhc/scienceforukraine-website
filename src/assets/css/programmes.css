@@ -437,10 +437,14 @@
   white-space: nowrap;
 }
 
+.programme-row__title-cell {
+  min-width: 220px;
+}
+
 .programme-row__title {
   color: var(--accent-1);
   font-weight: 400;
-  min-width: 160px;
+  margin-bottom: 2px;
 }
 
 .programme-row__country {
@@ -449,8 +453,9 @@
 }
 
 .programme-row__description {
-  color: var(--ink-soft);
-  max-width: 320px;
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  max-width: 340px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -467,7 +472,7 @@
   align-items: center;
   padding: 2px 8px;
   border-radius: var(--radius-pill);
-  font-weight: 700;
+  font-weight: 400;
   white-space: nowrap;
 }
 
@@ -636,6 +641,16 @@
   border-radius: var(--radius-pill);
   background: #D9F5E8;
   color: #0B7A4B;
+  font-weight: 400;
+  font-size: var(--font-size-s);
+}
+
+.programme-card__updated {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: #EDE3FB;
+  color: #6B3FA0;
   font-weight: 400;
   font-size: var(--font-size-s);
 }
