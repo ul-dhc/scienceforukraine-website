@@ -163,8 +163,6 @@
   gap: var(--spacing-xs);
 }
 
-/* chip (selector tier) — pill shape, border-only feedback, no solid fill.
-   Matches .programmes-view-toggle__btn / .programmes-chip-toggle. */
 .filter-pill {
   padding: 6px 12px;
   border-radius: var(--radius-pill);
@@ -187,9 +185,6 @@
   font-weight: var(--bold);
 }
 
-/* group colors mirror the tag colors on listing cards: category = blue
-   (the default above), discipline = mint, open-for = yellow background
-   with blue text (yellow-on-yellow isn't legible) */
 .filter-pill[data-filter="discipline"]:hover {
   border-color: var(--mint);
 }
@@ -336,8 +331,6 @@
   margin-top: var(--spacing-s);
 }
 
-/* filled chip — matches .programmes-filter-chip. Yellow chips keep blue
-   text rather than yellow-on-yellow, for legibility. */
 .listing-tag {
   display: inline-flex;
   padding: 4px 10px;
@@ -362,8 +355,6 @@
   color: var(--accent-1);
 }
 
-/* active-filter chips above the list (reuses .programmes-filter-chip) —
-   color-coded the same way as the tags below each listing */
 #listings-active-filters .programmes-filter-chip[data-clear="category"] {
   background: var(--tint-cool);
   color: var(--accent-1);
@@ -426,6 +417,76 @@
   color: var(--light-text);
   font-size: var(--font-size-s);
   float: right;
+}
+
+.detail-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-left: var(--spacing-s);
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--light-text);
+  cursor: pointer;
+  float: right;
+  transition: color var(--transition);
+}
+
+.detail-action-btn .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.detail-action-btn:hover,
+.detail-action-btn.is-copied {
+  color: var(--accent-1);
+}
+
+.share-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-s);
+  margin-top: var(--spacing-l);
+  padding-top: var(--spacing-l);
+  border-top: 1px solid var(--light-gray);
+  clear: both;
+}
+
+.share-row__label {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  margin-right: var(--spacing-xs);
+}
+
+.share-row__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: var(--border-w) solid var(--light-gray);
+  border-radius: var(--radius-pill);
+  color: var(--ink);
+  font-size: var(--font-size-s);
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.share-row__link .icon {
+  width: 16px;
+  height: 16px;
+  color: var(--light-text);
+}
+
+.share-row__link:hover {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+
+.share-row__link:hover .icon {
+  color: var(--accent-1);
 }
 
 .listing-detail__institution {
