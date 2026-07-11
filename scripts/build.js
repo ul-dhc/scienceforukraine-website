@@ -19,6 +19,12 @@ const BASE_PATH = '/scienceforukraine-website'
 
 const DEPLOY_URL = BASE_PATH ? 'https://ul-dhc.github.io' + BASE_PATH : SITE_URL
 
+// changes on every build — appended to CSS/JS URLs so browsers can't serve a
+// stale cached copy of an asset after a deploy (GitHub Pages doesn't change
+// filenames between builds, so without this, a browser could keep an old
+// cached script/stylesheet indefinitely even when the page itself is fresh)
+const BUILD_VERSION = Date.now()
+
 function applyBasePath (html) {
   if (!BASE_PATH) return html
   return html.replace(/(href|src)="\/(?!\/)/g, `$1="${BASE_PATH}/`)
@@ -85,7 +91,7 @@ const pageTemplate = read(path.join(SRC, 'partials', 'page-template.html'))
 
 function renderShell ({ page, title, description, url, contentHtml, extraScripts }) {
   const extraScriptsHtml = (extraScripts || [])
-    .map(src => `  <script src="${src}"></script>`)
+    .map(src => `  <script src="${src}?v=${BUILD_VERSION}"></script>`)
     .join('\n')
   const ogImage = `${DEPLOY_URL}/media/ScienceForUkraine-1128x191px-blue.png`
 
@@ -95,6 +101,7 @@ function renderShell ({ page, title, description, url, contentHtml, extraScripts
     .replaceAll('{{URL}}', url)
     .replaceAll('{{PAGE}}', page)
     .replaceAll('{{OG_IMAGE}}', ogImage)
+    .replaceAll('{{BUILD_VERSION}}', BUILD_VERSION)
     .replace('{{HEADER}}', headerHtml)
     .replace('{{FOOTER}}', footerHtml)
     .replace('{{CONTENT}}', contentHtml)
@@ -401,6 +408,7 @@ function programmesContentHtml (programmes) {
       </div>
 
       <div class="programmes-page">
+        <div class="programmes-results-area" id="programmes-results-area">
         <div class="programmes-toolbar">
           <input type="search" id="pf-search" class="programmes-search" placeholder="Search programmes, institutions, keywords...">
           <select id="pf-country" class="programmes-select"><option value="">Country</option>${countryOptions}</select>
@@ -457,6 +465,7 @@ function programmesContentHtml (programmes) {
 
         <div class="programmes-grid" id="programmes-grid"></div>
 
+        </div>
         <div class="programme-detail" id="programme-detail" hidden></div>
 
         <div class="programmes-submit-banner">
