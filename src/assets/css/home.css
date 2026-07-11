@@ -1,7 +1,3 @@
-/* ==========================================================================
-   #ScienceForUkraine — homepage layout
-   ========================================================================== */
-
 .hero {
   background-image: url("/assets/img/hero-bg.png");
   background-repeat: no-repeat;
@@ -30,6 +26,115 @@
   max-width: 520px;
 }
 
+.search-strip {
+  align-items: center;
+}
+
+.search-strip__subtitle {
+  color: var(--ink-soft);
+  font-size: var(--font-size-s);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+.search-strip__input-area {
+  position: relative;
+  flex: 1;
+  min-width: 260px;
+}
+
+.search-strip__input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-strip__input-wrap .icon {
+  position: absolute;
+  left: 16px;
+  width: 18px;
+  height: 18px;
+  color: var(--light-text);
+  pointer-events: none;
+}
+
+.search-strip__input {
+  width: 100%;
+  padding: 14px 20px 14px 44px;
+  border: var(--border-w) solid var(--light-gray);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-family);
+  font-size: var(--font-size-s);
+  background: var(--background);
+  transition: border-color var(--transition);
+}
+
+.search-strip__input:hover,
+.search-strip__input:focus-visible {
+  border-color: var(--accent-1);
+  outline: none;
+}
+
+.search-strip__results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 420px;
+  overflow-y: auto;
+  padding: var(--spacing-s);
+  background: var(--background);
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-m);
+  box-shadow: var(--shadow-m);
+}
+
+.search-strip__empty {
+  padding: var(--spacing) var(--spacing-s);
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+}
+
+.search-strip__group + .search-strip__group {
+  margin-top: var(--spacing-s);
+  padding-top: var(--spacing-s);
+  border-top: 1px solid var(--light-gray);
+}
+
+.search-strip__group-label {
+  padding: 4px var(--spacing-s);
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.search-strip__result {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--spacing-s);
+  border-radius: var(--radius-s);
+}
+
+.search-strip__result:hover {
+  background: var(--tint-cool);
+}
+
+.search-strip__result-title {
+  color: var(--ink);
+  font-size: var(--font-size-s);
+  font-weight: 700;
+}
+
+.search-strip__result-snippet {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  line-height: 1.4;
+}
+
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
@@ -41,8 +146,6 @@
     font-size: 30px;
   }
 }
-
-/* ---- three-card grid ------------------------------------------------- */
 
 .home-cards {
   display: grid;
@@ -57,8 +160,6 @@
     align-items: start;
   }
 }
-
-/* ---- latest updates strip --------------------------------------------- */
 
 .updates-strip {
   margin: 0 var(--spacing-l) var(--spacing-xl);
