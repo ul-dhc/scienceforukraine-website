@@ -212,16 +212,21 @@
     var marker = document.querySelector('.world-map__marker')
     if (marker) {
       marker.setAttribute('data-count', result.intlCount)
-      marker.style.fill = colorForCount(result.intlCount)
     }
 
     var countriesWithData = Object.keys(counts).filter(function (c) { return counts[c] > 0 })
     if (mapCountryCountEl) mapCountryCountEl.innerHTML = countriesWithData.length + ' countries'
 
     var sorted = Object.entries(counts).sort(function (a, b) { return b[1] - a[1] })
+    if (result.intlCount > 0) {
+      sorted.push([INTERNATIONAL_KEY, result.intlCount])
+      sorted.sort(function (a, b) { return b[1] - a[1] })
+    }
     var toShow = showingAllCountries ? sorted : sorted.slice(0, 5)
     topCountriesListEl.innerHTML = toShow.map(function (entry) {
-      return '<button type="button" class="programmes-top-countries__item" data-country="' + escapeHtml(entry[0]) + '"><span>' + escapeHtml(entry[0]) + '</span><span class="programmes-top-countries__count">' + entry[1] + '</span></button>'
+      var isIntl = entry[0] === INTERNATIONAL_KEY
+      var label = isIntl ? 'International (not country-specific)' : entry[0]
+      return '<button type="button" class="programmes-top-countries__item" data-country="' + escapeHtml(entry[0]) + '"><span>' + escapeHtml(label) + '</span><span class="programmes-top-countries__count">' + entry[1] + '</span></button>'
     }).join('')
     topCountriesListEl.querySelectorAll('.programmes-top-countries__item').forEach(function (btn) {
       btn.addEventListener('click', function () { filterByCountry(btn.getAttribute('data-country')) })
@@ -319,6 +324,8 @@
     updateMap()
   })
 
+  var mapDragMoved = false
+
   document.querySelectorAll('.world-map__country, .world-map__marker').forEach(function (el) {
     el.addEventListener('mousemove', function (e) {
       var count = el.getAttribute('data-count')
@@ -331,12 +338,64 @@
     })
     el.addEventListener('mouseleave', function () { if (tooltip) tooltip.style.display = 'none' })
     el.addEventListener('click', function () {
+      if (mapDragMoved) return
       var count = el.getAttribute('data-count')
       if (!count || count === '0') return
       var region = el.getAttribute('data-region')
       filterByCountry(region === 'International' ? INTERNATIONAL_KEY : el.getAttribute('data-country'))
     })
   })
+
+  // --- map pan/zoom ---
+  var mapViewport = document.getElementById('world-map-viewport')
+  var mapSvgEl = mapViewport ? mapViewport.querySelector('.world-map') : null
+  if (mapViewport && mapSvgEl) {
+    var zoomState = { scale: 1, x: 0, y: 0 }
+    var isDragging = false
+    var dragStartMouse = { x: 0, y: 0 }
+    var dragStartOffset = { x: 0, y: 0 }
+
+    function clampZoom (s) { return Math.max(1, Math.min(6, s)) }
+    function applyZoomTransform () {
+      mapSvgEl.style.transform = 'translate(' + zoomState.x + 'px,' + zoomState.y + 'px) scale(' + zoomState.scale + ')'
+    }
+
+    mapViewport.addEventListener('wheel', function (e) {
+      e.preventDefault()
+      var factor = e.deltaY < 0 ? 1.15 : 1 / 1.15
+      zoomState.scale = clampZoom(zoomState.scale * factor)
+      applyZoomTransform()
+    }, { passive: false })
+
+    mapViewport.addEventListener('mousedown', function (e) {
+      isDragging = true
+      mapDragMoved = false
+      dragStartMouse = { x: e.clientX, y: e.clientY }
+      dragStartOffset = { x: zoomState.x, y: zoomState.y }
+      mapViewport.classList.add('is-dragging')
+    })
+    window.addEventListener('mousemove', function (e) {
+      if (!isDragging) return
+      var dx = e.clientX - dragStartMouse.x
+      var dy = e.clientY - dragStartMouse.y
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) mapDragMoved = true
+      zoomState.x = dragStartOffset.x + dx
+      zoomState.y = dragStartOffset.y + dy
+      applyZoomTransform()
+    })
+    window.addEventListener('mouseup', function () {
+      isDragging = false
+      mapViewport.classList.remove('is-dragging')
+      setTimeout(function () { mapDragMoved = false }, 0)
+    })
+
+    var zoomInBtn = document.getElementById('pf-map-zoom-in')
+    var zoomOutBtn = document.getElementById('pf-map-zoom-out')
+    var zoomResetBtn = document.getElementById('pf-map-zoom-reset')
+    if (zoomInBtn) zoomInBtn.addEventListener('click', function () { zoomState.scale = clampZoom(zoomState.scale * 1.3); applyZoomTransform() })
+    if (zoomOutBtn) zoomOutBtn.addEventListener('click', function () { zoomState.scale = clampZoom(zoomState.scale / 1.3); applyZoomTransform() })
+    if (zoomResetBtn) zoomResetBtn.addEventListener('click', function () { zoomState = { scale: 1, x: 0, y: 0 }; applyZoomTransform() })
+  }
 
   window.addEventListener('hashchange', syncView)
 
