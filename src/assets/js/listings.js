@@ -22,6 +22,22 @@
   var sortSelect = document.getElementById('lf-sort')
   var activeFiltersEl = document.getElementById('listings-active-filters')
 
+  var SEARCH_LOG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbw0WHnAeTs4HA15oKqIWzB8GOSjfR6McZabFNsGRSNHWOqQIQFCb5BY8i8ECkuwvvJ0/exec'
+  var searchLogDebounceTimer = null
+  var lastLoggedSearch = ''
+
+  function logSearchQuery (query) {
+    var trimmed = query.trim()
+    if (trimmed.length < 2 || trimmed === lastLoggedSearch) return
+    lastLoggedSearch = trimmed
+    fetch(SEARCH_LOG_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ query: trimmed, page: 'Listings' })
+    }).catch(function () {})
+  }
+
   var state = { category: [], discipline: [], openFor: [], country: '', search: '', remote: false, accommodation: false, sort: 'newest', pageSize: 20, page: 1 }
 
   var DISCIPLINE_LABELS = {
@@ -297,6 +313,10 @@
     state.search = searchInput.value.trim()
     state.page = 1
     renderList()
+
+    var value = searchInput.value
+    clearTimeout(searchLogDebounceTimer)
+    searchLogDebounceTimer = setTimeout(function () { logSearchQuery(value) }, 1500)
   })
 
   countrySelect.addEventListener('change', function () {
