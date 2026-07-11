@@ -31,7 +31,7 @@
   var detailEl = document.getElementById('programme-detail')
   var resultsAreaEl = document.getElementById('programmes-results-area')
 
-  var state = { search: '', country: '', discipline: '', openFor: '', type: '', sort: 'newest', recentlyAdded: false, view: 'grid' }
+  var state = { search: '', country: '', discipline: '', openFor: '', type: '', sort: 'newest', recentlyAdded: false, view: 'grid', pageSize: 20, page: 1 }
   var showingAllCountries = false
 
   function escapeHtml (str) {
@@ -153,7 +153,7 @@
         '<div class="programme-card__meta-label">Discipline</div><div class="programme-card__meta-value">' + escapeHtml(disciplineLabel(p)) + '</div>' +
         (p.deadline ? '<div class="programme-card__meta-label">Deadline</div><div class="programme-card__meta-value">' + deadlineHtml(p) + '</div>' : '') +
         '<div class="programme-card__tags">' + tagsHtml(p) + '</div>' +
-        (p.dateAdded ? '<div class="programme-card__added">Added ' + escapeHtml(p.dateAdded) + '</div>' : '') +
+        ((p.dateUpdated || p.dateAdded) ? '<div class="programme-card__added">Last update: ' + escapeHtml(p.dateUpdated || p.dateAdded) + '</div>' : '') +
         '<span class="programme-card__link">View details &rarr;</span>' +
       '</a>'
   }
@@ -164,17 +164,27 @@
 
   var COLUMN_SORT_MAP = { id: 'id', title: 'title', country: 'country', type: 'type', deadline: 'deadline', added: 'newest' }
 
-  function sortIndicator (column) {
+  function isActiveSortColumn (column) {
     var mappedSort = COLUMN_SORT_MAP[column]
     var current = state.sort
-    if (current === mappedSort) return ' &darr;'
-    if (column === 'added' && current === 'oldest') return ' &uarr;'
-    if (column === 'title' && current === 'title-desc') return ' &uarr;'
-    if (column === 'country' && current === 'country-desc') return ' &uarr;'
-    if (column === 'type' && current === 'type-desc') return ' &uarr;'
-    if (column === 'id' && current === 'id-desc') return ' &uarr;'
-    if (column === 'deadline' && current === 'deadline-desc') return ' &uarr;'
-    return ''
+    if (current === mappedSort) return true
+    if (column === 'added' && current === 'oldest') return true
+    if (column === 'title' && current === 'title-desc') return true
+    if (column === 'country' && current === 'country-desc') return true
+    if (column === 'type' && current === 'type-desc') return true
+    if (column === 'id' && current === 'id-desc') return true
+    if (column === 'deadline' && current === 'deadline-desc') return true
+    return false
+  }
+
+  function sortIndicator (column) {
+    if (!isActiveSortColumn(column)) return ''
+    var descending = ['oldest', 'title-desc', 'country-desc', 'type-desc', 'id-desc', 'deadline-desc'].indexOf(state.sort) !== -1
+    return descending ? ' &uarr;' : ' &darr;'
+  }
+
+  function sortHeaderClass (column) {
+    return 'is-sortable' + (isActiveSortColumn(column) ? ' is-active-sort' : '')
   }
 
   function listTableHtml (results) {
@@ -198,12 +208,12 @@
       '<table class="programmes-table">' +
         '<thead><tr>' +
           '<th></th>' +
-          '<th class="is-sortable" data-sort-col="id">ID' + sortIndicator('id') + '</th>' +
-          '<th class="is-sortable" data-sort-col="title">Title' + sortIndicator('title') + '</th>' +
-          '<th class="is-sortable" data-sort-col="country">Country' + sortIndicator('country') + '</th>' +
-          '<th class="is-sortable" data-sort-col="type">Type' + sortIndicator('type') + '</th>' +
-          '<th class="is-sortable" data-sort-col="deadline">Deadline' + sortIndicator('deadline') + '</th>' +
-          '<th class="is-sortable" data-sort-col="added">Added / Updated' + sortIndicator('added') + '</th>' +
+          '<th class="' + sortHeaderClass('id') + '" data-sort-col="id">ID' + sortIndicator('id') + '</th>' +
+          '<th class="' + sortHeaderClass('title') + '" data-sort-col="title">Title' + sortIndicator('title') + '</th>' +
+          '<th class="' + sortHeaderClass('country') + '" data-sort-col="country">Country' + sortIndicator('country') + '</th>' +
+          '<th class="' + sortHeaderClass('type') + '" data-sort-col="type">Type' + sortIndicator('type') + '</th>' +
+          '<th class="' + sortHeaderClass('deadline') + '" data-sort-col="deadline">Deadline' + sortIndicator('deadline') + '</th>' +
+          '<th class="' + sortHeaderClass('added') + '" data-sort-col="added">Last update' + sortIndicator('added') + '</th>' +
         '</tr></thead>' +
         '<tbody>' + rows + '</tbody>' +
       '</table>'
@@ -244,11 +254,12 @@
     if (key === 'type') { state.type = ''; typeSelect.value = '' }
     if (key === 'recentlyAdded') { state.recentlyAdded = false; recentlyAddedBtn.classList.remove('is-active') }
     if (key === 'search') { state.search = ''; searchInput.value = '' }
+    state.page = 1
     render()
   }
 
   function clearAllFilters () {
-    state.search = ''; state.country = ''; state.discipline = ''; state.openFor = ''; state.type = ''; state.recentlyAdded = false
+    state.search = ''; state.country = ''; state.discipline = ''; state.openFor = ''; state.type = ''; state.recentlyAdded = false; state.page = 1
     searchInput.value = ''; countrySelect.value = ''; disciplineSelect.value = ''; openForSelect.value = ''; typeSelect.value = ''
     recentlyAddedBtn.classList.remove('is-active')
     render()
@@ -302,22 +313,51 @@
 
   function filterByCountry (country) {
     state.country = country
+    state.page = 1
     countrySelect.value = (country === INTERNATIONAL_KEY) ? '' : country
     render()
+  }
+
+  function paginate (results) {
+    if (state.pageSize === 'all') return results
+    var totalPages = Math.max(1, Math.ceil(results.length / state.pageSize))
+    if (state.page > totalPages) state.page = totalPages
+    var start = (state.page - 1) * state.pageSize
+    return results.slice(start, start + state.pageSize)
+  }
+
+  function renderPagination (totalCount) {
+    var container = document.getElementById('programmes-pagination-controls')
+    if (state.pageSize === 'all' || totalCount === 0) { container.innerHTML = ''; return }
+    var totalPages = Math.max(1, Math.ceil(totalCount / state.pageSize))
+    var html = ''
+    html += '<button type="button" class="programmes-page-btn" data-page="' + (state.page - 1) + '"' + (state.page <= 1 ? ' disabled' : '') + '>&larr; Prev</button>'
+    html += '<span class="programmes-page-status">Page ' + state.page + ' of ' + totalPages + '</span>'
+    html += '<button type="button" class="programmes-page-btn" data-page="' + (state.page + 1) + '"' + (state.page >= totalPages ? ' disabled' : '') + '>Next &rarr;</button>'
+    container.innerHTML = html
+    container.querySelectorAll('[data-page]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.page = parseInt(btn.getAttribute('data-page'), 10)
+        render()
+        gridEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    })
   }
 
   function render () {
     var results = programmes.filter(matches).sort(SORTERS[state.sort] || SORTERS.newest)
     countEl.textContent = results.length + ' programme' + (results.length === 1 ? '' : 's')
+    var pageResults = paginate(results)
     if (state.view === 'list') {
       gridEl.className = 'programmes-list'
-      gridEl.innerHTML = results.length ? listTableHtml(results) : '<div class="programmes-empty">No programmes match your filters.</div>'
+      gridEl.innerHTML = pageResults.length ? listTableHtml(pageResults) : '<div class="programmes-empty">No programmes match your filters.</div>'
       sortSelect.parentElement.hidden = true
     } else {
       gridEl.className = 'programmes-grid'
-      gridEl.innerHTML = results.length ? results.map(cardHtml).join('') : '<div class="programmes-empty">No programmes match your filters.</div>'
+      gridEl.innerHTML = pageResults.length ? pageResults.map(cardHtml).join('') : '<div class="programmes-empty">No programmes match your filters.</div>'
       sortSelect.parentElement.hidden = false
     }
+    renderPagination(results.length)
     updateMap()
     renderActiveFilters()
   }
@@ -335,7 +375,7 @@
         '<p class="listing-detail__description">' + escapeHtml(p.description || '') + '</p>' +
         '<div class="listing-detail__field-label">Discipline</div><div class="listing-detail__field-value">' + escapeHtml(disciplineLabel(p)) + '</div>' +
         (p.deadline ? '<div class="listing-detail__field-label">Deadline</div><div class="listing-detail__field-value">' + deadlineHtml(p) + '</div>' : '') +
-        (p.dateAdded ? '<div class="listing-detail__field-label">Added to archive</div><div class="listing-detail__field-value listing-detail__field-value--muted">' + escapeHtml(p.dateAdded) + '</div>' : '') +
+        ((p.dateUpdated || p.dateAdded) ? '<div class="listing-detail__field-label">Last update</div><div class="listing-detail__field-value listing-detail__field-value--muted">' + escapeHtml(p.dateUpdated || p.dateAdded) + '</div>' : '') +
         (p.link ? '<div class="listing-detail__field-label">Link</div><div class="listing-detail__field-value"><a href="' + escapeHtml(p.link) + '" target="_blank" rel="noopener">' + escapeHtml(p.link) + '</a></div>' : '')
     }
     var backBtn = document.getElementById('detail-back')
@@ -364,16 +404,24 @@
 
   // --- wiring ---
 
-  searchInput.addEventListener('input', function () { state.search = searchInput.value.trim(); render() })
-  countrySelect.addEventListener('change', function () { state.country = countrySelect.value; render() })
-  disciplineSelect.addEventListener('change', function () { state.discipline = disciplineSelect.value; render() })
-  openForSelect.addEventListener('change', function () { state.openFor = openForSelect.value; render() })
-  typeSelect.addEventListener('change', function () { state.type = typeSelect.value; render() })
+  var pageSizeSelect = document.getElementById('pf-page-size')
+
+  searchInput.addEventListener('input', function () { state.search = searchInput.value.trim(); state.page = 1; render() })
+  countrySelect.addEventListener('change', function () { state.country = countrySelect.value; state.page = 1; render() })
+  disciplineSelect.addEventListener('change', function () { state.discipline = disciplineSelect.value; state.page = 1; render() })
+  openForSelect.addEventListener('change', function () { state.openFor = openForSelect.value; state.page = 1; render() })
+  typeSelect.addEventListener('change', function () { state.type = typeSelect.value; state.page = 1; render() })
   sortSelect.addEventListener('change', function () { state.sort = sortSelect.value; render() })
+  pageSizeSelect.addEventListener('change', function () {
+    state.pageSize = pageSizeSelect.value === 'all' ? 'all' : parseInt(pageSizeSelect.value, 10)
+    state.page = 1
+    render()
+  })
 
   recentlyAddedBtn.addEventListener('click', function () {
     state.recentlyAdded = !state.recentlyAdded
     recentlyAddedBtn.classList.toggle('is-active', state.recentlyAdded)
+    state.page = 1
     render()
   })
 
