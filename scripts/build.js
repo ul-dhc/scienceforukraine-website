@@ -425,10 +425,22 @@ function programmesContentHtml (programmes) {
         <div class="programmes-results-area" id="programmes-results-area">
         <div class="programmes-toolbar">
           <input type="search" id="pf-search" class="programmes-search" placeholder="Search programmes, institutions, keywords...">
-          <select id="pf-country" class="programmes-select"><option value="">Country</option>${countryOptions}</select>
-          <select id="pf-discipline" class="programmes-select"><option value="">Discipline</option>${disciplineOptions}</select>
-          <select id="pf-open-for" class="programmes-select"><option value="">Open for</option>${openForOptions}</select>
-          <select id="pf-type" class="programmes-select"><option value="">Type</option>${typeOptions}</select>
+          <span class="programmes-select-wrap">
+            <select id="pf-country" class="programmes-select"><option value="">Country</option>${countryOptions}</select>
+            <span class="programmes-select-badge" id="pf-country-badge" hidden></span>
+          </span>
+          <span class="programmes-select-wrap">
+            <select id="pf-discipline" class="programmes-select"><option value="">Discipline</option>${disciplineOptions}</select>
+            <span class="programmes-select-badge" id="pf-discipline-badge" hidden></span>
+          </span>
+          <span class="programmes-select-wrap">
+            <select id="pf-open-for" class="programmes-select"><option value="">Open for</option>${openForOptions}</select>
+            <span class="programmes-select-badge" id="pf-open-for-badge" hidden></span>
+          </span>
+          <span class="programmes-select-wrap">
+            <select id="pf-type" class="programmes-select"><option value="">Type</option>${typeOptions}</select>
+            <span class="programmes-select-badge" id="pf-type-badge" hidden></span>
+          </span>
         </div>
 
         <div class="programmes-map-section" id="programmes-map-section">
