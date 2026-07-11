@@ -350,15 +350,21 @@
   var mapViewport = document.getElementById('world-map-viewport')
   var mapSvgEl = mapViewport ? mapViewport.querySelector('.world-map') : null
   if (mapViewport && mapSvgEl) {
-    var zoomState = { scale: 1, x: 0, y: 0 }
+    var defaultZoomState = {
+      scale: parseFloat(mapViewport.getAttribute('data-default-scale')) || 1,
+      x: parseFloat(mapViewport.getAttribute('data-default-x')) || 0,
+      y: parseFloat(mapViewport.getAttribute('data-default-y')) || 0
+    }
+    var zoomState = { scale: defaultZoomState.scale, x: defaultZoomState.x, y: defaultZoomState.y }
     var isDragging = false
     var dragStartMouse = { x: 0, y: 0 }
     var dragStartOffset = { x: 0, y: 0 }
 
-    function clampZoom (s) { return Math.max(1, Math.min(6, s)) }
+    function clampZoom (s) { return Math.max(0.6, Math.min(8, s)) }
     function applyZoomTransform () {
       mapSvgEl.style.transform = 'translate(' + zoomState.x + 'px,' + zoomState.y + 'px) scale(' + zoomState.scale + ')'
     }
+    applyZoomTransform()
 
     mapViewport.addEventListener('wheel', function (e) {
       e.preventDefault()
@@ -394,7 +400,7 @@
     var zoomResetBtn = document.getElementById('pf-map-zoom-reset')
     if (zoomInBtn) zoomInBtn.addEventListener('click', function () { zoomState.scale = clampZoom(zoomState.scale * 1.3); applyZoomTransform() })
     if (zoomOutBtn) zoomOutBtn.addEventListener('click', function () { zoomState.scale = clampZoom(zoomState.scale / 1.3); applyZoomTransform() })
-    if (zoomResetBtn) zoomResetBtn.addEventListener('click', function () { zoomState = { scale: 1, x: 0, y: 0 }; applyZoomTransform() })
+    if (zoomResetBtn) zoomResetBtn.addEventListener('click', function () { zoomState = { scale: defaultZoomState.scale, x: defaultZoomState.x, y: defaultZoomState.y }; applyZoomTransform() })
   }
 
   window.addEventListener('hashchange', syncView)
