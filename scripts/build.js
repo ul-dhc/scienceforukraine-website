@@ -19,7 +19,10 @@ const BASE_PATH = '/scienceforukraine-website'
 
 const DEPLOY_URL = BASE_PATH ? 'https://ul-dhc.github.io' + BASE_PATH : SITE_URL
 
-
+// changes on every build — appended to CSS/JS URLs so browsers can't serve a
+// stale cached copy of an asset after a deploy (GitHub Pages doesn't change
+// filenames between builds, so without this, a browser could keep an old
+// cached script/stylesheet indefinitely even when the page itself is fresh)
 const BUILD_VERSION = Date.now()
 
 function applyBasePath (html) {
@@ -387,13 +390,23 @@ const OPEN_FOR_LABELS_P = [
   ['institutions', 'Institutions']
 ]
 
+function checkboxDropdown (id, label, options) {
+  const items = options.map(([value, text]) =>
+    `<label class="programmes-multiselect__option"><input type="checkbox" value="${value}" data-filter-key="${id}"> ${text}</label>`
+  ).join('')
+  return `
+          <span class="programmes-multiselect" id="${id}-wrap">
+            <button type="button" class="programmes-select programmes-multiselect__button" id="${id}-button" aria-haspopup="true" aria-expanded="false">
+              ${label}
+              <span class="programmes-select-badge" id="${id}-badge" hidden></span>
+            </button>
+            <div class="programmes-multiselect__panel" id="${id}-panel" hidden>${items}</div>
+          </span>`
+}
+
 function programmesContentHtml (programmes) {
   const countries = [...new Set(programmes.map(p => p.country).filter(Boolean))].sort()
   const types = [...new Set(programmes.flatMap(p => p.types))].sort()
-  const countryOptions = countries.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('')
-  const disciplineOptions = DISCIPLINE_LABELS_P.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')
-  const openForOptions = OPEN_FOR_LABELS_P.map(([v, l]) => `<option value="${v}">${l}</option>`).join('')
-  const typeOptions = types.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('')
   const dataJson = JSON.stringify(programmes).replace(/</g, '\\u003c')
 
   const map = generateWorldMap(programmes)
@@ -425,22 +438,10 @@ function programmesContentHtml (programmes) {
         <div class="programmes-results-area" id="programmes-results-area">
         <div class="programmes-toolbar">
           <input type="search" id="pf-search" class="programmes-search" placeholder="Search programmes, institutions, keywords...">
-          <span class="programmes-select-wrap">
-            <select id="pf-country" class="programmes-select"><option value="">Country</option>${countryOptions}</select>
-            <span class="programmes-select-badge" id="pf-country-badge" hidden></span>
-          </span>
-          <span class="programmes-select-wrap">
-            <select id="pf-discipline" class="programmes-select"><option value="">Discipline</option>${disciplineOptions}</select>
-            <span class="programmes-select-badge" id="pf-discipline-badge" hidden></span>
-          </span>
-          <span class="programmes-select-wrap">
-            <select id="pf-open-for" class="programmes-select"><option value="">Open for</option>${openForOptions}</select>
-            <span class="programmes-select-badge" id="pf-open-for-badge" hidden></span>
-          </span>
-          <span class="programmes-select-wrap">
-            <select id="pf-type" class="programmes-select"><option value="">Type</option>${typeOptions}</select>
-            <span class="programmes-select-badge" id="pf-type-badge" hidden></span>
-          </span>
+          ${checkboxDropdown('pf-country', 'Country', countries.map(c => [escapeHtml(c), escapeHtml(c)]))}
+          ${checkboxDropdown('pf-discipline', 'Discipline', DISCIPLINE_LABELS_P)}
+          ${checkboxDropdown('pf-open-for', 'Open for', OPEN_FOR_LABELS_P)}
+          ${checkboxDropdown('pf-type', 'Type', types.map(t => [escapeHtml(t), escapeHtml(t)]))}
         </div>
 
         <div class="programmes-map-section" id="programmes-map-section">
