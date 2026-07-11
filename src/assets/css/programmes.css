@@ -391,51 +391,99 @@
 }
 
 .programmes-list {
-  display: flex;
-  flex-direction: column;
+  overflow-x: auto;
+}
+
+.programmes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-s);
+}
+
+.programmes-table th {
+  text-align: left;
+  padding: var(--spacing-s);
+  color: var(--light-text);
+  font-weight: 700;
+  border-bottom: 2px solid var(--light-gray);
+  white-space: nowrap;
+}
+
+.programmes-table th.is-sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.programmes-table th.is-sortable:hover {
+  color: var(--accent-1);
+}
+
+.programmes-table td {
+  padding: var(--spacing-s);
+  border-bottom: 1px solid var(--light-gray);
+  vertical-align: top;
 }
 
 .programme-row {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing);
-  padding: var(--spacing-s) 0;
-  border-bottom: 1px solid var(--light-gray);
-  color: var(--ink);
+  cursor: pointer;
+}
+
+.programme-row:hover {
+  background: var(--tint-cool);
 }
 
 .programme-row__id {
   color: var(--light-text);
-  font-size: var(--font-size-s);
-  width: 50px;
+  white-space: nowrap;
 }
 
 .programme-row__title {
   color: var(--accent-1);
-  font-weight: 700;
-  flex: 2;
+  font-weight: 400;
+  min-width: 160px;
 }
 
 .programme-row__country {
-  flex: 1;
-  color: var(--light-text);
-  font-size: var(--font-size-s);
+  color: var(--ink-soft);
+  white-space: nowrap;
 }
 
-.programme-row__type {
-  flex: 1;
-  font-size: var(--font-size-s);
+.programme-row__description {
+  color: var(--ink-soft);
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .programme-row__deadline {
-  flex: 1;
-  font-size: var(--font-size-s);
-  color: var(--light-text);
-  text-align: right;
+  white-space: nowrap;
 }
 
-.programme-row__spacer {
-  width: 40px;
+.deadline-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.deadline-badge--passed {
+  background: #FCE4E4;
+  color: #B42318;
+}
+
+.deadline-badge--soon {
+  background: #FFF3CD;
+  color: #92620A;
+}
+
+.deadline-badge--ahead {
+  background: #E1F5E9;
+  color: #12762E;
 }
 
 .programme-detail {
@@ -506,6 +554,10 @@
   font-size: var(--font-size-s);
   color: var(--light-text);
   margin-left: auto;
+}
+
+.programmes-sort[hidden] {
+  display: none;
 }
 
 .programmes-count {
