@@ -12,10 +12,6 @@
   var gridEl = document.getElementById('programmes-grid')
   var countEl = document.getElementById('programmes-count')
   var searchInput = document.getElementById('pf-search')
-  var countrySelect = document.getElementById('pf-country')
-  var disciplineSelect = document.getElementById('pf-discipline')
-  var openForSelect = document.getElementById('pf-open-for')
-  var typeSelect = document.getElementById('pf-type')
   var sortSelect = document.getElementById('pf-sort')
   var recentlyAddedBtn = document.getElementById('pf-recently-added')
   var activeFiltersEl = document.getElementById('programmes-active-filters')
@@ -30,6 +26,14 @@
   var tooltip = document.getElementById('programmes-map-tooltip')
   var detailEl = document.getElementById('programme-detail')
   var resultsAreaEl = document.getElementById('programmes-results-area')
+
+  // maps a filter's DOM id prefix to the state array it controls
+  var MULTISELECT_FILTERS = {
+    'pf-country': 'country',
+    'pf-discipline': 'discipline',
+    'pf-open-for': 'openFor',
+    'pf-type': 'type'
+  }
 
   var state = { search: '', country: [], discipline: [], openFor: [], type: [], sort: 'newest', recentlyAdded: false, view: 'grid', pageSize: 20, page: 1 }
   var showingAllCountries = false
@@ -101,7 +105,7 @@
   }
 
   function colorForCount (count) {
-    if (count === 0) return '#F1F4F7'
+    if (count === 0) return '#D9DEE5'
     if (count <= 2) return '#DCEEFF'
     if (count <= 5) return '#9DC7F0'
     if (count <= 15) return '#4A90D9'
@@ -220,18 +224,22 @@
       '</table>'
   }
 
+  function checkboxLabelFor (filterId, value) {
+    var input = document.querySelector('#' + filterId + '-panel input[value="' + value.replace(/"/g, '\\"') + '"]')
+    if (!input) return value
+    return input.parentElement.textContent.trim()
+  }
+
   function activeFilterChips () {
     var chips = []
     state.country.forEach(function (c) {
       chips.push({ key: 'country', value: c, label: (c === INTERNATIONAL_KEY ? 'International' : c) })
     })
     state.discipline.forEach(function (d) {
-      var opt = disciplineSelect.querySelector('option[value="' + d + '"]')
-      chips.push({ key: 'discipline', value: d, label: 'Discipline: ' + (opt ? opt.textContent : d) })
+      chips.push({ key: 'discipline', value: d, label: 'Discipline: ' + checkboxLabelFor('pf-discipline', d) })
     })
     state.openFor.forEach(function (o) {
-      var opt = openForSelect.querySelector('option[value="' + o + '"]')
-      chips.push({ key: 'openFor', value: o, label: 'Open for: ' + (opt ? opt.textContent : o) })
+      chips.push({ key: 'openFor', value: o, label: 'Open for: ' + checkboxLabelFor('pf-open-for', o) })
     })
     state.type.forEach(function (t) {
       chips.push({ key: 'type', value: t, label: 'Type: ' + t })
@@ -276,9 +284,21 @@
 
   function clearAllFilters () {
     state.search = ''; state.country = []; state.discipline = []; state.openFor = []; state.type = []; state.recentlyAdded = false; state.page = 1
-    searchInput.value = ''; countrySelect.value = ''; disciplineSelect.value = ''; openForSelect.value = ''; typeSelect.value = ''
+    searchInput.value = ''
     recentlyAddedBtn.classList.remove('is-active')
     render()
+  }
+
+  // keeps every checkbox's checked state in sync with the underlying arrays —
+  // needed because selections can also change from the map, the top-countries
+  // list, or removing a filter chip, not just checking a box directly
+  function syncCheckboxPanels () {
+    Object.keys(MULTISELECT_FILTERS).forEach(function (filterId) {
+      var arr = state[MULTISELECT_FILTERS[filterId]]
+      document.querySelectorAll('#' + filterId + '-panel input[type="checkbox"]').forEach(function (input) {
+        input.checked = arr.indexOf(input.value) !== -1
+      })
+    })
   }
 
   function computeCountryCounts () {
@@ -367,7 +387,7 @@
 
   function updateFilterBadge (key, count) {
     var badge = document.getElementById('pf-' + key + '-badge')
-    var wrap = badge ? badge.closest('.programmes-select-wrap') : null
+    var wrap = badge ? badge.closest('.programmes-multiselect') : null
     if (!badge || !wrap) return
     if (count > 0) {
       badge.textContent = count
@@ -404,6 +424,7 @@
     updateMap()
     renderActiveFilters()
     updateFilterBadges()
+    syncCheckboxPanels()
   }
 
   function renderDetail (id) {
@@ -452,17 +473,46 @@
   var pageSizeSelect = document.getElementById('pf-page-size')
 
   searchInput.addEventListener('input', function () { state.search = searchInput.value.trim(); state.page = 1; render() })
-  function addToArrayFilter (arr, select) {
-    var value = select.value
-    if (value && arr.indexOf(value) === -1) arr.push(value)
-    state.page = 1
-    render()
+  function closeAllPanels (exceptId) {
+    Object.keys(MULTISELECT_FILTERS).forEach(function (filterId) {
+      if (filterId === exceptId) return
+      var panel = document.getElementById(filterId + '-panel')
+      var btn = document.getElementById(filterId + '-button')
+      if (panel) panel.hidden = true
+      if (btn) btn.setAttribute('aria-expanded', 'false')
+    })
   }
 
-  countrySelect.addEventListener('change', function () { addToArrayFilter(state.country, countrySelect) })
-  disciplineSelect.addEventListener('change', function () { addToArrayFilter(state.discipline, disciplineSelect) })
-  openForSelect.addEventListener('change', function () { addToArrayFilter(state.openFor, openForSelect) })
-  typeSelect.addEventListener('change', function () { addToArrayFilter(state.type, typeSelect) })
+  Object.keys(MULTISELECT_FILTERS).forEach(function (filterId) {
+    var button = document.getElementById(filterId + '-button')
+    var panel = document.getElementById(filterId + '-panel')
+    if (!button || !panel) return
+
+    button.addEventListener('click', function (e) {
+      e.stopPropagation()
+      var willOpen = panel.hidden
+      closeAllPanels(filterId)
+      panel.hidden = !willOpen
+      button.setAttribute('aria-expanded', String(willOpen))
+    })
+
+    panel.querySelectorAll('input[type="checkbox"]').forEach(function (input) {
+      input.addEventListener('change', function () {
+        var arr = state[MULTISELECT_FILTERS[filterId]]
+        if (input.checked) {
+          if (arr.indexOf(input.value) === -1) arr.push(input.value)
+        } else {
+          removeFromArray(arr, input.value)
+        }
+        state.page = 1
+        render()
+      })
+    })
+  })
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.programmes-multiselect')) closeAllPanels()
+  })
   sortSelect.addEventListener('change', function () { state.sort = sortSelect.value; render() })
   pageSizeSelect.addEventListener('change', function () {
     state.pageSize = pageSizeSelect.value === 'all' ? 'all' : parseInt(pageSizeSelect.value, 10)
