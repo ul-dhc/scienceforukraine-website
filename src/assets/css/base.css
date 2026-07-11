@@ -48,11 +48,14 @@
   --accent-1: #0057B7;
   --accent-2: #FFD700;
   --mint: #0B7A4B;
+  --tint-mint: #D9F5E8;
 
 
   --tint-warm: #FDF9EE;
   --tint-warm-border: #F1E3BA;
   --tint-warm-icon: #C9971C;
+  --tint-yellow-chip: #FFF4CC;
+  --tint-mint-chip: #D9F5E8;
   --tint-cool: #F2F6FC;
   --tint-cool-border: #DCE7F7;
   --tint-cool-icon: var(--accent-1);
