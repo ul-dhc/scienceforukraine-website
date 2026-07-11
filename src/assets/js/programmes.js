@@ -31,7 +31,7 @@
   var detailEl = document.getElementById('programme-detail')
   var resultsAreaEl = document.getElementById('programmes-results-area')
 
-  var state = { search: '', country: '', discipline: '', openFor: '', type: '', sort: 'newest', recentlyAdded: false, view: 'grid', pageSize: 20, page: 1 }
+  var state = { search: '', country: [], discipline: [], openFor: [], type: [], sort: 'newest', recentlyAdded: false, view: 'grid', pageSize: 20, page: 1 }
   var showingAllCountries = false
 
   function escapeHtml (str) {
@@ -59,9 +59,9 @@
   // and clicking a country always show the same number (previously these could
   // disagree, since the map ignored whatever other filters were already active)
   function matchesExceptCountry (p) {
-    if (state.discipline && !p.disciplines[state.discipline]) return false
-    if (state.openFor && !p.openFor[state.openFor]) return false
-    if (state.type && p.types.indexOf(state.type) === -1) return false
+    if (state.discipline.length && !state.discipline.some(function (d) { return p.disciplines[d] })) return false
+    if (state.openFor.length && !state.openFor.some(function (o) { return p.openFor[o] })) return false
+    if (state.type.length && !state.type.some(function (t) { return p.types.indexOf(t) !== -1 })) return false
     if (state.recentlyAdded && !isNew(p)) return false
     if (state.search) {
       var q = state.search.toLowerCase()
@@ -76,10 +76,11 @@
   }
 
   function matches (p) {
-    if (state.country === INTERNATIONAL_KEY) {
-      if (p.country) return false
-    } else if (state.country && p.country !== state.country) {
-      return false
+    if (state.country.length) {
+      var countryMatch = state.country.some(function (c) {
+        return c === INTERNATIONAL_KEY ? !p.country : p.country === c
+      })
+      if (!countryMatch) return false
     }
     return matchesExceptCountry(p)
   }
@@ -221,12 +222,22 @@
 
   function activeFilterChips () {
     var chips = []
-    if (state.country) chips.push({ key: 'country', label: (state.country === INTERNATIONAL_KEY ? 'International' : state.country) })
-    if (state.discipline) chips.push({ key: 'discipline', label: 'Discipline: ' + (disciplineSelect.options[disciplineSelect.selectedIndex] || {}).text })
-    if (state.openFor) chips.push({ key: 'openFor', label: 'Open for: ' + (openForSelect.options[openForSelect.selectedIndex] || {}).text })
-    if (state.type) chips.push({ key: 'type', label: 'Type: ' + state.type })
-    if (state.recentlyAdded) chips.push({ key: 'recentlyAdded', label: 'Recently added' })
-    if (state.search) chips.push({ key: 'search', label: 'Search: "' + state.search + '"' })
+    state.country.forEach(function (c) {
+      chips.push({ key: 'country', value: c, label: (c === INTERNATIONAL_KEY ? 'International' : c) })
+    })
+    state.discipline.forEach(function (d) {
+      var opt = disciplineSelect.querySelector('option[value="' + d + '"]')
+      chips.push({ key: 'discipline', value: d, label: 'Discipline: ' + (opt ? opt.textContent : d) })
+    })
+    state.openFor.forEach(function (o) {
+      var opt = openForSelect.querySelector('option[value="' + o + '"]')
+      chips.push({ key: 'openFor', value: o, label: 'Open for: ' + (opt ? opt.textContent : o) })
+    })
+    state.type.forEach(function (t) {
+      chips.push({ key: 'type', value: t, label: 'Type: ' + t })
+    })
+    if (state.recentlyAdded) chips.push({ key: 'recentlyAdded', value: '', label: 'Recently added' })
+    if (state.search) chips.push({ key: 'search', value: '', label: 'Search: "' + state.search + '"' })
     return chips
   }
 
@@ -236,22 +247,27 @@
     activeFiltersEl.innerHTML = '' +
       '<span class="programmes-active-filters__label">Active filters:</span>' +
       chips.map(function (c) {
-        return '<button type="button" class="programmes-filter-chip" data-clear="' + c.key + '">' + escapeHtml(c.label) + ' &times;</button>'
+        return '<button type="button" class="programmes-filter-chip" data-clear="' + c.key + '" data-clear-value="' + escapeHtml(c.value) + '">' + escapeHtml(c.label) + ' &times;</button>'
       }).join('') +
       '<button type="button" class="programmes-filter-chip programmes-filter-chip--clear-all" id="pf-clear-all">Clear all</button>'
 
     activeFiltersEl.querySelectorAll('[data-clear]').forEach(function (btn) {
-      btn.addEventListener('click', function () { clearFilter(btn.getAttribute('data-clear')) })
+      btn.addEventListener('click', function () { clearFilter(btn.getAttribute('data-clear'), btn.getAttribute('data-clear-value')) })
     })
     var clearAllBtn = document.getElementById('pf-clear-all')
     if (clearAllBtn) clearAllBtn.addEventListener('click', clearAllFilters)
   }
 
-  function clearFilter (key) {
-    if (key === 'country') { state.country = ''; countrySelect.value = '' }
-    if (key === 'discipline') { state.discipline = ''; disciplineSelect.value = '' }
-    if (key === 'openFor') { state.openFor = ''; openForSelect.value = '' }
-    if (key === 'type') { state.type = ''; typeSelect.value = '' }
+  function removeFromArray (arr, value) {
+    var i = arr.indexOf(value)
+    if (i !== -1) arr.splice(i, 1)
+  }
+
+  function clearFilter (key, value) {
+    if (key === 'country') removeFromArray(state.country, value)
+    if (key === 'discipline') removeFromArray(state.discipline, value)
+    if (key === 'openFor') removeFromArray(state.openFor, value)
+    if (key === 'type') removeFromArray(state.type, value)
     if (key === 'recentlyAdded') { state.recentlyAdded = false; recentlyAddedBtn.classList.remove('is-active') }
     if (key === 'search') { state.search = ''; searchInput.value = '' }
     state.page = 1
@@ -259,7 +275,7 @@
   }
 
   function clearAllFilters () {
-    state.search = ''; state.country = ''; state.discipline = ''; state.openFor = ''; state.type = ''; state.recentlyAdded = false; state.page = 1
+    state.search = ''; state.country = []; state.discipline = []; state.openFor = []; state.type = []; state.recentlyAdded = false; state.page = 1
     searchInput.value = ''; countrySelect.value = ''; disciplineSelect.value = ''; openForSelect.value = ''; typeSelect.value = ''
     recentlyAddedBtn.classList.remove('is-active')
     render()
@@ -284,11 +300,13 @@
       var count = counts[country] || 0
       path.setAttribute('data-count', count)
       path.style.fill = colorForCount(count)
+      path.classList.toggle('world-map__country--selected', state.country.indexOf(country) !== -1)
     })
 
     var marker = document.querySelector('.world-map__marker')
     if (marker) {
       marker.setAttribute('data-count', result.intlCount)
+      marker.classList.toggle('world-map__marker--selected', state.country.indexOf(INTERNATIONAL_KEY) !== -1)
     }
 
     var countriesWithData = Object.keys(counts).filter(function (c) { return counts[c] > 0 })
@@ -303,18 +321,20 @@
     topCountriesListEl.innerHTML = toShow.map(function (entry) {
       var isIntl = entry[0] === INTERNATIONAL_KEY
       var label = isIntl ? 'International (not country-specific)' : entry[0]
-      return '<button type="button" class="programmes-top-countries__item" data-country="' + escapeHtml(entry[0]) + '"><span>' + escapeHtml(label) + '</span><span class="programmes-top-countries__count">' + entry[1] + '</span></button>'
+      var isSelected = state.country.indexOf(entry[0]) !== -1
+      return '<button type="button" class="programmes-top-countries__item' + (isSelected ? ' is-active' : '') + '" data-country="' + escapeHtml(entry[0]) + '"><span>' + escapeHtml(label) + '</span><span class="programmes-top-countries__count">' + entry[1] + '</span></button>'
     }).join('')
     topCountriesListEl.querySelectorAll('.programmes-top-countries__item').forEach(function (btn) {
-      btn.addEventListener('click', function () { filterByCountry(btn.getAttribute('data-country')) })
+      btn.addEventListener('click', function () { toggleCountry(btn.getAttribute('data-country')) })
     })
     viewAllCountriesBtn.textContent = showingAllCountries ? 'Show top 5 only' : 'View all countries (' + sorted.length + ') \u2192'
   }
 
-  function filterByCountry (country) {
-    state.country = country
+  function toggleCountry (country) {
+    var i = state.country.indexOf(country)
+    if (i === -1) state.country.push(country)
+    else state.country.splice(i, 1)
     state.page = 1
-    countrySelect.value = (country === INTERNATIONAL_KEY) ? '' : country
     render()
   }
 
@@ -408,10 +428,18 @@
   var pageSizeSelect = document.getElementById('pf-page-size')
 
   searchInput.addEventListener('input', function () { state.search = searchInput.value.trim(); state.page = 1; render() })
-  countrySelect.addEventListener('change', function () { state.country = countrySelect.value; state.page = 1; render() })
-  disciplineSelect.addEventListener('change', function () { state.discipline = disciplineSelect.value; state.page = 1; render() })
-  openForSelect.addEventListener('change', function () { state.openFor = openForSelect.value; state.page = 1; render() })
-  typeSelect.addEventListener('change', function () { state.type = typeSelect.value; state.page = 1; render() })
+  function addToArrayFilter (arr, select) {
+    var value = select.value
+    if (value && arr.indexOf(value) === -1) arr.push(value)
+    select.value = ''
+    state.page = 1
+    render()
+  }
+
+  countrySelect.addEventListener('change', function () { addToArrayFilter(state.country, countrySelect) })
+  disciplineSelect.addEventListener('change', function () { addToArrayFilter(state.discipline, disciplineSelect) })
+  openForSelect.addEventListener('change', function () { addToArrayFilter(state.openFor, openForSelect) })
+  typeSelect.addEventListener('change', function () { addToArrayFilter(state.type, typeSelect) })
   sortSelect.addEventListener('change', function () { state.sort = sortSelect.value; render() })
   pageSizeSelect.addEventListener('change', function () {
     state.pageSize = pageSizeSelect.value === 'all' ? 'all' : parseInt(pageSizeSelect.value, 10)
@@ -473,7 +501,7 @@
       var count = el.getAttribute('data-count')
       if (!count || count === '0') return
       var region = el.getAttribute('data-region')
-      filterByCountry(region === 'International' ? INTERNATIONAL_KEY : el.getAttribute('data-country'))
+      toggleCountry(region === 'International' ? INTERNATIONAL_KEY : el.getAttribute('data-country'))
     })
   })
 
