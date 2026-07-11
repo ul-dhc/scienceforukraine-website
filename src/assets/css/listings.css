@@ -88,7 +88,7 @@
   max-width: 720px;
   margin: var(--spacing) auto 0;
   padding: var(--spacing) var(--spacing-l);
-  border: 1px dashed var(--tint-warm-icon);
+  border: 1px dashed var(--accent-2);
   border-radius: var(--radius-m);
   text-align: left;
   font-size: var(--font-size-s);
@@ -163,7 +163,8 @@
   gap: var(--spacing-xs);
 }
 
-
+/* chip (selector tier) — pill shape, border-only feedback, no solid fill.
+   Matches .programmes-view-toggle__btn / .programmes-chip-toggle. */
 .filter-pill {
   padding: 6px 12px;
   border-radius: var(--radius-pill);
@@ -186,7 +187,9 @@
   font-weight: var(--bold);
 }
 
-
+/* group colors mirror the tag colors on listing cards: category = blue
+   (the default above), discipline = mint, open-for = yellow background
+   with blue text (yellow-on-yellow isn't legible) */
 .filter-pill[data-filter="discipline"]:hover {
   border-color: var(--mint);
 }
@@ -333,7 +336,8 @@
   margin-top: var(--spacing-s);
 }
 
-
+/* filled chip — matches .programmes-filter-chip. Yellow chips keep blue
+   text rather than yellow-on-yellow, for legibility. */
 .listing-tag {
   display: inline-flex;
   padding: 4px 10px;
