@@ -200,13 +200,13 @@ function homeContentHtml () {
           <div class="icon-badge icon-badge--cool">${icon('search')}</div>
           <div class="updates-strip__heading-text">
             <h2>Search the website</h2>
-            <p class="search-strip__subtitle">Find support listings, funding programmes, pages, and updates.</p>
+            <p class="search-strip__subtitle">Positions, funding programmes, pages, and updates — all in one place.</p>
           </div>
         </div>
         <div class="search-strip__input-area">
           <div class="search-strip__input-wrap">
             ${icon('search')}
-            <input type="search" id="site-search-input" class="search-strip__input" placeholder="Search by keyword, institution, country, discipline…" autocomplete="off">
+            <input type="search" id="site-search-input" class="search-strip__input" placeholder="e.g. tuition waiver, DAAD, mentoring..." autocomplete="off">
           </div>
           <div class="search-strip__results" id="site-search-results" hidden></div>
         </div>
@@ -651,8 +651,10 @@ function writeShareRedirect (sectionSlug, id, title, description) {
   const safeId = String(id).replace(/[^A-Za-z0-9_-]/g, '-')
   if (!safeId) return
 
+  const itemPath = `/${sectionSlug}/${safeId}/`
   const redirectPath = `${BASE_PATH}/${sectionSlug}/#${encodeURIComponent(id)}`
-  const canonicalUrl = `${SITE_URL}/${sectionSlug}/#${encodeURIComponent(id)}`
+  const canonicalPath = `${BASE_PATH}${itemPath}`
+  const canonicalUrl = `${SITE_URL}${itemPath}`
   const ogImage = `${DEPLOY_URL}/media/ScienceForUkraine-1128x191px-blue.png`
   const safeTitle = escapeHtml(title || id)
   const fullTitle = `${safeTitle} – #ScienceForUkraine`
@@ -673,7 +675,7 @@ function writeShareRedirect (sectionSlug, id, title, description) {
 <meta property="og:type" content="website">
 <meta property="og:url" content="${canonicalUrl}">
 <meta property="og:image" content="${ogImage}">
-<link rel="canonical" href="${redirectPath}">
+<link rel="canonical" href="${canonicalPath}">
 </head>
 <body>
 <p>Redirecting to <a href="${redirectPath}">${safeTitle}</a>…</p>
