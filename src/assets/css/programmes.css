@@ -1,414 +1,692 @@
-(function () {
-  var dataEl = document.getElementById('programmes-data')
-  if (!dataEl) return
+.programmes-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-l) var(--spacing-l);
+}
 
-  var programmes = JSON.parse(dataEl.textContent)
-  var byId = {}
-  programmes.forEach(function (p) { byId[p.id] = p })
+.programmes-header__title {
+  color: var(--accent-1);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  margin-bottom: var(--spacing-s);
+}
 
-  var NEW_THRESHOLD_DAYS = 60
-  var INTERNATIONAL_KEY = '__INTERNATIONAL__'
+.programmes-header__subtitle {
+  max-width: 640px;
+  color: var(--ink-soft);
+}
 
-  var gridEl = document.getElementById('programmes-grid')
-  var countEl = document.getElementById('programmes-count')
-  var searchInput = document.getElementById('pf-search')
-  var countrySelect = document.getElementById('pf-country')
-  var disciplineSelect = document.getElementById('pf-discipline')
-  var openForSelect = document.getElementById('pf-open-for')
-  var typeSelect = document.getElementById('pf-type')
-  var sortSelect = document.getElementById('pf-sort')
-  var recentlyAddedBtn = document.getElementById('pf-recently-added')
-  var activeFiltersEl = document.getElementById('programmes-active-filters')
-  var viewGridBtn = document.getElementById('pf-view-grid')
-  var viewListBtn = document.getElementById('pf-view-list')
-  var mapSection = document.getElementById('programmes-map-section')
-  var mapBody = document.getElementById('programmes-map-body')
-  var mapCollapseBtn = document.getElementById('pf-map-collapse')
-  var mapCountryCountEl = document.getElementById('programmes-map-country-count')
-  var topCountriesListEl = document.getElementById('programmes-top-countries-list')
-  var viewAllCountriesBtn = document.getElementById('pf-view-all-countries')
-  var tooltip = document.getElementById('programmes-map-tooltip')
-  var detailEl = document.getElementById('programme-detail')
-  var resultsAreaEl = document.getElementById('programmes-results-area')
+.programmes-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-xl);
+  margin-top: var(--spacing-l);
+}
 
-  var state = { search: '', country: '', discipline: '', openFor: '', type: '', sort: 'newest', recentlyAdded: false, view: 'grid' }
-  var showingAllCountries = false
+.programmes-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 120px;
+}
 
-  function escapeHtml (str) {
-    var div = document.createElement('div')
-    div.textContent = str == null ? '' : String(str)
-    return div.innerHTML
+.programmes-stat .icon {
+  color: var(--accent-1);
+  width: 26px;
+  height: 26px;
+}
+
+.programmes-stat__value {
+  color: var(--accent-1);
+  font-size: var(--font-size-l);
+  font-weight: 700;
+}
+
+.programmes-stat__label {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+}
+
+.programmes-banner {
+  display: flex;
+  gap: var(--spacing);
+  align-items: flex-start;
+  max-width: 720px;
+  margin: var(--spacing-l) auto 0;
+  padding: var(--spacing) var(--spacing-l);
+  background: var(--tint-cool);
+  border: 1px solid var(--tint-cool-border);
+  border-radius: var(--radius-m);
+  text-align: left;
+}
+
+.programmes-banner .icon {
+  color: var(--accent-1);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.programmes-banner p {
+  color: var(--ink-soft);
+  font-size: var(--font-size-s);
+  line-height: 1.5;
+}
+
+.programmes-crosslink {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
+  max-width: 720px;
+  margin: var(--spacing) auto 0;
+  padding: var(--spacing) var(--spacing-l);
+  border: 1px dashed var(--accent-1);
+  border-radius: var(--radius-m);
+  text-align: left;
+}
+
+.programmes-crosslink .icon {
+  color: var(--accent-1);
+  flex-shrink: 0;
+}
+
+.programmes-crosslink a {
+  font-weight: 700;
+  color: var(--accent-1);
+}
+
+.programmes-map-section {
+  padding: var(--spacing-l);
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-l);
+  margin-bottom: var(--spacing-l);
+}
+
+.programmes-map {
+  flex: 2;
+  min-width: 320px;
+}
+
+.programmes-map__heading {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.programmes-map__subheading {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  margin-bottom: var(--spacing);
+}
+
+.programmes-map__subheading strong {
+  color: var(--accent-1);
+}
+
+.world-map {
+  width: 100%;
+  height: auto;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.world-map-viewport {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-s);
+  cursor: grab;
+  touch-action: none;
+}
+
+.world-map-viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.world-map-zoom-controls {
+  position: absolute;
+  top: var(--spacing-s);
+  right: var(--spacing-s);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.world-map-zoom-controls button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--light-gray);
+  background: var(--background);
+  color: var(--ink);
+  border-radius: var(--radius-s);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+}
+
+#pf-map-zoom-reset {
+  width: auto;
+  padding: 0 8px;
+  font-size: var(--font-size-s);
+}
+
+.world-map-zoom-controls button:hover {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+
+.programmes-map-tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: var(--ink);
+  color: var(--background);
+  font-size: var(--font-size-s);
+  padding: 6px 10px;
+  border-radius: var(--radius-s);
+  z-index: 200;
+  display: none;
+  white-space: nowrap;
+}
+
+.programmes-top-countries {
+  flex: 1;
+  min-width: 220px;
+}
+
+.programmes-top-countries__heading {
+  font-weight: 700;
+  margin-bottom: var(--spacing-s);
+}
+
+.programmes-top-countries__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.programmes-top-countries__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--light-gray);
+  cursor: pointer;
+  font-size: var(--font-size-s);
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  text-align: left;
+  color: var(--ink);
+  font-family: var(--font-family);
+}
+
+.programmes-top-countries__item:hover {
+  color: var(--accent-1);
+}
+
+.programmes-top-countries__count {
+  color: var(--light-text);
+}
+
+.programmes-top-countries__view-all {
+  display: inline-block;
+  margin-top: var(--spacing-s);
+  font-size: var(--font-size-s);
+  font-weight: 700;
+  color: var(--accent-1);
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: var(--font-family);
+  padding: 0;
+}
+
+.world-map__country {
+  fill: #F1F4F7;
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+
+.world-map__marker {
+  stroke: none;
+  cursor: pointer;
+  transition: opacity var(--transition), transform var(--transition);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.world-map__marker:hover {
+  opacity: 0.85;
+  transform: scale(1.2);
+}
+
+.world-map__country:hover {
+  opacity: 0.75;
+}
+
+.programmes-map-collapse {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: var(--spacing-s);
+  background: none;
+  border: none;
+  color: var(--accent-1);
+  font-weight: 700;
+  font-size: var(--font-size-s);
+  cursor: pointer;
+  font-family: var(--font-family);
+  padding: 0;
+}
+
+.programmes-map-section__body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xl);
+  align-items: center;
+}
+
+.programmes-map-section__body[hidden] {
+  display: none;
+}
+
+.programmes-recent-toggles {
+  display: flex;
+  gap: var(--spacing-s);
+  margin-bottom: var(--spacing);
+}
+
+.programmes-chip-toggle {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--light-gray);
+  background: var(--background);
+  font-size: var(--font-size-s);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+.programmes-chip-toggle__hint {
+  color: var(--light-text);
+}
+
+.programmes-chip-toggle.is-active {
+  background: var(--accent-1);
+  border-color: var(--accent-1);
+  color: var(--background);
+}
+
+.programmes-chip-toggle.is-active .programmes-chip-toggle__hint {
+  color: var(--background);
+  opacity: 0.8;
+}
+
+.programmes-results-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-s);
+}
+
+.programmes-view-toggle {
+  display: flex;
+  gap: 4px;
+}
+
+.programmes-view-toggle__btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-s);
+  background: var(--background);
+  font-size: var(--font-size-s);
+  color: var(--light-text);
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+.programmes-view-toggle__btn.is-active {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
+}
+
+.programmes-active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--spacing);
+}
+
+.programmes-active-filters__label {
+  font-size: var(--font-size-s);
+  color: var(--light-text);
+}
+
+.programmes-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--tint-cool);
+  color: var(--accent-1);
+  font-size: var(--font-size-s);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+.programmes-filter-chip--clear-all {
+  background: none;
+  color: var(--light-text);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.programmes-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.programme-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing);
+  padding: var(--spacing-s) 0;
+  border-bottom: 1px solid var(--light-gray);
+  color: var(--ink);
+}
+
+.programme-row__id {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  width: 50px;
+}
+
+.programme-row__title {
+  color: var(--accent-1);
+  font-weight: 700;
+  flex: 2;
+}
+
+.programme-row__country {
+  flex: 1;
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+}
+
+.programme-row__type {
+  flex: 1;
+  font-size: var(--font-size-s);
+}
+
+.programme-row__deadline {
+  flex: 1;
+  font-size: var(--font-size-s);
+  color: var(--light-text);
+  text-align: right;
+}
+
+.programme-row__spacer {
+  width: 40px;
+}
+
+.programme-detail {
+  padding: var(--spacing-l) 0;
+}
+
+.programme-detail__country {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ink-soft);
+  font-weight: 700;
+  font-size: var(--font-size);
+  margin-bottom: var(--spacing-s);
+}
+
+.programme-detail__added-value {
+  color: var(--light-text);
+  font-weight: 400;
+}
+
+.listing-detail__field-value--muted {
+  color: var(--light-text);
+  font-weight: 400;
+}
+
+@media (max-width: 800px) {
+  .programmes-map-section {
+    display: none;
   }
+}
 
-  function daysAgo (dateStr) {
-    if (!dateStr) return Infinity
-    return (Date.now() - new Date(dateStr).getTime()) / (1000 * 60 * 60 * 24)
+.programmes-page {
+  padding: var(--spacing-l);
+}
+
+.programmes-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-s);
+  align-items: center;
+  margin-bottom: var(--spacing-l);
+}
+
+.programmes-search {
+  flex: 1;
+  min-width: 220px;
+  padding: 10px 14px;
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-s);
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+}
+
+.programmes-select {
+  padding: 10px 14px;
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-s);
+  font-family: var(--font-family);
+  font-size: var(--font-size-s);
+  background: var(--background);
+}
+
+.programmes-sort {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-s);
+  font-size: var(--font-size-s);
+  color: var(--light-text);
+  margin-left: auto;
+}
+
+.programmes-count {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  margin-bottom: var(--spacing);
+}
+
+.programmes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-l);
+}
+
+@media (max-width: 1000px) {
+  .programmes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
 
-  function isNew (p) { return daysAgo(p.dateAdded) <= NEW_THRESHOLD_DAYS }
-
-  // matches everything EXCEPT the country filter — used by the map, so hovering
-  // and clicking a country always show the same number (previously these could
-  // disagree, since the map ignored whatever other filters were already active)
-  function matchesExceptCountry (p) {
-    if (state.discipline && !p.disciplines[state.discipline]) return false
-    if (state.openFor && !p.openFor[state.openFor]) return false
-    if (state.type && p.types.indexOf(state.type) === -1) return false
-    if (state.recentlyAdded && !isNew(p)) return false
-    if (state.search) {
-      var q = state.search.toLowerCase()
-      var haystack = [p.title, p.description, p.country].join(' ').toLowerCase()
-      if (haystack.indexOf(q) === -1) return false
-    }
-    return true
+@media (max-width: 650px) {
+  .programmes-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
+}
 
-  function matches (p) {
-    if (state.country === INTERNATIONAL_KEY) {
-      if (p.country) return false
-    } else if (state.country && p.country !== state.country) {
-      return false
-    }
-    return matchesExceptCountry(p)
+.programme-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-l);
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-m);
+  background: var(--background);
+  box-shadow: var(--shadow-s);
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow var(--transition), border-color var(--transition);
+}
+
+.programme-card:hover {
+  border-color: var(--accent-1);
+  box-shadow: var(--shadow-m);
+}
+
+.programme-card__id {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+}
+
+.programme-card__pin-icon {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  margin-right: 4px;
+  vertical-align: -2px;
+}
+
+.programme-card__added {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  margin-top: var(--spacing-s);
+}
+
+.programme-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-s);
+}
+
+.programme-card__new {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: #D9F5E8;
+  color: #0B7A4B;
+  font-weight: 400;
+  font-size: var(--font-size-s);
+}
+
+.programme-card__title {
+  color: var(--accent-1);
+  font-size: var(--font-size-l);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.programme-card__country {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--ink-soft);
+  font-weight: 700;
+  font-size: var(--font-size-s);
+  margin-bottom: var(--spacing-s);
+}
+
+.programme-card__description {
+  color: var(--ink-soft);
+  font-size: var(--font-size-s);
+  margin-bottom: var(--spacing-s);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex: 1;
+}
+
+.programme-card__meta-label {
+  color: var(--light-text);
+  font-size: var(--font-size-s);
+  margin-top: 6px;
+}
+
+.programme-card__meta-value {
+  font-size: var(--font-size-s);
+}
+
+.programme-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: var(--spacing-s);
+}
+
+.programme-tag {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-s);
+  font-weight: 400;
+  background: none;
+  border: 1px solid var(--accent-1);
+  color: var(--accent-1);
+}
+
+.programme-tag--secondary {
+  border-color: var(--light-gray);
+  color: var(--ink-soft);
+}
+
+.programme-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: var(--spacing);
+  font-weight: 400;
+  font-size: var(--font-size-s);
+  color: var(--light-text);
+}
+
+.programmes-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--light-text);
+  padding: var(--spacing-xl) 0;
+}
+
+.programmes-submit-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing);
+  margin-top: var(--spacing-xl);
+  padding: var(--spacing-l);
+  background: var(--tint-warm);
+  border: 1px solid var(--tint-warm-border);
+  border-radius: var(--radius-m);
+}
+
+.programmes-submit-banner p {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .programmes-sort {
+    margin-left: 0;
+    width: 100%;
   }
-
-  var SORTERS = {
-    newest: function (a, b) { return (b.dateAdded || '').localeCompare(a.dateAdded || '') },
-    oldest: function (a, b) { return (a.dateAdded || '').localeCompare(b.dateAdded || '') },
-    title: function (a, b) { return a.title.localeCompare(b.title) },
-    country: function (a, b) { return (a.country || '').localeCompare(b.country || '') }
-  }
-
-  function colorForCount (count) {
-    if (count === 0) return '#F1F4F7'
-    if (count <= 2) return '#DCEEFF'
-    if (count <= 5) return '#9DC7F0'
-    if (count <= 15) return '#4A90D9'
-    return '#0057B7'
-  }
-
-  function tagsHtml (p) {
-    var tags = ['<span class="programme-tag">' + escapeHtml(p.primaryType) + '</span>']
-    p.types.forEach(function (t) {
-      if (t !== p.primaryType) tags.push('<span class="programme-tag programme-tag--secondary">' + escapeHtml(t) + '</span>')
-    })
-    return tags.join('')
-  }
-
-  function disciplineLabel (p) {
-    if (p.disciplines.unspecified) return 'All disciplines'
-    var labels = { naturalSciences: 'Natural sciences', socialSciences: 'Social sciences', humanitiesAndTheArts: 'Humanities & the arts', engineeringAndTechnology: 'Engineering & technology', medicalAndHealthSciences: 'Medical & health sciences', agriculturalAndVeterinarySciences: 'Agricultural & veterinary sciences' }
-    var matched = Object.keys(labels).filter(function (k) { return p.disciplines[k] })
-    return matched.length ? matched.map(function (k) { return labels[k] }).join(', ') : 'Not specified'
-  }
-
-  function cardHtml (p) {
-    return '' +
-      '<a class="programme-card" href="#' + encodeURIComponent(p.id) + '">' +
-        '<div class="programme-card__top">' +
-          (isNew(p) ? '<span class="programme-card__new">NEW</span>' : '<span></span>') +
-          '<span class="programme-card__id">' + escapeHtml(p.id) + '</span>' +
-        '</div>' +
-        '<div class="programme-card__title">' + escapeHtml(p.title) + '</div>' +
-        '<div class="programme-card__country">' + icon_pin() + escapeHtml(p.country || 'International') + '</div>' +
-        '<div class="programme-card__description">' + escapeHtml(p.description || '') + '</div>' +
-        '<div class="programme-card__meta-label">Discipline</div><div class="programme-card__meta-value">' + escapeHtml(disciplineLabel(p)) + '</div>' +
-        (p.deadline ? '<div class="programme-card__meta-label">Deadline</div><div class="programme-card__meta-value">' + escapeHtml(p.deadline) + '</div>' : '') +
-        '<div class="programme-card__tags">' + tagsHtml(p) + '</div>' +
-        (p.dateAdded ? '<div class="programme-card__added">Added ' + escapeHtml(p.dateAdded) + '</div>' : '') +
-        '<span class="programme-card__link">View details &rarr;</span>' +
-      '</a>'
-  }
-
-  function icon_pin () {
-    return '<svg class="programme-card__pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>'
-  }
-
-  function listRowHtml (p) {
-    return '' +
-      '<a class="programme-row" href="#' + encodeURIComponent(p.id) + '">' +
-        (isNew(p) ? '<span class="programme-card__new">NEW</span>' : '<span class="programme-row__spacer"></span>') +
-        '<span class="programme-row__id">' + escapeHtml(p.id) + '</span>' +
-        '<span class="programme-row__title">' + escapeHtml(p.title) + '</span>' +
-        '<span class="programme-row__country">' + escapeHtml(p.country || 'International') + '</span>' +
-        '<span class="programme-row__type">' + escapeHtml(p.primaryType) + '</span>' +
-        (p.deadline ? '<span class="programme-row__deadline">Deadline: ' + escapeHtml(p.deadline) + '</span>' : '<span></span>') +
-      '</a>'
-  }
-
-  function activeFilterChips () {
-    var chips = []
-    if (state.country) chips.push({ key: 'country', label: (state.country === INTERNATIONAL_KEY ? 'International' : state.country) })
-    if (state.discipline) chips.push({ key: 'discipline', label: 'Discipline: ' + (disciplineSelect.options[disciplineSelect.selectedIndex] || {}).text })
-    if (state.openFor) chips.push({ key: 'openFor', label: 'Open for: ' + (openForSelect.options[openForSelect.selectedIndex] || {}).text })
-    if (state.type) chips.push({ key: 'type', label: 'Type: ' + state.type })
-    if (state.recentlyAdded) chips.push({ key: 'recentlyAdded', label: 'Recently added' })
-    if (state.search) chips.push({ key: 'search', label: 'Search: "' + state.search + '"' })
-    return chips
-  }
-
-  function renderActiveFilters () {
-    var chips = activeFilterChips()
-    if (!chips.length) { activeFiltersEl.innerHTML = ''; return }
-    activeFiltersEl.innerHTML = '' +
-      '<span class="programmes-active-filters__label">Active filters:</span>' +
-      chips.map(function (c) {
-        return '<button type="button" class="programmes-filter-chip" data-clear="' + c.key + '">' + escapeHtml(c.label) + ' &times;</button>'
-      }).join('') +
-      '<button type="button" class="programmes-filter-chip programmes-filter-chip--clear-all" id="pf-clear-all">Clear all</button>'
-
-    activeFiltersEl.querySelectorAll('[data-clear]').forEach(function (btn) {
-      btn.addEventListener('click', function () { clearFilter(btn.getAttribute('data-clear')) })
-    })
-    var clearAllBtn = document.getElementById('pf-clear-all')
-    if (clearAllBtn) clearAllBtn.addEventListener('click', clearAllFilters)
-  }
-
-  function clearFilter (key) {
-    if (key === 'country') { state.country = ''; countrySelect.value = '' }
-    if (key === 'discipline') { state.discipline = ''; disciplineSelect.value = '' }
-    if (key === 'openFor') { state.openFor = ''; openForSelect.value = '' }
-    if (key === 'type') { state.type = ''; typeSelect.value = '' }
-    if (key === 'recentlyAdded') { state.recentlyAdded = false; recentlyAddedBtn.classList.remove('is-active') }
-    if (key === 'search') { state.search = ''; searchInput.value = '' }
-    render()
-  }
-
-  function clearAllFilters () {
-    state.search = ''; state.country = ''; state.discipline = ''; state.openFor = ''; state.type = ''; state.recentlyAdded = false
-    searchInput.value = ''; countrySelect.value = ''; disciplineSelect.value = ''; openForSelect.value = ''; typeSelect.value = ''
-    recentlyAddedBtn.classList.remove('is-active')
-    render()
-  }
-
-  function computeCountryCounts () {
-    var counts = {}
-    var intlCount = 0
-    programmes.filter(matchesExceptCountry).forEach(function (p) {
-      if (p.country) counts[p.country] = (counts[p.country] || 0) + 1
-      else intlCount++
-    })
-    return { counts: counts, intlCount: intlCount }
-  }
-
-  function updateMap () {
-    var result = computeCountryCounts()
-    var counts = result.counts
-
-    document.querySelectorAll('.world-map__country').forEach(function (path) {
-      var country = path.getAttribute('data-country')
-      var count = counts[country] || 0
-      path.setAttribute('data-count', count)
-      path.style.fill = colorForCount(count)
-    })
-
-    var marker = document.querySelector('.world-map__marker')
-    if (marker) {
-      marker.setAttribute('data-count', result.intlCount)
-    }
-
-    var countriesWithData = Object.keys(counts).filter(function (c) { return counts[c] > 0 })
-    if (mapCountryCountEl) mapCountryCountEl.innerHTML = countriesWithData.length + ' countries'
-
-    var sorted = Object.entries(counts).sort(function (a, b) { return b[1] - a[1] })
-    if (result.intlCount > 0) {
-      sorted.push([INTERNATIONAL_KEY, result.intlCount])
-      sorted.sort(function (a, b) { return b[1] - a[1] })
-    }
-    var toShow = showingAllCountries ? sorted : sorted.slice(0, 5)
-    topCountriesListEl.innerHTML = toShow.map(function (entry) {
-      var isIntl = entry[0] === INTERNATIONAL_KEY
-      var label = isIntl ? 'International (not country-specific)' : entry[0]
-      return '<button type="button" class="programmes-top-countries__item" data-country="' + escapeHtml(entry[0]) + '"><span>' + escapeHtml(label) + '</span><span class="programmes-top-countries__count">' + entry[1] + '</span></button>'
-    }).join('')
-    topCountriesListEl.querySelectorAll('.programmes-top-countries__item').forEach(function (btn) {
-      btn.addEventListener('click', function () { filterByCountry(btn.getAttribute('data-country')) })
-    })
-    viewAllCountriesBtn.textContent = showingAllCountries ? 'Show top 5 only' : 'View all countries (' + sorted.length + ') \u2192'
-  }
-
-  function filterByCountry (country) {
-    state.country = country
-    countrySelect.value = (country === INTERNATIONAL_KEY) ? '' : country
-    render()
-  }
-
-  function render () {
-    var results = programmes.filter(matches).sort(SORTERS[state.sort] || SORTERS.newest)
-    countEl.textContent = results.length + ' programme' + (results.length === 1 ? '' : 's')
-    gridEl.className = state.view === 'list' ? 'programmes-list' : 'programmes-grid'
-    gridEl.innerHTML = results.length
-      ? results.map(state.view === 'list' ? listRowHtml : cardHtml).join('')
-      : '<div class="programmes-empty">No programmes match your filters.</div>'
-    updateMap()
-    renderActiveFilters()
-  }
-
-  function renderDetail (id) {
-    var p = byId[id]
-    if (!p) {
-      detailEl.innerHTML = '<button type="button" class="listing-detail__back" id="detail-back">&larr; All programmes</button><div class="listing-detail__not-found">This programme could not be found.</div>'
-    } else {
-      detailEl.innerHTML = '' +
-        '<button type="button" class="listing-detail__back" id="detail-back">&larr; All programmes</button>' +
-        '<span class="listing-detail__id">' + escapeHtml(p.id) + '</span>' +
-        '<div class="programme-detail__country">' + icon_pin() + escapeHtml(p.country || 'International') + '</div>' +
-        '<div class="listing-detail__institution">' + escapeHtml(p.title) + '</div>' +
-        '<p class="listing-detail__description">' + escapeHtml(p.description || '') + '</p>' +
-        '<div class="listing-detail__field-label">Discipline</div><div class="listing-detail__field-value">' + escapeHtml(disciplineLabel(p)) + '</div>' +
-        (p.deadline ? '<div class="listing-detail__field-label">Deadline</div><div class="listing-detail__field-value">' + escapeHtml(p.deadline) + '</div>' : '') +
-        (p.dateAdded ? '<div class="listing-detail__field-label">Added to archive</div><div class="listing-detail__field-value listing-detail__field-value--muted">' + escapeHtml(p.dateAdded) + '</div>' : '') +
-        (p.link ? '<div class="listing-detail__field-label">Link</div><div class="listing-detail__field-value"><a href="' + escapeHtml(p.link) + '" target="_blank" rel="noopener">' + escapeHtml(p.link) + '</a></div>' : '')
-    }
-    var backBtn = document.getElementById('detail-back')
-    if (backBtn) backBtn.addEventListener('click', function () { window.location.hash = '' })
-  }
-
-  var headerExtra1 = document.getElementById('programmes-header-extra')
-  var headerExtra2 = document.getElementById('programmes-header-extra-2')
-
-  function syncView () {
-    var id = decodeURIComponent(window.location.hash.replace(/^#/, ''))
-    if (id) {
-      resultsAreaEl.hidden = true
-      if (headerExtra1) headerExtra1.hidden = true
-      if (headerExtra2) headerExtra2.hidden = true
-      detailEl.hidden = false
-      renderDetail(id)
-      window.scrollTo(0, 0)
-    } else {
-      resultsAreaEl.hidden = false
-      if (headerExtra1) headerExtra1.hidden = false
-      if (headerExtra2) headerExtra2.hidden = false
-      detailEl.hidden = true
-    }
-  }
-
-  // --- wiring ---
-
-  searchInput.addEventListener('input', function () { state.search = searchInput.value.trim(); render() })
-  countrySelect.addEventListener('change', function () { state.country = countrySelect.value; render() })
-  disciplineSelect.addEventListener('change', function () { state.discipline = disciplineSelect.value; render() })
-  openForSelect.addEventListener('change', function () { state.openFor = openForSelect.value; render() })
-  typeSelect.addEventListener('change', function () { state.type = typeSelect.value; render() })
-  sortSelect.addEventListener('change', function () { state.sort = sortSelect.value; render() })
-
-  recentlyAddedBtn.addEventListener('click', function () {
-    state.recentlyAdded = !state.recentlyAdded
-    recentlyAddedBtn.classList.toggle('is-active', state.recentlyAdded)
-    render()
-  })
-
-  viewGridBtn.addEventListener('click', function () {
-    state.view = 'grid'
-    viewGridBtn.classList.add('is-active')
-    viewListBtn.classList.remove('is-active')
-    render()
-  })
-  viewListBtn.addEventListener('click', function () {
-    state.view = 'list'
-    viewListBtn.classList.add('is-active')
-    viewGridBtn.classList.remove('is-active')
-    render()
-  })
-
-  mapCollapseBtn.addEventListener('click', function () {
-    var isCollapsed = mapBody.hasAttribute('hidden')
-    if (isCollapsed) {
-      mapBody.removeAttribute('hidden')
-    } else {
-      mapBody.setAttribute('hidden', '')
-    }
-    var label = mapCollapseBtn.querySelector('.programmes-map-collapse__label')
-    if (label) label.textContent = isCollapsed ? 'Collapse map' : 'Expand map'
-  })
-
-  viewAllCountriesBtn.addEventListener('click', function () {
-    showingAllCountries = !showingAllCountries
-    updateMap()
-  })
-
-  var mapDragMoved = false
-
-  document.querySelectorAll('.world-map__country, .world-map__marker').forEach(function (el) {
-    el.addEventListener('mousemove', function (e) {
-      var count = el.getAttribute('data-count')
-      if (!tooltip || !count || count === '0') { if (tooltip) tooltip.style.display = 'none'; return }
-      var label = el.getAttribute('data-region') || el.getAttribute('data-country')
-      tooltip.textContent = label + ': ' + count + ' programme' + (count === '1' ? '' : 's')
-      tooltip.style.display = 'block'
-      tooltip.style.left = (e.clientX + 12) + 'px'
-      tooltip.style.top = (e.clientY + 12) + 'px'
-    })
-    el.addEventListener('mouseleave', function () { if (tooltip) tooltip.style.display = 'none' })
-    el.addEventListener('click', function () {
-      if (mapDragMoved) return
-      var count = el.getAttribute('data-count')
-      if (!count || count === '0') return
-      var region = el.getAttribute('data-region')
-      filterByCountry(region === 'International' ? INTERNATIONAL_KEY : el.getAttribute('data-country'))
-    })
-  })
-
-  // --- map pan/zoom ---
-  var mapViewport = document.getElementById('world-map-viewport')
-  var mapSvgEl = mapViewport ? mapViewport.querySelector('.world-map') : null
-  if (mapViewport && mapSvgEl) {
-    var defaultZoomState = {
-      scale: parseFloat(mapViewport.getAttribute('data-default-scale')) || 1,
-      x: parseFloat(mapViewport.getAttribute('data-default-x')) || 0,
-      y: parseFloat(mapViewport.getAttribute('data-default-y')) || 0
-    }
-    var zoomState = { scale: defaultZoomState.scale, x: defaultZoomState.x, y: defaultZoomState.y }
-    var isDragging = false
-    var dragStartMouse = { x: 0, y: 0 }
-    var dragStartOffset = { x: 0, y: 0 }
-
-    function clampZoom (s) { return Math.max(0.6, Math.min(8, s)) }
-    function applyZoomTransform () {
-      mapSvgEl.style.transform = 'translate(' + zoomState.x + 'px,' + zoomState.y + 'px) scale(' + zoomState.scale + ')'
-    }
-    applyZoomTransform()
-
-    mapViewport.addEventListener('wheel', function (e) {
-      e.preventDefault()
-      var factor = e.deltaY < 0 ? 1.15 : 1 / 1.15
-      zoomState.scale = clampZoom(zoomState.scale * factor)
-      applyZoomTransform()
-    }, { passive: false })
-
-    mapViewport.addEventListener('mousedown', function (e) {
-      isDragging = true
-      mapDragMoved = false
-      dragStartMouse = { x: e.clientX, y: e.clientY }
-      dragStartOffset = { x: zoomState.x, y: zoomState.y }
-      mapViewport.classList.add('is-dragging')
-    })
-    window.addEventListener('mousemove', function (e) {
-      if (!isDragging) return
-      var dx = e.clientX - dragStartMouse.x
-      var dy = e.clientY - dragStartMouse.y
-      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) mapDragMoved = true
-      zoomState.x = dragStartOffset.x + dx
-      zoomState.y = dragStartOffset.y + dy
-      applyZoomTransform()
-    })
-    window.addEventListener('mouseup', function () {
-      isDragging = false
-      mapViewport.classList.remove('is-dragging')
-      setTimeout(function () { mapDragMoved = false }, 0)
-    })
-
-    var zoomInBtn = document.getElementById('pf-map-zoom-in')
-    var zoomOutBtn = document.getElementById('pf-map-zoom-out')
-    var zoomResetBtn = document.getElementById('pf-map-zoom-reset')
-    if (zoomInBtn) zoomInBtn.addEventListener('click', function () { zoomState.scale = clampZoom(zoomState.scale * 1.3); applyZoomTransform() })
-    if (zoomOutBtn) zoomOutBtn.addEventListener('click', function () { zoomState.scale = clampZoom(zoomState.scale / 1.3); applyZoomTransform() })
-    if (zoomResetBtn) zoomResetBtn.addEventListener('click', function () { zoomState = { scale: defaultZoomState.scale, x: defaultZoomState.x, y: defaultZoomState.y }; applyZoomTransform() })
-  }
-
-  window.addEventListener('hashchange', syncView)
-
-  render()
-  syncView()
-})()
+}
