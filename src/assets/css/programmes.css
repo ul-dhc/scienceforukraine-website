@@ -128,15 +128,54 @@
 .world-map {
   width: 100%;
   height: auto;
+  transform-origin: 0 0;
+  will-change: transform;
 }
 
-.world-map__country {
+.world-map-viewport {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--light-gray);
+  border-radius: var(--radius-s);
+  cursor: grab;
+  touch-action: none;
+}
+
+.world-map-viewport.is-dragging {
+  cursor: grabbing;
+}
+
+.world-map-zoom-controls {
+  position: absolute;
+  top: var(--spacing-s);
+  right: var(--spacing-s);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.world-map-zoom-controls button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--light-gray);
+  background: var(--background);
+  color: var(--ink);
+  border-radius: var(--radius-s);
   cursor: pointer;
-  transition: opacity var(--transition);
+  font-size: 16px;
+  line-height: 1;
 }
 
-.world-map__country:hover {
-  opacity: 0.75;
+#pf-map-zoom-reset {
+  width: auto;
+  padding: 0 8px;
+  font-size: var(--font-size-s);
+}
+
+.world-map-zoom-controls button:hover {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
 }
 
 .programmes-map-tooltip {
@@ -213,15 +252,20 @@
 }
 
 .world-map__marker {
-  fill: #F1F4F7;
-  stroke: #ffffff;
-  stroke-width: 1.5;
+  fill: var(--accent-2);
+  stroke: #B8860B;
+  stroke-width: 1;
   cursor: pointer;
-  transition: opacity var(--transition);
+  transition: opacity var(--transition), transform var(--transition);
+  transform-origin: center;
 }
 
-.world-map__country:hover,
 .world-map__marker:hover {
+  opacity: 0.85;
+  transform: scale(1.15);
+}
+
+.world-map__country:hover {
   opacity: 0.75;
 }
 
