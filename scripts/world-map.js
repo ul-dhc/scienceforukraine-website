@@ -2,6 +2,7 @@ const topojson = require('topojson-client')
 const { geoNaturalEarth1, geoPath } = require('d3-geo')
 const world = require('world-atlas/countries-110m.json')
 
+// maps our dataset's country naming onto world-atlas's naming, where they differ.
 const NAME_ALIASES = {
   'U.K.': 'United Kingdom',
   'UK': 'United Kingdom',
@@ -12,7 +13,8 @@ const NAME_ALIASES = {
   'Czech Republic': 'Czechia'
 }
 
-
+// fixed point used to represent "International" (no specific country) programmes —
+// placed in the Atlantic, roughly between Europe and North America
 const INTERNATIONAL_MARKER_LONLAT = [-38, 40]
 
 function resolveWorldName (ourName) {
@@ -20,18 +22,35 @@ function resolveWorldName (ourName) {
 }
 
 function generateWorldMap (programmes) {
-  const activeCountries = new Set()
+  const countsByWorldName = {}
+  const worldNameToOurs = {}
   for (const p of programmes) {
-    if (p.country) activeCountries.add(resolveWorldName(p.country))
+    if (!p.country) continue
+    const worldName = resolveWorldName(p.country)
+    countsByWorldName[worldName] = (countsByWorldName[worldName] || 0) + 1
+    worldNameToOurs[worldName] = p.country
   }
 
   const geo = topojson.feature(world, world.objects.countries)
 
-  // zoom the projection to the countries that actually have data, not the
-  // whole world — with a little padding so nothing sits at the edge
-  const activeFeatures = geo.features.filter(f => activeCountries.has(f.properties.name))
-  const fitTarget = activeFeatures.length
-    ? { type: 'FeatureCollection', features: activeFeatures }
+  // fit the zoom to the DENSE cluster of countries (covering ~90% of programmes
+  // by count), not every country with any data at all — a couple of geographic
+  // outliers (e.g. India, Brazil) would otherwise force a near-global bounding
+  // box and defeat the zoom entirely, even though they're a small fraction of
+  // the actual data
+  const sortedByCount = Object.entries(countsByWorldName).sort((a, b) => b[1] - a[1])
+  const totalCount = sortedByCount.reduce((sum, [, c]) => sum + c, 0)
+  const coreWorldNames = new Set()
+  let running = 0
+  for (const [name, count] of sortedByCount) {
+    coreWorldNames.add(name)
+    running += count
+    if (running / totalCount >= 0.9) break
+  }
+
+  const coreFeatures = geo.features.filter(f => coreWorldNames.has(f.properties.name))
+  const fitTarget = coreFeatures.length
+    ? { type: 'FeatureCollection', features: coreFeatures }
     : geo
 
   const width = 960
@@ -42,11 +61,6 @@ function generateWorldMap (programmes) {
     fitTarget
   )
   const pathGen = geoPath(projection)
-
-  const worldNameToOurs = {}
-  for (const p of programmes) {
-    if (p.country) worldNameToOurs[resolveWorldName(p.country)] = p.country
-  }
 
   const pathsHtml = geo.features.map(feature => {
     const worldName = feature.properties.name
