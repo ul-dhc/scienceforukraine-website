@@ -410,12 +410,19 @@ function programmesContentHtml (programmes) {
         </div>
 
         <div class="programmes-map-section" id="programmes-map-section">
-          <button type="button" class="programmes-map-collapse" id="pf-map-collapse"><span class="programmes-map-collapse__label">Expand map</span> ${icon('chevronDown')}</button>
-          <div class="programmes-map-section__body" id="programmes-map-body" hidden>
+          <button type="button" class="programmes-map-collapse" id="pf-map-collapse"><span class="programmes-map-collapse__label">Collapse map</span> ${icon('chevronDown')}</button>
+          <div class="programmes-map-section__body" id="programmes-map-body">
             <div class="programmes-map">
-              <div class="programmes-map__heading">Where opportunities are available</div>
-              <div class="programmes-map__subheading">Programmes in <strong id="programmes-map-country-count">${countries.length} countries</strong></div>
-              ${map.svg}
+              <div class="programmes-map__heading">Countries covered in this archive</div>
+              <div class="programmes-map__subheading">Programmes in <strong id="programmes-map-country-count">${countries.length} countries</strong> (past and present)</div>
+              <div class="world-map-viewport" id="world-map-viewport">
+                <div class="world-map-zoom-controls">
+                  <button type="button" id="pf-map-zoom-in" aria-label="Zoom in">+</button>
+                  <button type="button" id="pf-map-zoom-out" aria-label="Zoom out">&minus;</button>
+                  <button type="button" id="pf-map-zoom-reset">Reset view</button>
+                </div>
+                ${map.svg}
+              </div>
             </div>
             <div class="programmes-top-countries">
               <div class="programmes-top-countries__heading">Top countries by archive listings</div>
