@@ -372,6 +372,7 @@
         '<span class="listing-detail__id">' + escapeHtml(p.id) + '</span>' +
         '<div class="programme-detail__country">' + icon_pin() + escapeHtml(p.country || 'International') + '</div>' +
         '<div class="listing-detail__institution">' + escapeHtml(p.title) + '</div>' +
+        '<div class="listing-detail__tags">' + tagsHtml(p) + '</div>' +
         '<p class="listing-detail__description">' + escapeHtml(p.description || '') + '</p>' +
         '<div class="listing-detail__field-label">Discipline</div><div class="listing-detail__field-value">' + escapeHtml(disciplineLabel(p)) + '</div>' +
         (p.deadline ? '<div class="listing-detail__field-label">Deadline</div><div class="listing-detail__field-value">' + deadlineHtml(p) + '</div>' : '') +
