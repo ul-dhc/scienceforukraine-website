@@ -87,6 +87,24 @@
     return '#0057B7'
   }
 
+  function deadlineStatus (p) {
+    if (!p.deadline) return null
+    var deadline = new Date(p.deadline)
+    var today = new Date()
+    today.setHours(0, 0, 0, 0)
+    var daysUntil = (deadline.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)
+    if (daysUntil < 0) return 'passed'
+    if (daysUntil <= 30) return 'soon'
+    return 'ahead'
+  }
+
+  function deadlineHtml (p, label) {
+    if (!p.deadline) return ''
+    var status = deadlineStatus(p)
+    var statusLabel = status === 'passed' ? ' (passed)' : status === 'soon' ? ' (approaching)' : ''
+    return '<span class="deadline-badge deadline-badge--' + status + '">' + (label || '') + escapeHtml(p.deadline) + statusLabel + '</span>'
+  }
+
   function tagsHtml (p) {
     var tags = ['<span class="programme-tag">' + escapeHtml(p.primaryType) + '</span>']
     p.types.forEach(function (t) {
@@ -113,7 +131,7 @@
         '<div class="programme-card__country">' + icon_pin() + escapeHtml(p.country || 'International') + '</div>' +
         '<div class="programme-card__description">' + escapeHtml(p.description || '') + '</div>' +
         '<div class="programme-card__meta-label">Discipline</div><div class="programme-card__meta-value">' + escapeHtml(disciplineLabel(p)) + '</div>' +
-        (p.deadline ? '<div class="programme-card__meta-label">Deadline</div><div class="programme-card__meta-value">' + escapeHtml(p.deadline) + '</div>' : '') +
+        (p.deadline ? '<div class="programme-card__meta-label">Deadline</div><div class="programme-card__meta-value">' + deadlineHtml(p) + '</div>' : '') +
         '<div class="programme-card__tags">' + tagsHtml(p) + '</div>' +
         (p.dateAdded ? '<div class="programme-card__added">Added ' + escapeHtml(p.dateAdded) + '</div>' : '') +
         '<span class="programme-card__link">View details &rarr;</span>' +
@@ -124,16 +142,42 @@
     return '<svg class="programme-card__pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>'
   }
 
-  function listRowHtml (p) {
+  var SORT_LABELS = { newest: 'Added', title: 'Title', country: 'Country', oldest: 'Added' }
+  var COLUMN_SORT_MAP = { added: 'newest', title: 'title', country: 'country' }
+
+  function sortIndicator (column) {
+    var mappedSort = COLUMN_SORT_MAP[column]
+    if (state.sort !== mappedSort && !(column === 'added' && state.sort === 'oldest')) return ''
+    return state.sort === 'oldest' ? ' &uarr;' : ' &darr;'
+  }
+
+  function listTableHtml (results) {
+    var rows = results.map(function (p) {
+      return '' +
+        '<tr class="programme-row" data-id="' + escapeHtml(p.id) + '">' +
+          '<td class="programme-row__new-cell">' + (isNew(p) ? '<span class="programme-card__new">NEW</span>' : '') + '</td>' +
+          '<td class="programme-row__id">' + escapeHtml(p.id) + '</td>' +
+          '<td class="programme-row__title">' + escapeHtml(p.title) + '</td>' +
+          '<td class="programme-row__country">' + escapeHtml(p.country || 'International') + '</td>' +
+          '<td class="programme-row__type"><span class="programme-tag">' + escapeHtml(p.primaryType) + '</span></td>' +
+          '<td class="programme-row__description">' + escapeHtml(p.description || '') + '</td>' +
+          '<td class="programme-row__deadline">' + (p.deadline ? deadlineHtml(p) : '') + '</td>' +
+        '</tr>'
+    }).join('')
+
     return '' +
-      '<a class="programme-row" href="#' + encodeURIComponent(p.id) + '">' +
-        (isNew(p) ? '<span class="programme-card__new">NEW</span>' : '<span class="programme-row__spacer"></span>') +
-        '<span class="programme-row__id">' + escapeHtml(p.id) + '</span>' +
-        '<span class="programme-row__title">' + escapeHtml(p.title) + '</span>' +
-        '<span class="programme-row__country">' + escapeHtml(p.country || 'International') + '</span>' +
-        '<span class="programme-row__type">' + escapeHtml(p.primaryType) + '</span>' +
-        (p.deadline ? '<span class="programme-row__deadline">Deadline: ' + escapeHtml(p.deadline) + '</span>' : '<span></span>') +
-      '</a>'
+      '<table class="programmes-table">' +
+        '<thead><tr>' +
+          '<th></th>' +
+          '<th>ID</th>' +
+          '<th class="is-sortable" data-sort-col="title">Title' + sortIndicator('title') + '</th>' +
+          '<th class="is-sortable" data-sort-col="country">Country' + sortIndicator('country') + '</th>' +
+          '<th>Type</th>' +
+          '<th>Description</th>' +
+          '<th class="is-sortable" data-sort-col="added">Deadline / Added' + sortIndicator('added') + '</th>' +
+        '</tr></thead>' +
+        '<tbody>' + rows + '</tbody>' +
+      '</table>'
   }
 
   function activeFilterChips () {
@@ -236,10 +280,15 @@
   function render () {
     var results = programmes.filter(matches).sort(SORTERS[state.sort] || SORTERS.newest)
     countEl.textContent = results.length + ' programme' + (results.length === 1 ? '' : 's')
-    gridEl.className = state.view === 'list' ? 'programmes-list' : 'programmes-grid'
-    gridEl.innerHTML = results.length
-      ? results.map(state.view === 'list' ? listRowHtml : cardHtml).join('')
-      : '<div class="programmes-empty">No programmes match your filters.</div>'
+    if (state.view === 'list') {
+      gridEl.className = 'programmes-list'
+      gridEl.innerHTML = results.length ? listTableHtml(results) : '<div class="programmes-empty">No programmes match your filters.</div>'
+      sortSelect.parentElement.hidden = true
+    } else {
+      gridEl.className = 'programmes-grid'
+      gridEl.innerHTML = results.length ? results.map(cardHtml).join('') : '<div class="programmes-empty">No programmes match your filters.</div>'
+      sortSelect.parentElement.hidden = false
+    }
     updateMap()
     renderActiveFilters()
   }
@@ -256,7 +305,7 @@
         '<div class="listing-detail__institution">' + escapeHtml(p.title) + '</div>' +
         '<p class="listing-detail__description">' + escapeHtml(p.description || '') + '</p>' +
         '<div class="listing-detail__field-label">Discipline</div><div class="listing-detail__field-value">' + escapeHtml(disciplineLabel(p)) + '</div>' +
-        (p.deadline ? '<div class="listing-detail__field-label">Deadline</div><div class="listing-detail__field-value">' + escapeHtml(p.deadline) + '</div>' : '') +
+        (p.deadline ? '<div class="listing-detail__field-label">Deadline</div><div class="listing-detail__field-value">' + deadlineHtml(p) + '</div>' : '') +
         (p.dateAdded ? '<div class="listing-detail__field-label">Added to archive</div><div class="listing-detail__field-value listing-detail__field-value--muted">' + escapeHtml(p.dateAdded) + '</div>' : '') +
         (p.link ? '<div class="listing-detail__field-label">Link</div><div class="listing-detail__field-value"><a href="' + escapeHtml(p.link) + '" target="_blank" rel="noopener">' + escapeHtml(p.link) + '</a></div>' : '')
     }
@@ -406,6 +455,25 @@
     if (zoomOutBtn) zoomOutBtn.addEventListener('click', function () { zoomState.scale = clampZoom(zoomState.scale / 1.3); applyZoomTransform() })
     if (zoomResetBtn) zoomResetBtn.addEventListener('click', function () { zoomState = { scale: defaultZoomState.scale, x: defaultZoomState.x, y: defaultZoomState.y }; applyZoomTransform() })
   }
+
+  gridEl.addEventListener('click', function (e) {
+    var sortHeader = e.target.closest('[data-sort-col]')
+    if (sortHeader) {
+      var col = sortHeader.getAttribute('data-sort-col')
+      var mapped = COLUMN_SORT_MAP[col]
+      if (col === 'added') {
+        state.sort = (state.sort === 'newest') ? 'oldest' : 'newest'
+      } else {
+        state.sort = mapped
+      }
+      render()
+      return
+    }
+    var row = e.target.closest('.programme-row')
+    if (row && row.tagName === 'TR') {
+      window.location.hash = encodeURIComponent(row.getAttribute('data-id'))
+    }
+  })
 
   window.addEventListener('hashchange', syncView)
 
