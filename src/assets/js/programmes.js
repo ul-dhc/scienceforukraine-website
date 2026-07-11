@@ -47,6 +47,14 @@
 
   function isNew (p) { return daysAgo(p.dateAdded) <= NEW_THRESHOLD_DAYS }
 
+  function isUpdated (p) {
+    if (isNew(p)) return false
+    if (!p.dateUpdated) return false
+    if (daysAgo(p.dateUpdated) > NEW_THRESHOLD_DAYS) return false
+    if (p.dateAdded && p.dateUpdated <= p.dateAdded) return false
+    return true
+  }
+
   // matches everything EXCEPT the country filter — used by the map, so hovering
   // and clicking a country always show the same number (previously these could
   // disagree, since the map ignored whatever other filters were already active)
@@ -57,7 +65,11 @@
     if (state.recentlyAdded && !isNew(p)) return false
     if (state.search) {
       var q = state.search.toLowerCase()
-      var haystack = [p.title, p.description, p.country].join(' ').toLowerCase()
+      var searchFields = [p.title, p.description, p.country, p.region, p.primaryType, p.types.join(' ')]
+      searchFields.push(disciplineLabel(p))
+      var openForLabels = { doctoralStudents: 'Doctoral students', researchers: 'Researchers', students: 'Students', institutions: 'Institutions' }
+      Object.keys(openForLabels).forEach(function (k) { if (p.openFor[k]) searchFields.push(openForLabels[k]) })
+      var haystack = searchFields.join(' ').toLowerCase()
       if (haystack.indexOf(q) === -1) return false
     }
     return true
@@ -76,7 +88,15 @@
     newest: function (a, b) { return (b.dateAdded || '').localeCompare(a.dateAdded || '') },
     oldest: function (a, b) { return (a.dateAdded || '').localeCompare(b.dateAdded || '') },
     title: function (a, b) { return a.title.localeCompare(b.title) },
-    country: function (a, b) { return (a.country || '').localeCompare(b.country || '') }
+    'title-desc': function (a, b) { return b.title.localeCompare(a.title) },
+    country: function (a, b) { return (a.country || '').localeCompare(b.country || '') },
+    'country-desc': function (a, b) { return (b.country || '').localeCompare(a.country || '') },
+    type: function (a, b) { return a.primaryType.localeCompare(b.primaryType) },
+    'type-desc': function (a, b) { return b.primaryType.localeCompare(a.primaryType) },
+    id: function (a, b) { return a.id.localeCompare(b.id, undefined, { numeric: true }) },
+    'id-desc': function (a, b) { return b.id.localeCompare(a.id, undefined, { numeric: true }) },
+    deadline: function (a, b) { return (a.deadline || '9999').localeCompare(b.deadline || '9999') },
+    'deadline-desc': function (a, b) { return (b.deadline || '0000').localeCompare(a.deadline || '0000') }
   }
 
   function colorForCount (count) {
@@ -124,7 +144,7 @@
     return '' +
       '<a class="programme-card" href="#' + encodeURIComponent(p.id) + '">' +
         '<div class="programme-card__top">' +
-          (isNew(p) ? '<span class="programme-card__new">NEW</span>' : '<span></span>') +
+          (isNew(p) ? '<span class="programme-card__new">NEW</span>' : (isUpdated(p) ? '<span class="programme-card__updated">UPDATED</span>' : '<span></span>')) +
           '<span class="programme-card__id">' + escapeHtml(p.id) + '</span>' +
         '</div>' +
         '<div class="programme-card__title">' + escapeHtml(p.title) + '</div>' +
@@ -142,26 +162,35 @@
     return '<svg class="programme-card__pin-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>'
   }
 
-  var SORT_LABELS = { newest: 'Added', title: 'Title', country: 'Country', oldest: 'Added' }
-  var COLUMN_SORT_MAP = { added: 'newest', title: 'title', country: 'country' }
+  var COLUMN_SORT_MAP = { id: 'id', title: 'title', country: 'country', type: 'type', deadline: 'deadline', added: 'newest' }
 
   function sortIndicator (column) {
     var mappedSort = COLUMN_SORT_MAP[column]
-    if (state.sort !== mappedSort && !(column === 'added' && state.sort === 'oldest')) return ''
-    return state.sort === 'oldest' ? ' &uarr;' : ' &darr;'
+    var current = state.sort
+    if (current === mappedSort) return ' &darr;'
+    if (column === 'added' && current === 'oldest') return ' &uarr;'
+    if (column === 'title' && current === 'title-desc') return ' &uarr;'
+    if (column === 'country' && current === 'country-desc') return ' &uarr;'
+    if (column === 'type' && current === 'type-desc') return ' &uarr;'
+    if (column === 'id' && current === 'id-desc') return ' &uarr;'
+    if (column === 'deadline' && current === 'deadline-desc') return ' &uarr;'
+    return ''
   }
 
   function listTableHtml (results) {
     var rows = results.map(function (p) {
       return '' +
         '<tr class="programme-row" data-id="' + escapeHtml(p.id) + '">' +
-          '<td class="programme-row__new-cell">' + (isNew(p) ? '<span class="programme-card__new">NEW</span>' : '') + '</td>' +
+          '<td class="programme-row__new-cell">' + (isNew(p) ? '<span class="programme-card__new">NEW</span>' : (isUpdated(p) ? '<span class="programme-card__updated">UPDATED</span>' : '')) + '</td>' +
           '<td class="programme-row__id">' + escapeHtml(p.id) + '</td>' +
-          '<td class="programme-row__title">' + escapeHtml(p.title) + '</td>' +
+          '<td class="programme-row__title-cell">' +
+            '<div class="programme-row__title">' + escapeHtml(p.title) + '</div>' +
+            '<div class="programme-row__description">' + escapeHtml(p.description || '') + '</div>' +
+          '</td>' +
           '<td class="programme-row__country">' + escapeHtml(p.country || 'International') + '</td>' +
           '<td class="programme-row__type"><span class="programme-tag">' + escapeHtml(p.primaryType) + '</span></td>' +
-          '<td class="programme-row__description">' + escapeHtml(p.description || '') + '</td>' +
           '<td class="programme-row__deadline">' + (p.deadline ? deadlineHtml(p) : '') + '</td>' +
+          '<td class="programme-row__added">' + escapeHtml(p.dateUpdated || p.dateAdded || '') + '</td>' +
         '</tr>'
     }).join('')
 
@@ -169,12 +198,12 @@
       '<table class="programmes-table">' +
         '<thead><tr>' +
           '<th></th>' +
-          '<th>ID</th>' +
+          '<th class="is-sortable" data-sort-col="id">ID' + sortIndicator('id') + '</th>' +
           '<th class="is-sortable" data-sort-col="title">Title' + sortIndicator('title') + '</th>' +
           '<th class="is-sortable" data-sort-col="country">Country' + sortIndicator('country') + '</th>' +
-          '<th>Type</th>' +
-          '<th>Description</th>' +
-          '<th class="is-sortable" data-sort-col="added">Deadline / Added' + sortIndicator('added') + '</th>' +
+          '<th class="is-sortable" data-sort-col="type">Type' + sortIndicator('type') + '</th>' +
+          '<th class="is-sortable" data-sort-col="deadline">Deadline' + sortIndicator('deadline') + '</th>' +
+          '<th class="is-sortable" data-sort-col="added">Added / Updated' + sortIndicator('added') + '</th>' +
         '</tr></thead>' +
         '<tbody>' + rows + '</tbody>' +
       '</table>'
@@ -460,12 +489,9 @@
     var sortHeader = e.target.closest('[data-sort-col]')
     if (sortHeader) {
       var col = sortHeader.getAttribute('data-sort-col')
-      var mapped = COLUMN_SORT_MAP[col]
-      if (col === 'added') {
-        state.sort = (state.sort === 'newest') ? 'oldest' : 'newest'
-      } else {
-        state.sort = mapped
-      }
+      var ascKey = COLUMN_SORT_MAP[col]
+      var descKey = (col === 'added') ? 'oldest' : (ascKey + '-desc')
+      state.sort = (state.sort === ascKey) ? descKey : ascKey
       render()
       return
     }
