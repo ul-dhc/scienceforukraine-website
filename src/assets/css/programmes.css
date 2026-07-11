@@ -86,6 +86,7 @@
   border: 1px dashed var(--accent-1);
   border-radius: var(--radius-m);
   text-align: left;
+  font-size: var(--font-size-s);
 }
 
 .programmes-crosslink .icon {
@@ -226,10 +227,6 @@
 .programmes-top-countries__item.is-active {
   border-bottom: 2px solid var(--accent-2);
   font-weight: 700;
-}
-  text-align: left;
-  color: var(--ink);
-  font-family: var(--font-family);
 }
 
 .programmes-top-countries__item:hover {
@@ -856,7 +853,7 @@
   display: inline-flex;
   padding: 3px 10px;
   border-radius: var(--radius-pill);
-  background: #D9F5E8;
+  background: var(--tint-mint-chip);
   color: var(--mint);
   font-weight: 400;
   font-size: var(--font-size-s);
