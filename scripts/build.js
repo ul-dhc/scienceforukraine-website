@@ -354,6 +354,19 @@ function listingsContentHtml (openListings, closedListings) {
             </label>
           </div>
           <div class="listings-list" id="listings-list"></div>
+          <div class="programmes-pagination" id="listings-pagination">
+            <label class="programmes-page-size">
+              <span>Show</span>
+              <select id="lf-page-size">
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="all">All</option>
+              </select>
+              <span>per page</span>
+            </label>
+            <div class="programmes-pagination__controls" id="listings-pagination-controls"></div>
+          </div>
         </main>
 
         <div class="listing-detail" id="listing-detail" hidden></div>
@@ -468,6 +481,19 @@ function programmesContentHtml (programmes) {
         <div class="programmes-active-filters" id="programmes-active-filters"></div>
 
         <div class="programmes-grid" id="programmes-grid"></div>
+        <div class="programmes-pagination" id="programmes-pagination">
+          <label class="programmes-page-size">
+            <span>Show</span>
+            <select id="pf-page-size">
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="all">All</option>
+            </select>
+            <span>per page</span>
+          </label>
+          <div class="programmes-pagination__controls" id="programmes-pagination-controls"></div>
+        </div>
 
         </div>
         <div class="programme-detail" id="programme-detail" hidden></div>
