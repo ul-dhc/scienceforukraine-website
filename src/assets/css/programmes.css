@@ -211,14 +211,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 8px;
+  padding: 6px 0;
   border-bottom: 1px solid var(--light-gray);
   cursor: pointer;
   font-size: var(--font-size-s);
   background: none;
   border-left: none;
   border-right: none;
-  border-radius: var(--radius-s);
 }
 
 .programmes-top-countries__item.is-active {
@@ -258,12 +257,15 @@
   cursor: pointer;
   stroke: #ffffff;
   stroke-width: 0.5;
-  transition: opacity var(--transition);
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform var(--transition);
 }
 
 .world-map__country--selected {
-  stroke: var(--accent-2);
-  stroke-width: 3;
+  fill: var(--accent-2) !important;
+  stroke: #B8860B;
+  stroke-width: 1;
 }
 
 .world-map__marker--selected {
@@ -285,7 +287,8 @@
 }
 
 .world-map__country:hover {
-  opacity: 0.75;
+  fill: #FFE58A !important;
+  transform: scale(1.03);
 }
 
 .programmes-map-collapse {
@@ -625,6 +628,34 @@
   font-family: var(--font-family);
   font-size: var(--font-size-s);
   background: var(--background);
+}
+
+.programmes-select-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.programmes-select-wrap.has-selection .programmes-select {
+  border-color: var(--accent-2);
+  border-width: 2px;
+}
+
+.programmes-select-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--accent-2);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .programmes-sort {
