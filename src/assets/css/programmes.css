@@ -853,16 +853,24 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing);
-  margin-top: var(--spacing-xl);
-  padding: var(--spacing-l);
+  max-width: 720px;
+  margin: var(--spacing-l) auto 0;
+  padding: var(--spacing) var(--spacing-l);
   background: var(--tint-warm);
   border: 1px solid var(--tint-warm-border);
   border-radius: var(--radius-m);
 }
 
 .programmes-submit-banner p {
-  color: var(--ink);
-  font-weight: 700;
+  color: var(--ink-soft);
+  font-size: var(--font-size-s);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.programmes-submit-banner .btn {
+  padding: 8px 16px;
+  font-size: var(--font-size-s);
 }
 
 @media (max-width: 700px) {
