@@ -252,17 +252,16 @@
 }
 
 .world-map__marker {
-  fill: var(--accent-2);
-  stroke: #B8860B;
-  stroke-width: 1;
+  stroke: none;
   cursor: pointer;
   transition: opacity var(--transition), transform var(--transition);
+  transform-box: fill-box;
   transform-origin: center;
 }
 
 .world-map__marker:hover {
   opacity: 0.85;
-  transform: scale(1.15);
+  transform: scale(1.2);
 }
 
 .world-map__country:hover {
