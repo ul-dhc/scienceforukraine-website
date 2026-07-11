@@ -15,7 +15,17 @@ const NAME_ALIASES = {
 
 // fixed point used to represent "International" (no specific country) programmes —
 // placed in the Atlantic, roughly between Europe and North America
-const INTERNATIONAL_MARKER_LONLAT = [-38, 40]
+const INTERNATIONAL_MARKER_LONLAT = [-12, 46]
+
+function starPath (cx, cy, outerR, innerR) {
+  const points = []
+  for (let i = 0; i < 10; i++) {
+    const angle = (Math.PI / 5) * i - Math.PI / 2
+    const r = i % 2 === 0 ? outerR : innerR
+    points.push([cx + r * Math.cos(angle), cy + r * Math.sin(angle)])
+  }
+  return 'M' + points.map(p => p.join(',')).join('L') + 'Z'
+}
 
 function resolveWorldName (ourName) {
   return NAME_ALIASES[ourName] || ourName
@@ -72,7 +82,7 @@ function generateWorldMap (programmes) {
 
   const markerXY = projection(INTERNATIONAL_MARKER_LONLAT)
   const markerHtml = markerXY
-    ? `<circle class="world-map__marker" data-region="International" cx="${markerXY[0]}" cy="${markerXY[1]}" r="8"></circle>`
+    ? `<path class="world-map__marker" data-region="International" d="${starPath(markerXY[0], markerXY[1], 10, 4)}"></path>`
     : ''
 
   const svg = `<svg class="world-map" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of countries with archived funding programmes">${pathsHtml}${markerHtml}</svg>`
