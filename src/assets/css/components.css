@@ -10,7 +10,6 @@
   flex-shrink: 0;
 }
 
-
 .btn {
   display: inline-flex;
   align-items: center;
@@ -31,7 +30,6 @@
   outline-offset: 2px;
 }
 
-/* blue button: blue border by default, hovers to yellow */
 .btn-primary,
 .btn-outline {
   border-color: var(--accent-1);
@@ -42,7 +40,6 @@
   border-color: var(--accent-2);
 }
 
-/* yellow button: yellow border by default, hovers to blue */
 .btn-secondary {
   border-color: var(--accent-2);
 }
@@ -50,8 +47,6 @@
 .btn-secondary:hover {
   border-color: var(--accent-1);
 }
-
-/* ---- cards --------------------------------------------------------------- */
 
 .card {
   border-radius: var(--radius-l);
@@ -70,14 +65,17 @@
   border-color: var(--tint-cool-border);
 }
 
-
 :target.card {
-  animation: card-target-highlight 2s ease-out;
+  animation: card-target-highlight 2.2s ease-out;
 }
 
 @keyframes card-target-highlight {
-  0% { box-shadow: 0 0 0 4px var(--accent-2); }
-  100% { box-shadow: 0 0 0 4px transparent; }
+  0%, 15% {
+    box-shadow: 0 0 0 6px var(--accent-2), 0 0 24px 4px rgba(255, 215, 0, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 6px transparent, 0 0 24px 4px rgba(255, 215, 0, 0);
+  }
 }
 
 .card__header {
@@ -107,8 +105,6 @@
   gap: var(--spacing-s);
 }
 
-/* ---- icon badge (circular icon used on cards / updates bar) ------------- */
-
 .icon-badge {
   display: flex;
   align-items: center;
@@ -133,8 +129,6 @@
 .icon-badge--cool {
   color: var(--tint-cool-icon);
 }
-
-/* ---- action link (pill-shaped row link with icon + chevron) ------------- */
 
 .action-link {
   display: flex;
@@ -187,8 +181,6 @@
   color: var(--gray);
   flex-shrink: 0;
 }
-
-/* ---- section eyebrow / heading conventions shared across pages --------- */
 
 .section-title {
   color: var(--accent-1);
