@@ -1,5 +1,3 @@
-
-
 .icon {
   display: inline-block;
   width: 20px;
@@ -39,6 +37,16 @@
 .btn-secondary {
   background: var(--accent-2);
   color: var(--accent-1);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--accent-1);
+  border: 2px solid var(--accent-1);
+}
+
+.btn-outline:hover {
+  background: var(--tint-cool);
 }
 
 /* ---- cards --------------------------------------------------------------- */
