@@ -148,7 +148,7 @@ function homeContentHtml () {
          
           </div>
           <div class="card__links">
-            ${actionLink({ href: '/listings', iconName: 'search', label: 'View all support listings' })}
+            ${actionLink({ href: '/listings', iconName: 'search', label: 'View positions and support listings' })}
             ${actionLink({ href: '/funding-programmes', iconName: 'gift', label: 'Funding programmes and other support' })}
             ${actionLink({ href: '/mtg', iconName: 'send', label: 'Micro Travel Grants', highlight: true })}
           </div>
