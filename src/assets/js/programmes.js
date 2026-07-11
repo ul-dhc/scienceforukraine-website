@@ -707,7 +707,7 @@
       })
         .then(function () {
           submitButton.disabled = false
-          submitStatus.textContent = 'Thank you – we will take a look!'
+          submitStatus.textContent = 'Thank you. We will take a look!'
           submitStatus.className = 'programmes-submit-form__status programmes-submit-form__status--success'
           submitForm.reset()
           setTimeout(function () { submitForm.hidden = true; submitStatus.textContent = '' }, 2500)
