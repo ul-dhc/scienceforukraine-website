@@ -439,6 +439,81 @@
     syncCheckboxPanels()
   }
 
+  function copyLinkButtonHtml () {
+    return '<button type="button" class="detail-action-btn" id="detail-copy-link" aria-label="Copy link to this programme" title="Copy link to this programme">' +
+      '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>' +
+      '</button>'
+  }
+
+  function detailUrl (id) {
+    var basePath = document.body.getAttribute('data-base-path') || ''
+    return window.location.origin + basePath + '/funding-programmes/#' + encodeURIComponent(id)
+  }
+
+  function shareRowHtml (id, title) {
+    var url = detailUrl(id)
+    var encodedUrl = encodeURIComponent(url)
+    var text = encodeURIComponent(title + ' — ' + url)
+    var subject = encodeURIComponent(title)
+    var body = encodeURIComponent('Thought this might be relevant:\n\n' + url)
+
+    return '' +
+      '<div class="share-row">' +
+        '<span class="share-row__label">Share this programme</span>' +
+        '<a class="share-row__link" href="https://wa.me/?text=' + text + '" target="_blank" rel="noopener">' +
+          '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>' +
+          '<span>WhatsApp</span>' +
+        '</a>' +
+        '<a class="share-row__link" href="mailto:?subject=' + subject + '&body=' + body + '">' +
+          '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>' +
+          '<span>Email</span>' +
+        '</a>' +
+        '<a class="share-row__link" href="https://www.linkedin.com/sharing/share-offsite/?url=' + encodedUrl + '" target="_blank" rel="noopener">' +
+          '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>' +
+          '<span>LinkedIn</span>' +
+        '</a>' +
+        '<a class="share-row__link" href="https://www.facebook.com/sharer/sharer.php?u=' + encodedUrl + '" target="_blank" rel="noopener">' +
+          '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>' +
+          '<span>Facebook</span>' +
+        '</a>' +
+      '</div>'
+  }
+
+  function wireCopyLink (id) {
+    var btn = document.getElementById('detail-copy-link')
+    if (!btn) return
+    btn.addEventListener('click', function (e) {
+      e.preventDefault()
+      e.stopPropagation()
+
+      var url = detailUrl(id)
+      var originalHtml = btn.innerHTML
+
+      function showCopied () {
+        btn.classList.add('is-copied')
+        btn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>'
+        setTimeout(function () {
+          btn.classList.remove('is-copied')
+          btn.innerHTML = originalHtml
+        }, 1500)
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(showCopied)
+      } else {
+        var tmp = document.createElement('textarea')
+        tmp.value = url
+        tmp.style.position = 'fixed'
+        tmp.style.opacity = '0'
+        document.body.appendChild(tmp)
+        tmp.select()
+        document.execCommand('copy')
+        document.body.removeChild(tmp)
+        showCopied()
+      }
+    })
+  }
+
   function renderDetail (id) {
     var p = byId[id]
     if (!p) {
@@ -446,6 +521,7 @@
     } else {
       detailEl.innerHTML = '' +
         '<button type="button" class="listing-detail__back" id="detail-back">&larr; All programmes</button>' +
+        copyLinkButtonHtml() +
         '<span class="listing-detail__id">' + escapeHtml(p.id) + '</span>' +
         '<div class="programme-detail__country">' + icon_pin() + escapeHtml(p.country || 'International') + '</div>' +
         '<div class="listing-detail__institution">' + escapeHtml(p.title) + '</div>' +
@@ -454,8 +530,10 @@
         '<div class="listing-detail__field-label">Discipline</div><div class="listing-detail__field-value">' + escapeHtml(disciplineLabel(p)) + '</div>' +
         (p.deadline ? '<div class="listing-detail__field-label">Deadline</div><div class="listing-detail__field-value">' + deadlineHtml(p) + '</div>' : '') +
         ((p.dateUpdated || p.dateAdded) ? '<div class="listing-detail__field-label">Last update</div><div class="listing-detail__field-value listing-detail__field-value--muted">' + escapeHtml(p.dateUpdated || p.dateAdded) + '</div>' : '') +
-        (p.link ? '<div class="listing-detail__field-label">Link</div><div class="listing-detail__field-value"><a href="' + escapeHtml(p.link) + '" target="_blank" rel="noopener">' + escapeHtml(p.link) + '</a></div>' : '')
+        (p.link ? '<div class="listing-detail__field-label">Link</div><div class="listing-detail__field-value"><a href="' + escapeHtml(p.link) + '" target="_blank" rel="noopener">' + escapeHtml(p.link) + '</a></div>' : '') +
+        shareRowHtml(p.id, p.title)
     }
+    if (p) wireCopyLink(p.id)
     var backBtn = document.getElementById('detail-back')
     if (backBtn) backBtn.addEventListener('click', function () { window.location.hash = '' })
   }
