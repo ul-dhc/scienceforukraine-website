@@ -29,14 +29,7 @@
   var viewAllCountriesBtn = document.getElementById('pf-view-all-countries')
   var tooltip = document.getElementById('programmes-map-tooltip')
   var detailEl = document.getElementById('programme-detail')
-  var resultsSections = [
-    document.querySelector('.programmes-toolbar'),
-    document.querySelector('.programmes-recent-toggles'),
-    mapSection,
-    document.querySelector('.programmes-results-bar'),
-    activeFiltersEl,
-    gridEl
-  ]
+  var resultsAreaEl = document.getElementById('programmes-results-area')
 
   var state = { search: '', country: '', discipline: '', openFor: '', type: '', sort: 'newest', recentlyAdded: false, view: 'grid' }
   var showingAllCountries = false
@@ -274,10 +267,15 @@
 
   function syncView () {
     var id = decodeURIComponent(window.location.hash.replace(/^#/, ''))
-    var showDetail = !!id
-    resultsSections.forEach(function (el) { if (el) el.hidden = showDetail })
-    detailEl.hidden = !showDetail
-    if (showDetail) { renderDetail(id); window.scrollTo(0, 0) }
+    if (id) {
+      resultsAreaEl.hidden = true
+      detailEl.hidden = false
+      renderDetail(id)
+      window.scrollTo(0, 0)
+    } else {
+      resultsAreaEl.hidden = false
+      detailEl.hidden = true
+    }
   }
 
   // --- wiring ---
