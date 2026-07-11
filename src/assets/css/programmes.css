@@ -498,17 +498,17 @@
 
 .programmes-table th:nth-child(4),
 .programmes-table td:nth-child(4) {
-  width: 11%;
+  width: 9%;
 }
 
 .programmes-table th:nth-child(5),
 .programmes-table td:nth-child(5) {
-  width: 11%;
+  width: 15%;
 }
 
 .programmes-table th:nth-child(6),
 .programmes-table td:nth-child(6) {
-  width: 12%;
+  width: 11%;
 }
 
 .programmes-table th:nth-child(7),
@@ -882,6 +882,7 @@
   background: none;
   border: 1px solid var(--accent-1);
   color: var(--accent-1);
+  white-space: nowrap;
 }
 
 .programme-tag--secondary {
