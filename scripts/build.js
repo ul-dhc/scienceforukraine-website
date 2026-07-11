@@ -425,7 +425,7 @@ function programmesContentHtml (programmes) {
         <div id="programmes-header-extra-2">
           <div class="programmes-crosslink">
             ${icon('arrowRight')}
-            <span>Looking for individual positions, mentorship, and other direct opportunities? <a href="/listings">Browse Positions &amp; Support Offers &rarr;</a></span>
+            <span>Looking for individual positions, mentorship, and other direct opportunities? <br><a href="/listings">Browse Positions &amp; Support Offers &rarr;</a></span>
           </div>
         </div>
       </div>
