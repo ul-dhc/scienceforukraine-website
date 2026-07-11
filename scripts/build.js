@@ -539,7 +539,7 @@ function programmesContentHtml (programmes) {
 
           <label class="programmes-submit-form__honeypot" aria-hidden="true">
             <span>Leave this field empty</span>
-            <input type="text" name="website" tabindex="-1" autocomplete="off">
+            <input type="text" name="hp_extra_field_2847" tabindex="-1" autocomplete="new-password">
           </label>
 
           <div class="programmes-submit-form__actions">
