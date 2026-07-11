@@ -21,8 +21,9 @@
   font-weight: var(--bold);
   font-size: var(--font-size);
   background: transparent;
-  border: var(--border-w) solid transparent;
-  transition: border-color var(--transition), border-width var(--transition), color var(--transition);
+  color: var(--accent-1);
+  border: 2px solid transparent;
+  transition: border-color var(--transition);
 }
 
 .btn:focus-visible,
@@ -31,39 +32,24 @@
   outline-offset: 2px;
 }
 
-/* tier 1: primary — the one main action on a page (Submit, Find support) */
-.btn-primary {
-  color: var(--accent-1);
+/* blue button: blue border by default, hovers to yellow */
+.btn-primary,
+.btn-outline {
   border-color: var(--accent-1);
 }
 
-.btn-primary:hover {
-  border-color: var(--accent-1-hover);
-  border-width: var(--border-w-active);
-  color: var(--accent-1-hover);
+.btn-primary:hover,
+.btn-outline:hover {
+  border-color: var(--accent-2);
 }
 
-/* tier 2: secondary — an equally-valid alternate action (Donate) */
+/* yellow button: yellow border by default, hovers to blue */
 .btn-secondary {
-  color: var(--ink);
   border-color: var(--accent-2);
 }
 
 .btn-secondary:hover {
-  border-color: var(--accent-2-hover);
-  border-width: var(--border-w-active);
-}
-
-/* tier 3: ghost — lower-emphasis actions (open a form, toolbar buttons) */
-.btn-outline {
-  color: var(--ink-soft);
-  border-color: var(--light-gray);
-}
-
-.btn-outline:hover {
-  color: var(--accent-1);
   border-color: var(--accent-1);
-  border-width: var(--border-w-active);
 }
 
 /* ---- cards --------------------------------------------------------------- */
