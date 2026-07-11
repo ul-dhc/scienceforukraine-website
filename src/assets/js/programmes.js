@@ -659,6 +659,72 @@
   window.addEventListener('resize', enforceGridOnMobile)
   enforceGridOnMobile()
 
+  var SUBMIT_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyvegcSDnFslhN9F8CTZMvUnHVfPI8GYw2MpekL73ku9T_Bk7xpP9-2rwSnrclM8xz1/exec'
+  var submitToggleBtn = document.getElementById('pf-submit-toggle')
+  var submitForm = document.getElementById('pf-submit-form')
+  var submitButton = document.getElementById('pf-submit-button')
+  var submitStatus = document.getElementById('pf-submit-status')
+  var formLoadedAt = Date.now()
+
+  if (submitToggleBtn && submitForm) {
+    submitToggleBtn.addEventListener('click', function () {
+      submitForm.hidden = !submitForm.hidden
+      if (!submitForm.hidden) {
+        submitForm.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      }
+    })
+
+    submitForm.addEventListener('submit', function (e) {
+      e.preventDefault()
+
+      var honeypot = submitForm.querySelector('input[name="website"]').value
+      if (honeypot) return // silently drop — a bot filled the hidden field
+
+      var payload = {
+        title: submitForm.querySelector('input[name="title"]').value.trim(),
+        link: submitForm.querySelector('input[name="link"]').value.trim(),
+        country: submitForm.querySelector('input[name="country"]').value.trim(),
+        notes: submitForm.querySelector('textarea[name="notes"]').value.trim(),
+        website: honeypot,
+        loadedAt: formLoadedAt
+      }
+
+      if (!payload.title || !payload.link) {
+        submitStatus.textContent = 'Please fill in both the title and link.'
+        submitStatus.className = 'programmes-submit-form__status programmes-submit-form__status--error'
+        return
+      }
+
+      submitButton.disabled = true
+      submitStatus.textContent = 'Sending...'
+      submitStatus.className = 'programmes-submit-form__status'
+
+      fetch(SUBMIT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      })
+        .then(function (res) { return res.json() })
+        .then(function (data) {
+          submitButton.disabled = false
+          if (data && data.ok) {
+            submitStatus.textContent = 'Thank you — we\u2019ll take a look!'
+            submitStatus.className = 'programmes-submit-form__status programmes-submit-form__status--success'
+            submitForm.reset()
+            setTimeout(function () { submitForm.hidden = true; submitStatus.textContent = '' }, 2500)
+          } else {
+            submitStatus.textContent = (data && data.error) || 'Something went wrong. Please try again.'
+            submitStatus.className = 'programmes-submit-form__status programmes-submit-form__status--error'
+          }
+        })
+        .catch(function () {
+          submitButton.disabled = false
+          submitStatus.textContent = 'Something went wrong. Please try again.'
+          submitStatus.className = 'programmes-submit-form__status programmes-submit-form__status--error'
+        })
+    })
+  }
+
   window.addEventListener('hashchange', syncView)
 
   render()
