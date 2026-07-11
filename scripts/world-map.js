@@ -1,6 +1,7 @@
 const topojson = require('topojson-client')
 const { geoNaturalEarth1, geoPath } = require('d3-geo')
 const world = require('world-atlas/countries-110m.json')
+const turf = require('@turf/turf')
 
 // maps our dataset's country naming onto world-atlas's naming, where they differ.
 const NAME_ALIASES = {
@@ -22,6 +23,45 @@ function resolveWorldName (ourName) {
   return NAME_ALIASES[ourName] || ourName
 }
 
+// The underlying Natural Earth data draws Crimea as Russian territory,
+// reflecting the 2014 annexation and de facto control — this is not
+// internationally recognized; the UN and the overwhelming majority of
+// countries recognize Crimea as Ukrainian territory. Corrected geometrically
+// here rather than relying on the data source's assumption.
+function correctCrimeaAttribution (geo) {
+  const russiaIndex = geo.features.findIndex(f => f.properties.name === 'Russia')
+  const ukraineIndex = geo.features.findIndex(f => f.properties.name === 'Ukraine')
+  if (russiaIndex === -1 || ukraineIndex === -1) return
+
+  const russia = geo.features[russiaIndex]
+  const ukraine = geo.features[ukraineIndex]
+
+  try {
+    // bounding box generously covering the Crimean peninsula plus the
+    // isthmus connecting it to the mainland, so the corrected shape joins
+    // Ukraine's border cleanly rather than leaving a gap
+    const crimeaBox = turf.bboxPolygon([32.3, 44.0, 37.0, 46.3])
+    const crimeaPiece = turf.intersect(turf.featureCollection([russia, crimeaBox]))
+    if (!crimeaPiece) return
+
+    const russiaFixed = turf.difference(turf.featureCollection([russia, crimeaPiece]))
+    const ukraineFixed = turf.union(turf.featureCollection([ukraine, crimeaPiece]))
+
+    if (russiaFixed) {
+      russiaFixed.properties = russia.properties
+      geo.features[russiaIndex] = russiaFixed
+    }
+    if (ukraineFixed) {
+      ukraineFixed.properties = ukraine.properties
+      geo.features[ukraineIndex] = ukraineFixed
+    }
+  } catch (e) {
+    // if the geometric operation fails for any reason, fall back to the
+    // original geometry rather than breaking the whole map build
+    console.warn('Crimea attribution correction failed, using original geometry:', e.message)
+  }
+}
+
 function generateWorldMap (programmes) {
   const countsByWorldName = {}
   const worldNameToOurs = {}
@@ -33,6 +73,7 @@ function generateWorldMap (programmes) {
   }
 
   const geo = topojson.feature(world, world.objects.countries)
+  correctCrimeaAttribution(geo)
   const width = 960
   const height = 460
   const padding = 24
