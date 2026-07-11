@@ -155,16 +155,18 @@
   gap: 2px;
 }
 
+/* action button (ghost tier), icon-only size */
 .world-map-zoom-controls button {
   width: 28px;
   height: 28px;
-  border: 1px solid var(--light-gray);
+  border: var(--border-w) solid var(--light-gray);
   background: var(--background);
   color: var(--ink);
   border-radius: var(--radius-s);
   cursor: pointer;
   font-size: 16px;
   line-height: 1;
+  transition: border-color var(--transition), border-width var(--transition), color var(--transition);
 }
 
 #pf-map-zoom-reset {
@@ -175,6 +177,7 @@
 
 .world-map-zoom-controls button:hover {
   border-color: var(--accent-1);
+  border-width: var(--border-w-active);
   color: var(--accent-1);
 }
 
@@ -324,15 +327,21 @@
   margin-bottom: var(--spacing);
 }
 
+/* chip (selector tier) — pill shape, border-only feedback, no solid fill */
 .programmes-chip-toggle {
   padding: 6px 14px;
   border-radius: var(--radius-pill);
-  border: 1px solid var(--light-gray);
+  border: var(--border-w) solid var(--light-gray);
   background: var(--background);
   font-size: var(--font-size-s);
   color: var(--ink);
   cursor: pointer;
   font-family: var(--font-family);
+  transition: border-color var(--transition), border-width var(--transition), color var(--transition);
+}
+
+.programmes-chip-toggle:hover {
+  border-color: var(--accent-1);
 }
 
 .programmes-chip-toggle__hint {
@@ -340,13 +349,14 @@
 }
 
 .programmes-chip-toggle.is-active {
-  background: var(--accent-1);
   border-color: var(--accent-1);
-  color: var(--background);
+  border-width: var(--border-w-active);
+  color: var(--accent-1);
+  font-weight: var(--bold);
 }
 
 .programmes-chip-toggle.is-active .programmes-chip-toggle__hint {
-  color: var(--background);
+  color: var(--accent-1);
   opacity: 0.8;
 }
 
@@ -368,23 +378,32 @@
   }
 }
 
+/* chip (selector tier) — pill shape, matches .programmes-chip-toggle */
 .programmes-view-toggle__btn {
   display: flex;
   align-items: center;
   gap: 4px;
   padding: 6px 12px;
-  border: 1px solid var(--light-gray);
-  border-radius: var(--radius-s);
+  border: var(--border-w) solid var(--light-gray);
+  border-radius: var(--radius-pill);
   background: var(--background);
   font-size: var(--font-size-s);
   color: var(--light-text);
   cursor: pointer;
   font-family: var(--font-family);
+  transition: border-color var(--transition), border-width var(--transition), color var(--transition);
+}
+
+.programmes-view-toggle__btn:hover {
+  border-color: var(--accent-1);
+  color: var(--accent-1);
 }
 
 .programmes-view-toggle__btn.is-active {
   border-color: var(--accent-1);
+  border-width: var(--border-w-active);
   color: var(--accent-1);
+  font-weight: var(--bold);
 }
 
 .programmes-active-filters {
@@ -400,6 +419,9 @@
   color: var(--light-text);
 }
 
+/* tag chip: a record of an applied filter (click to remove), distinct
+   from the selector chips above — soft tint fill is intentional here
+   since it mirrors the tint-cool/tint-warm convention used on cards. */
 .programmes-filter-chip {
   display: inline-flex;
   align-items: center;
@@ -408,9 +430,14 @@
   background: var(--tint-cool);
   color: var(--accent-1);
   font-size: var(--font-size-s);
-  border: none;
+  border: var(--border-w) solid transparent;
   cursor: pointer;
   font-family: var(--font-family);
+  transition: border-color var(--transition);
+}
+
+.programmes-filter-chip:hover {
+  border-color: var(--accent-1);
 }
 
 .programmes-filter-chip--clear-all {
@@ -418,6 +445,11 @@
   color: var(--light-text);
   font-weight: 700;
   text-decoration: underline;
+}
+
+.programmes-filter-chip--clear-all:hover {
+  border-color: transparent;
+  color: var(--ink-soft);
 }
 
 .programmes-list {
@@ -616,19 +648,34 @@
   flex: 1;
   min-width: 220px;
   padding: 10px 14px;
-  border: 1px solid var(--light-gray);
+  border: var(--border-w) solid var(--light-gray);
   border-radius: var(--radius-s);
   font-family: var(--font-family);
   font-size: var(--font-size);
+  transition: border-color var(--transition);
 }
 
+.programmes-search:hover,
+.programmes-search:focus-visible {
+  border-color: var(--accent-1);
+}
+
+/* form triggers (search input, select, multiselect) share one border
+   language: light-gray by default, accent-1 border on hover/focus, and
+   a wider accent-2 border while a filter is actively applied. */
 .programmes-select {
   padding: 10px 14px;
-  border: 1px solid var(--light-gray);
+  border: var(--border-w) solid var(--light-gray);
   border-radius: var(--radius-s);
   font-family: var(--font-family);
   font-size: var(--font-size-s);
   background: var(--background);
+  transition: border-color var(--transition), border-width var(--transition);
+}
+
+.programmes-select:hover,
+.programmes-select:focus-visible {
+  border-color: var(--accent-1);
 }
 
 .programmes-select-wrap {
@@ -638,7 +685,7 @@
 
 .programmes-select-wrap.has-selection .programmes-select {
   border-color: var(--accent-2);
-  border-width: 2px;
+  border-width: var(--border-w-active);
 }
 
 .programmes-multiselect {
@@ -655,7 +702,7 @@
 
 .programmes-multiselect.has-selection .programmes-multiselect__button {
   border-color: var(--accent-2);
-  border-width: 2px;
+  border-width: var(--border-w-active);
 }
 
 .programmes-multiselect__panel {
@@ -926,11 +973,17 @@
 
 .programmes-page-size select {
   padding: 6px 10px;
-  border: 1px solid var(--light-gray);
+  border: var(--border-w) solid var(--light-gray);
   border-radius: var(--radius-s);
   font-family: var(--font-family);
   font-size: var(--font-size-s);
   background: var(--background);
+  transition: border-color var(--transition);
+}
+
+.programmes-page-size select:hover,
+.programmes-page-size select:focus-visible {
+  border-color: var(--accent-1);
 }
 
 .programmes-pagination__controls {
@@ -939,9 +992,10 @@
   gap: var(--spacing);
 }
 
+/* action button (ghost tier), compact size */
 .programmes-page-btn {
   padding: 6px 14px;
-  border: 1px solid var(--light-gray);
+  border: var(--border-w) solid var(--light-gray);
   border-radius: var(--radius-s);
   background: var(--background);
   color: var(--accent-1);
@@ -949,6 +1003,7 @@
   font-size: var(--font-size-s);
   cursor: pointer;
   font-family: var(--font-family);
+  transition: border-color var(--transition), border-width var(--transition);
 }
 
 .programmes-page-btn:disabled {
@@ -959,6 +1014,7 @@
 
 .programmes-page-btn:not(:disabled):hover {
   border-color: var(--accent-1);
+  border-width: var(--border-w-active);
 }
 
 .programmes-page-status {
