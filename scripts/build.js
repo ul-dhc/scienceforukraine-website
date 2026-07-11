@@ -407,24 +407,11 @@ function programmesContentHtml (programmes) {
           <select id="pf-discipline" class="programmes-select"><option value="">Discipline</option>${disciplineOptions}</select>
           <select id="pf-open-for" class="programmes-select"><option value="">Open for</option>${openForOptions}</select>
           <select id="pf-type" class="programmes-select"><option value="">Type</option>${typeOptions}</select>
-          <label class="programmes-sort">
-            <span>Sort by</span>
-            <select id="pf-sort" class="programmes-select">
-              <option value="newest">Newest added</option>
-              <option value="oldest">Oldest added</option>
-              <option value="title">Title A&ndash;Z</option>
-              <option value="country">Country A&ndash;Z</option>
-            </select>
-          </label>
-        </div>
-
-        <div class="programmes-recent-toggles">
-          <button type="button" class="programmes-chip-toggle" id="pf-recently-added">Recently added <span class="programmes-chip-toggle__hint">(last 2 months)</span></button>
         </div>
 
         <div class="programmes-map-section" id="programmes-map-section">
-          <button type="button" class="programmes-map-collapse" id="pf-map-collapse"><span class="programmes-map-collapse__label">Collapse map</span> ${icon('chevronDown')}</button>
-          <div class="programmes-map-section__body" id="programmes-map-body">
+          <button type="button" class="programmes-map-collapse" id="pf-map-collapse"><span class="programmes-map-collapse__label">Expand map</span> ${icon('chevronDown')}</button>
+          <div class="programmes-map-section__body" id="programmes-map-body" hidden>
             <div class="programmes-map">
               <div class="programmes-map__heading">Where opportunities are available</div>
               <div class="programmes-map__subheading">Programmes in <strong id="programmes-map-country-count">${countries.length} countries</strong></div>
@@ -439,10 +426,23 @@ function programmesContentHtml (programmes) {
         </div>
         <div class="programmes-map-tooltip" id="programmes-map-tooltip"></div>
 
+        <div class="programmes-recent-toggles">
+          <button type="button" class="programmes-chip-toggle" id="pf-recently-added">Recently added <span class="programmes-chip-toggle__hint">(last 2 months)</span></button>
+          <label class="programmes-sort">
+            <span>Sort by</span>
+            <select id="pf-sort" class="programmes-select">
+              <option value="newest">Newest added</option>
+              <option value="oldest">Oldest added</option>
+              <option value="title">Title A&ndash;Z</option>
+              <option value="country">Country A&ndash;Z</option>
+            </select>
+          </label>
+        </div>
+
         <div class="programmes-results-bar">
           <div class="programmes-count" id="programmes-count"></div>
           <div class="programmes-view-toggle">
-            <button type="button" class="programmes-view-toggle__btn is-active" id="pf-view-grid">${icon('gift')} Grid</button>
+            <button type="button" class="programmes-view-toggle__btn is-active" id="pf-view-grid">${icon('grid')} Grid</button>
             <button type="button" class="programmes-view-toggle__btn" id="pf-view-list">${icon('newspaper')} List</button>
           </div>
         </div>
