@@ -150,7 +150,7 @@ function homeContentHtml () {
           </div>
           <div class="card__links">
             ${actionLink({ href: '/listings', iconName: 'search', label: 'Positions and support listings' })}
-            ${actionLink({ href: '/funding-programmes', iconName: 'gift', label: 'Funding programmes and other support' })}
+            ${actionLink({ href: '/funding-programmes', iconName: 'archive', label: 'Funding programmes and other support' })}
             ${actionLink({ href: '/mtg', iconName: 'send', label: 'Micro Travel Grants', highlight: true })}
           </div>
         </div>
@@ -331,14 +331,17 @@ function listingsContentHtml (openListings, closedListings) {
           ${icon('info')}
           <p>#ScienceForUkraine cannot guarantee that any given opportunity is still open, or that the host institution will respond. If you are affiliated with a listing and would like it corrected or removed, please contact <a href="mailto:data@scienceforukraine.eu">data@scienceforukraine.eu</a>. Know of an opportunity that should be listed? <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0a7SOe1BeSbZsI2py43gaC2MgpuaaiAcl5cqmskCxzeuHvg/viewform" target="_blank" rel="noopener">Submit a listing</a>.</p>
         </div>
-        <div class="listings-crosslink">
+        <div class="listings-crosslink" id="listings-header-extra">
           ${icon('arrowRight')}
           <span>Looking for general funding programmes, fellowships, and grants? <br><a href="/funding-programmes">Browse Funding &amp; Support Programmes &rarr;</a></span>
         </div>
       </div>
       <div class="listings-page">
         <aside class="listings-filters" id="listings-filters">
-          <input type="search" id="lf-search" class="listings-search" placeholder="Search">
+          <div class="search-strip__input-wrap">
+            ${icon('search')}
+            <input type="search" id="lf-search" class="search-strip__input" placeholder="Search" autocomplete="off">
+          </div>
 
           <div class="filter-group">
             <span class="filter-label">Category</span>
@@ -472,14 +475,6 @@ function programmesContentHtml (programmes) {
 
       <div class="programmes-page">
         <div class="programmes-results-area" id="programmes-results-area">
-        <div class="programmes-toolbar">
-          <input type="search" id="pf-search" class="programmes-search" placeholder="Search programmes, institutions, keywords...">
-          ${checkboxDropdown('pf-country', 'Country', countries.map(c => [escapeHtml(c), escapeHtml(c)]))}
-          ${checkboxDropdown('pf-discipline', 'Discipline', DISCIPLINE_LABELS_P)}
-          ${checkboxDropdown('pf-open-for', 'Open for', OPEN_FOR_LABELS_P)}
-          ${checkboxDropdown('pf-type', 'Type', types.map(t => [escapeHtml(t), escapeHtml(t)]))}
-        </div>
-
         <div class="programmes-map-section" id="programmes-map-section">
           <button type="button" class="programmes-map-collapse" id="pf-map-collapse"><span class="programmes-map-collapse__label">Collapse map</span> ${icon('chevronDown')}</button>
           <div class="programmes-map-section__body" id="programmes-map-body">
@@ -503,6 +498,17 @@ function programmesContentHtml (programmes) {
           </div>
         </div>
         <div class="programmes-map-tooltip" id="programmes-map-tooltip"></div>
+
+        <div class="programmes-toolbar">
+          <div class="search-strip__input-wrap">
+            ${icon('search')}
+            <input type="search" id="pf-search" class="search-strip__input" placeholder="Search programmes, institutions, keywords..." autocomplete="off">
+          </div>
+          ${checkboxDropdown('pf-country', 'Country', countries.map(c => [escapeHtml(c), escapeHtml(c)]))}
+          ${checkboxDropdown('pf-discipline', 'Discipline', DISCIPLINE_LABELS_P)}
+          ${checkboxDropdown('pf-open-for', 'Open for', OPEN_FOR_LABELS_P)}
+          ${checkboxDropdown('pf-type', 'Type', types.map(t => [escapeHtml(t), escapeHtml(t)]))}
+        </div>
 
         <div class="programmes-recent-toggles">
           <button type="button" class="programmes-chip-toggle" id="pf-recently-added">Recently added <span class="programmes-chip-toggle__hint">(last 2 months)</span></button>
