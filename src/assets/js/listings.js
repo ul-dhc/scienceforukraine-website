@@ -350,16 +350,19 @@
 
   function syncView () {
     var id = decodeURIComponent(window.location.hash.replace(/^#/, ''))
+    var headerExtra = document.getElementById('listings-header-extra')
     if (id) {
       filtersEl.hidden = true
       mainEl.hidden = true
       detailEl.hidden = false
+      if (headerExtra) headerExtra.hidden = true
       renderDetail(id)
       window.scrollTo(0, 0)
     } else {
       filtersEl.hidden = false
       mainEl.hidden = false
       detailEl.hidden = true
+      if (headerExtra) headerExtra.hidden = false
     }
   }
 
