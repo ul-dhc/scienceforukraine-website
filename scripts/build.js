@@ -333,9 +333,11 @@ function listingsContentHtml (openListings, closedListings) {
           ${icon('info')}
           <p>#ScienceForUkraine cannot guarantee that any given opportunity is still open, or that the host institution will respond. If you are affiliated with a listing and would like it corrected or removed, please contact <a href="mailto:data@scienceforukraine.eu">data@scienceforukraine.eu</a>. Know of an opportunity that should be listed? <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0a7SOe1BeSbZsI2py43gaC2MgpuaaiAcl5cqmskCxzeuHvg/viewform" target="_blank" rel="noopener">Submit a listing</a>.</p>
         </div>
-        <div class="listings-crosslink" id="listings-header-extra-2">
-          ${icon('arrowRight')}
-          <span>Looking for general funding programmes, fellowships, and grants? <br><a href="/funding-programmes">Browse Funding &amp; Support Programmes &rarr;</a></span>
+        <div id="listings-header-extra-2">
+          <div class="listings-crosslink">
+            ${icon('arrowRight')}
+            <span>Looking for general funding programmes, fellowships, and grants? <br><a href="/funding-programmes">Browse Funding &amp; Support Programmes &rarr;</a></span>
+          </div>
         </div>
       </div>
       <div class="listings-page">
