@@ -237,8 +237,8 @@
     var url = detailUrl(id)
     var encodedUrl = encodeURIComponent(url)
     var text = encodeURIComponent(title + ' — ' + url)
-    var subject = encodeURIComponent(title)
-    var body = encodeURIComponent('This #ScienceForUkraine listing may be relevant:\n\n' + url)
+    var subject = encodeURIComponent(title + ' – via #ScienceForUkraine')
+    var body = encodeURIComponent('Thought this might be relevant:\n\n' + url)
 
     return '' +
       '<div class="share-row">' +
