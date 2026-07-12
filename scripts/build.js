@@ -506,7 +506,7 @@ function programmesContentHtml (programmes) {
         <div class="programmes-toolbar">
           <div class="search-strip__input-wrap">
             ${icon('search')}
-            <input type="search" id="pf-search" class="search-strip__input" placeholder="Search programmes, institutions, keywords..." autocomplete="off">
+            <input type="search" id="pf-search" class="search-strip__input" placeholder="Search funding programmes..." autocomplete="off">
           </div>
           ${checkboxDropdown('pf-country', 'Country', countries.map(c => [escapeHtml(c), escapeHtml(c)]))}
           ${checkboxDropdown('pf-discipline', 'Discipline', DISCIPLINE_LABELS_P)}
