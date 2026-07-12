@@ -135,15 +135,6 @@
   font-weight: 700;
 }
 
-.listings-search {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--light-gray);
-  border-radius: var(--radius-s);
-  font-family: var(--font-family);
-  font-size: var(--font-size);
-}
-
 .filter-group {
   display: flex;
   flex-direction: column;
