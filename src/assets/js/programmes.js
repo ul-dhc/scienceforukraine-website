@@ -454,7 +454,7 @@
     var url = detailUrl(id)
     var encodedUrl = encodeURIComponent(url)
     var text = encodeURIComponent(title + ' — ' + url)
-    var subject = encodeURIComponent(title)
+    var subject = encodeURIComponent(title + ' – via #ScienceForUkraine')
     var body = encodeURIComponent('Thought this might be relevant:\n\n' + url)
 
     return '' +
