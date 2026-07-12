@@ -350,19 +350,22 @@
 
   function syncView () {
     var id = decodeURIComponent(window.location.hash.replace(/^#/, ''))
-    var headerExtra = document.getElementById('listings-header-extra')
+    var headerExtra1 = document.getElementById('listings-header-extra-1')
+    var headerExtra2 = document.getElementById('listings-header-extra-2')
     if (id) {
       filtersEl.hidden = true
       mainEl.hidden = true
       detailEl.hidden = false
-      if (headerExtra) headerExtra.hidden = true
+      if (headerExtra1) headerExtra1.hidden = true
+      if (headerExtra2) headerExtra2.hidden = true
       renderDetail(id)
       window.scrollTo(0, 0)
     } else {
       filtersEl.hidden = false
       mainEl.hidden = false
       detailEl.hidden = true
-      if (headerExtra) headerExtra.hidden = false
+      if (headerExtra1) headerExtra1.hidden = false
+      if (headerExtra2) headerExtra2.hidden = false
     }
   }
 
