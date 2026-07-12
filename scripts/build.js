@@ -206,7 +206,7 @@ function homeContentHtml () {
         <div class="search-strip__input-area">
           <div class="search-strip__input-wrap">
             ${icon('search')}
-            <input type="search" id="site-search-input" class="search-strip__input" placeholder="Type a keyword, institution, country, discipline…" autocomplete="off">
+            <input type="search" id="site-search-input" class="search-strip__input" placeholder="... a keyword, institution, country, discipline ..." autocomplete="off">
           </div>
           <div class="search-strip__results" id="site-search-results" hidden></div>
         </div>
