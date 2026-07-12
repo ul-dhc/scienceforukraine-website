@@ -164,7 +164,7 @@
 .world-map-zoom-controls button {
   width: 28px;
   height: 28px;
-  border: 2px solid var(--accent-1);
+  border: var(--border-w) solid var(--accent-1);
   background: var(--background);
   color: var(--accent-1);
   border-radius: var(--radius-s);
@@ -643,20 +643,9 @@
   margin-bottom: var(--spacing-l);
 }
 
-.programmes-search {
+.programmes-toolbar .search-strip__input-wrap {
   flex: 1;
   min-width: 220px;
-  padding: 10px 14px;
-  border: var(--border-w) solid var(--light-gray);
-  border-radius: var(--radius-s);
-  font-family: var(--font-family);
-  font-size: var(--font-size);
-  transition: border-color var(--transition);
-}
-
-.programmes-search:hover,
-.programmes-search:focus-visible {
-  border-color: var(--accent-1);
 }
 
 /* form triggers (search input, select, multiselect) share one border
