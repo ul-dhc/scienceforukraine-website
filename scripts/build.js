@@ -321,17 +321,19 @@ function listingsContentHtml (openListings, closedListings) {
   return `
       <div class="listings-header">
         <h1 class="listings-header__title">Positions &amp; Support Offers</h1>
-        <p class="listings-header__subtitle">A growing collection of positions, mentoring, research visits, and support offers for Ukrainian researchers and students.</p>
-        <div class="listings-stats">
-          <div class="listings-stat">${icon('search')}<span class="listings-stat__value">${openListings.length}</span><span class="listings-stat__label">listings</span></div>
-          <div class="listings-stat">${icon('globePin')}<span class="listings-stat__value">${countries.length}</span><span class="listings-stat__label">countries represented</span></div>
-          <div class="listings-stat">${icon('refresh')}<span class="listings-stat__value">Rolling</span><span class="listings-stat__label">new listings added regularly</span></div>
+        <div id="listings-header-extra-1">
+          <p class="listings-header__subtitle">A growing collection of positions, mentoring, research visits, and support offers for Ukrainian researchers and students.</p>
+          <div class="listings-stats">
+            <div class="listings-stat">${icon('search')}<span class="listings-stat__value">${openListings.length}</span><span class="listings-stat__label">listings</span></div>
+            <div class="listings-stat">${icon('globePin')}<span class="listings-stat__value">${countries.length}</span><span class="listings-stat__label">countries represented</span></div>
+            <div class="listings-stat">${icon('refresh')}<span class="listings-stat__value">Rolling</span><span class="listings-stat__label">new listings added regularly</span></div>
+          </div>
         </div>
         <div class="listings-banner">
           ${icon('info')}
           <p>#ScienceForUkraine cannot guarantee that any given opportunity is still open, or that the host institution will respond. If you are affiliated with a listing and would like it corrected or removed, please contact <a href="mailto:data@scienceforukraine.eu">data@scienceforukraine.eu</a>. Know of an opportunity that should be listed? <a href="https://docs.google.com/forms/d/e/1FAIpQLSe0a7SOe1BeSbZsI2py43gaC2MgpuaaiAcl5cqmskCxzeuHvg/viewform" target="_blank" rel="noopener">Submit a listing</a>.</p>
         </div>
-        <div class="listings-crosslink" id="listings-header-extra">
+        <div class="listings-crosslink" id="listings-header-extra-2">
           ${icon('arrowRight')}
           <span>Looking for general funding programmes, fellowships, and grants? <br><a href="/funding-programmes">Browse Funding &amp; Support Programmes &rarr;</a></span>
         </div>
