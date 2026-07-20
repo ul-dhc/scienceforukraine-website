@@ -15,7 +15,7 @@ const SITE_URL = 'https://scienceforukraine.eu'
 
 const CUSTOM_DOMAIN = ''
 
-const BASE_PATH = '/scienceforukraine-website'
+const BASE_PATH = '' //'/scienceforukraine-website'
 
 const DEPLOY_URL = BASE_PATH ? 'https://ul-dhc.github.io' + BASE_PATH : SITE_URL
 
