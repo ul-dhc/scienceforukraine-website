@@ -2,6 +2,7 @@
   var dataEl = document.getElementById('listings-data')
   if (!dataEl) return
 
+  var basePath = document.body.getAttribute('data-base-path') || ''
   var data = JSON.parse(dataEl.textContent)
   var openListings = data.open
   var closedListings = data.closed
@@ -9,10 +10,35 @@
   openListings.forEach(function (l) { byId[l.id] = l })
   closedListings.forEach(function (l) { byId[l.id] = l })
 
-  var filtersEl = document.getElementById('listings-filters')
-  var mainEl = document.querySelector('.listings-main')
+  var DISCIPLINE_LABELS = {
+    naturalSciences: 'Natural sciences',
+    socialSciences: 'Social sciences',
+    humanitiesAndTheArts: 'Humanities & the arts',
+    engineeringAndTechnology: 'Engineering & technology',
+    medicalAndHealthSciences: 'Medical & health sciences',
+    agriculturalAndVeterinarySciences: 'Agricultural & veterinary sciences',
+    unspecified: 'Unspecified'
+  }
+  var OPEN_FOR_LABELS = {
+    researchers: 'Researchers',
+    doctoralStudents: 'Doctoral students',
+    students: 'Students',
+    others: 'Others'
+  }
+
   var detailEl = document.getElementById('listing-detail')
   var listEl = document.getElementById('listings-list')
+
+  // Detail-only page (e.g. /d/U3450/) — render just the detail and stop
+  if (!listEl && detailEl && openListings.length) {
+    var id = openListings[0].id
+    detailEl.hidden = false
+    renderDetail(id)
+    return
+  }
+
+  var filtersEl = document.getElementById('listings-filters')
+  var mainEl = document.querySelector('.listings-main')
   var countEl = document.getElementById('listings-count')
   var searchInput = document.getElementById('lf-search')
   var countrySelect = document.getElementById('lf-country')
@@ -39,22 +65,6 @@
   }
 
   var state = { category: [], discipline: [], openFor: [], country: '', search: '', remote: false, accommodation: false, sort: 'newest', pageSize: 20, page: 1 }
-
-  var DISCIPLINE_LABELS = {
-    naturalSciences: 'Natural sciences',
-    socialSciences: 'Social sciences',
-    humanitiesAndTheArts: 'Humanities & the arts',
-    engineeringAndTechnology: 'Engineering & technology',
-    medicalAndHealthSciences: 'Medical & health sciences',
-    agriculturalAndVeterinarySciences: 'Agricultural & veterinary sciences',
-    unspecified: 'Unspecified'
-  }
-  var OPEN_FOR_LABELS = {
-    researchers: 'Researchers',
-    doctoralStudents: 'Doctoral students',
-    students: 'Students',
-    others: 'Others'
-  }
 
   function escapeHtml (str) {
     var div = document.createElement('div')
@@ -85,10 +95,10 @@
     var tags = []
     if (listing.category) tags.push('<span class="listing-tag listing-tag--category">' + escapeHtml(listing.category) + '</span>')
     Object.keys(DISCIPLINE_LABELS).forEach(function (key) {
-      if (listing.disciplines[key]) tags.push('<span class="listing-tag listing-tag--discipline">' + DISCIPLINE_LABELS[key] + '</span>')
+      if (listing.disciplines && listing.disciplines[key]) tags.push('<span class="listing-tag listing-tag--discipline">' + DISCIPLINE_LABELS[key] + '</span>')
     })
     Object.keys(OPEN_FOR_LABELS).forEach(function (key) {
-      if (listing.openFor[key]) tags.push('<span class="listing-tag listing-tag--attr">' + OPEN_FOR_LABELS[key] + '</span>')
+      if (listing.openFor && listing.openFor[key]) tags.push('<span class="listing-tag listing-tag--attr">' + OPEN_FOR_LABELS[key] + '</span>')
     })
     return tags.join('')
   }
@@ -168,7 +178,7 @@
       meta += '<div class="listing-card__meta-label">Application Deadline</div><div class="listing-card__meta-value">' + escapeHtml(listing.applicationDeadline) + '</div>'
     }
     return '' +
-      '<a class="listing-card" href="#' + encodeURIComponent(listing.id) + '">' +
+      '<a class="listing-card" href="' + (basePath || '') + '/d/' + encodeURIComponent(listing.id) + '/">' +
         '<span class="listing-card__country">' + pinIcon() + escapeHtml(listing.country) + '<span class="listing-card__id">' + escapeHtml(listing.id) + '</span></span>' +
         '<div class="listing-card__institution">' + escapeHtml(listing.institution) + '</div>' +
         '<div class="listing-card__description">' + escapeHtml(listing.description) + '</div>' +
@@ -229,8 +239,7 @@
   }
 
   function detailUrl (id) {
-    var basePath = document.body.getAttribute('data-base-path') || ''
-    return window.location.origin + basePath + '/listings/' + encodeURIComponent(id) + '/'
+    return window.location.origin + basePath + '/d/' + encodeURIComponent(id) + '/'
   }
 
   function shareRowHtml (id, title) {
@@ -343,7 +352,11 @@
     var backBtn = document.getElementById('detail-back')
     if (backBtn) {
       backBtn.addEventListener('click', function () {
-        window.location.hash = ''
+        if (listEl) {
+          window.location.hash = ''
+        } else {
+          window.location.href = basePath + '/listings'
+        }
       })
     }
   }

@@ -609,7 +609,7 @@ function buildSearchIndex (listingsData, programmesData) {
       type: 'listing',
       title: l.institution || l.id,
       text: [l.description, l.category, l.researchFocus].filter(Boolean).join(' — '),
-      url: `/listings#${encodeURIComponent(l.id)}`
+      url: `/d/${encodeURIComponent(l.id)}/`
     })
   })
 
@@ -698,6 +698,38 @@ function writeShareRedirect (sectionSlug, id, title, description) {
   fs.writeFileSync(path.join(dir, 'index.html'), html)
 }
 
+function writeListingDetailPage (listing) {
+  const safeId = String(listing.id).replace(/[^A-Za-z0-9_-]/g, '-')
+  if (!safeId) return
+
+  const title = listing.institution || listing.id
+  const fullTitle = `${escapeHtml(title)} – #ScienceForUkraine`
+  const descriptionSource = listing.description && listing.description.trim()
+    ? listing.description
+    : 'A support opportunity for Ukrainian researchers and students, shared via #ScienceForUkraine.'
+  const safeDescription = escapeHtml(truncateText(descriptionSource, 200))
+  const dataJson = JSON.stringify({ open: [listing], closed: [] }).replace(/</g, '\\u003c')
+
+  const contentHtml = `
+      <div class="listings-page">
+        <div class="listing-detail" id="listing-detail"></div>
+      </div>
+      <script id="listings-data" type="application/json">${dataJson}</script>`
+
+  const html = renderShell({
+    page: 'listing-detail',
+    title: fullTitle,
+    description: safeDescription,
+    url: `${SITE_URL}/d/${safeId}/`,
+    contentHtml,
+    extraScripts: ['/assets/js/listings.js']
+  })
+
+  const dir = path.join(DIST, 'd', safeId)
+  mkdirp(dir)
+  fs.writeFileSync(path.join(dir, 'index.html'), applyBasePath(html))
+}
+
 async function build () {
   fs.rmSync(DIST, { recursive: true, force: true })
   mkdirp(DIST)
@@ -725,13 +757,12 @@ async function build () {
     console.log(`built /${page.slug}`)
   }
 
-  listingsData.open.forEach(l => {
-    writeShareRedirect('listings', l.id, l.institution || l.id, l.description || '')
-  })
+  listingsData.open.forEach(l => writeListingDetailPage(l))
+  listingsData.closed.forEach(l => writeListingDetailPage(l))
   programmesData.forEach(p => {
     writeShareRedirect('funding-programmes', p.id, p.title, p.description || p.country || '')
   })
-  console.log(`built ${listingsData.open.length + programmesData.length} share-preview pages`)
+  console.log(`built ${listingsData.open.length + listingsData.closed.length} listing detail pages, ${programmesData.length} programme share-preview pages`)
 
   const searchIndex = buildSearchIndex(listingsData, programmesData)
   fs.writeFileSync(path.join(DIST, 'search-index.json'), JSON.stringify(searchIndex))
