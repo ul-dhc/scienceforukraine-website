@@ -89,7 +89,6 @@ Deployment-related constants are at the top of `scripts/build.js`:
 | Constant | Purpose |
 |---|---|
 | `SITE_URL` | Canonical site URL (`https://scienceforukraine.eu`), used for OG tags |
-| `CUSTOM_DOMAIN` | If set, a `CNAME` file is written to `dist/` for custom domain setup |
 | `BASE_PATH` | Path prefix for GitHub Pages subdirectory deployments (empty for root domain) |
 | `DEPLOY_URL` | Computed from `BASE_PATH` and `SITE_URL`, used for absolute URLs in meta tags |
 
@@ -97,12 +96,10 @@ Deployment-related constants are at the top of `scripts/build.js`:
 
 To deploy under a repository subdirectory (e.g. `https://username.github.io/repo-name/`):
 1. Set `BASE_PATH` in `build.js` to `'/repo-name'`
-2. Leave `CUSTOM_DOMAIN` empty
 
 To deploy with a custom domain:
 1. Leave `BASE_PATH` empty
-2. Set `CUSTOM_DOMAIN` to your domain (e.g. `'scienceforukraine.eu'`)
-3. Configure your DNS to point to GitHub Pages ([GitHub docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-github-pages))
+2. Configure your custom domain in your GitHub repository's Pages settings and DNS ([GitHub docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-github-pages))
 
 ## License
 

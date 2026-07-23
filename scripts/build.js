@@ -14,8 +14,6 @@ const DIST = path.join(ROOT, 'dist')
 
 const SITE_URL = 'https://scienceforukraine.eu'
 
-const CUSTOM_DOMAIN = ''
-
 const BASE_PATH = '' //'/scienceforukraine-website'
 
 const DEPLOY_URL = BASE_PATH ? 'https://ul-dhc.github.io' + BASE_PATH : SITE_URL
@@ -239,7 +237,6 @@ function newsContentHtml () {
 
   const cardsHtml = items.map((item, i) => {
     const pinnedClass = item.pinned ? ' update-card--pinned' : ''
-    const openAttr = ''
     const pinnedLabel = item.pinned ? `<span class="update-card__pin-label" title="Pinned update" aria-label="Pinned update">${icon('pin')}</span>` : ''
     const bodyParagraphs = (item.body || '').split('\n\n').filter(Boolean).map(p => {
       const withBold = escapeHtml(p).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
@@ -255,7 +252,7 @@ function newsContentHtml () {
     const excerptHtml = item.excerpt ? `<div class="update-card__excerpt">${escapeHtml(item.excerpt)}</div>` : ''
 
     return `
-        <details class="update-card${pinnedClass}" id="${item.slug}"${openAttr}>
+        <details class="update-card${pinnedClass}" id="${item.slug}">
           <summary class="update-card__summary">
             <div class="update-card__main">
               ${pinnedLabel}
@@ -757,10 +754,6 @@ async function build () {
   copyDir(path.join(PUBLIC, 'media'), path.join(DIST, 'media'))
   fs.copyFileSync(path.join(PUBLIC, 'favicon.ico'), path.join(DIST, 'favicon.ico'))
 
-  if (CUSTOM_DOMAIN) {
-    fs.writeFileSync(path.join(DIST, 'CNAME'), CUSTOM_DOMAIN)
-    console.log(`CNAME written for ${CUSTOM_DOMAIN}`)
-  }
 
   console.log('\nDone. Output in /dist')
 }
