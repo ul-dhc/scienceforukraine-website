@@ -146,7 +146,7 @@
 
   function disciplineLabel (p) {
     if (p.disciplines.unspecified) return 'All disciplines'
-    var labels = { naturalSciences: 'Natural sciences', socialSciences: 'Social sciences', humanitiesAndTheArts: 'Humanities & the arts', engineeringAndTechnology: 'Engineering & technology', medicalAndHealthSciences: 'Medical & health sciences', agriculturalAndVeterinarySciences: 'Agricultural & veterinary sciences' }
+    var labels = window.DISCIPLINE_LABELS
     var matched = Object.keys(labels).filter(function (k) { return p.disciplines[k] })
     return matched.length ? matched.map(function (k) { return labels[k] }).join(', ') : 'Not specified'
   }

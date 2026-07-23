@@ -5,6 +5,7 @@ const { icon } = require('./icons')
 const { fetchListings } = require('./listings')
 const { fetchProgrammes } = require('./funding-programmes')
 const { generateWorldMap } = require('./world-map')
+const { CATEGORY_OPTIONS, DISCIPLINE_OPTIONS, OPEN_FOR_OPTIONS } = require('./constants')
 
 const ROOT = path.join(__dirname, '..')
 const SRC = path.join(ROOT, 'src')
@@ -37,14 +38,14 @@ const PAGES = [
   },
   { slug: 'help', name: 'help', title: 'How You Can Help', description: 'Ways to support the Ukrainian academic community: donate, or submit a support offer.' },
   { slug: 'support', name: 'support', title: 'Funding Programmes and Other Support', description: 'A country-by-country list of funding programmes and support initiatives for Ukrainian researchers and students.' },
-  { slug: 'funding-programmes', name: 'funding-programmes', title: 'Funding & Support Programmes', description: 'A curated archive of funding programmes, fellowships, grants, and support opportunities for Ukrainian researchers and students.', template: 'programmes', extraScripts: ['/assets/js/programmes.js'] },
+  { slug: 'funding-programmes', name: 'funding-programmes', title: 'Funding & Support Programmes', description: 'A curated archive of funding programmes, fellowships, grants, and support opportunities for Ukrainian researchers and students.', template: 'programmes', extraScripts: ['/assets/js/filter-constants.js', '/assets/js/programmes.js'] },
   { slug: 'about', name: 'about', title: 'About Us', description: 'Who we are, our mission, and the people behind #ScienceForUkraine.' },
   { slug: 'press', name: 'press', title: 'Press & Media', description: 'Press releases, media coverage, and press materials for #ScienceForUkraine.' },
   { slug: 'partners', name: 'partners', title: 'Our Partners', description: 'Organisations, institutions and companies supporting #ScienceForUkraine.' },
   { slug: 'donate', name: 'donate', title: 'Donate', description: 'Support #ScienceForUkraine and the Academic Micro Travel Grant programme.' },
   { slug: 'mtg', name: 'mtg', title: 'Micro Travel Grant Programme', description: 'The #ScienceForUkraine Micro Travel Grant Programme for early-career scholars based in Ukraine.' },
   { slug: 'news', name: 'news', title: 'Latest Updates', description: 'News and announcements from #ScienceForUkraine.', template: 'news', extraScripts: ['/assets/js/news.js'] },
-  { slug: 'listings', name: 'listings', title: 'Positions & Support Offers', description: 'Browse open funding, scholarship, position, and support listings for Ukrainian researchers and students.', template: 'listings', extraScripts: ['/assets/js/listings.js'] }
+  { slug: 'listings', name: 'listings', title: 'Positions & Support Offers', description: 'Browse open funding, scholarship, position, and support listings for Ukrainian researchers and students.', template: 'listings', extraScripts: ['/assets/js/filter-constants.js', '/assets/js/listings.js'] }
 ]
 
 function read (p) {
@@ -288,22 +289,6 @@ function newsContentHtml () {
       </div>`
 }
 
-const CATEGORY_OPTIONS = ['Position', 'Scholarship', 'Joint application', 'Resources', 'Mentoring', 'Academic transfer']
-const DISCIPLINE_OPTIONS = [
-  ['naturalSciences', 'Natural sciences'],
-  ['socialSciences', 'Social sciences'],
-  ['humanitiesAndTheArts', 'Humanities & the arts'],
-  ['engineeringAndTechnology', 'Engineering & technology'],
-  ['medicalAndHealthSciences', 'Medical & health sciences'],
-  ['agriculturalAndVeterinarySciences', 'Agricultural & veterinary sciences'],
-  ['unspecified', 'Unspecified']
-]
-const OPEN_FOR_OPTIONS = [
-  ['researchers', 'Researchers'],
-  ['doctoralStudents', 'Doctoral students'],
-  ['students', 'Students'],
-  ['others', 'Others']
-]
 
 function pillGroup (filterKey, options) {
   const pills = options.map(opt => {
@@ -722,7 +707,7 @@ function writeListingDetailPage (listing) {
     description: safeDescription,
     url: `${SITE_URL}/d/${safeId}/`,
     contentHtml,
-    extraScripts: ['/assets/js/listings.js']
+    extraScripts: ['/assets/js/filter-constants.js', '/assets/js/listings.js']
   })
 
   const dir = path.join(DIST, 'd', safeId)

@@ -33,6 +33,7 @@ scripts/              Node.js build scripts (CommonJS)
   listings.js         Fetches & normalizes listing data from Google Sheets
   funding-programmes.js  Fetches & normalizes programme data from Google Sheets
   world-map.js        SVG world map generator
+  constants.js        Shared filter option constants (disciplines, open-for, categories)
   icons.js            Inline SVG icon helper
 
 src/

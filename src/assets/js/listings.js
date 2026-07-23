@@ -10,21 +10,8 @@
   openListings.forEach(function (l) { byId[l.id] = l })
   closedListings.forEach(function (l) { byId[l.id] = l })
 
-  var DISCIPLINE_LABELS = {
-    naturalSciences: 'Natural sciences',
-    socialSciences: 'Social sciences',
-    humanitiesAndTheArts: 'Humanities & the arts',
-    engineeringAndTechnology: 'Engineering & technology',
-    medicalAndHealthSciences: 'Medical & health sciences',
-    agriculturalAndVeterinarySciences: 'Agricultural & veterinary sciences',
-    unspecified: 'Unspecified'
-  }
-  var OPEN_FOR_LABELS = {
-    researchers: 'Researchers',
-    doctoralStudents: 'Doctoral students',
-    students: 'Students',
-    others: 'Others'
-  }
+  var DISCIPLINE_LABELS = window.DISCIPLINE_LABELS
+  var OPEN_FOR_LABELS = window.OPEN_FOR_LABELS
 
   var detailEl = document.getElementById('listing-detail')
   var listEl = document.getElementById('listings-list')
