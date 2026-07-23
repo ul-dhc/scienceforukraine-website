@@ -54,12 +54,6 @@
   var state = { search: '', country: [], discipline: [], openFor: [], type: [], sort: 'newest', recentlyAdded: false, view: 'grid', pageSize: 20, page: 1 }
   var showingAllCountries = false
 
-  function escapeHtml (str) {
-    var div = document.createElement('div')
-    div.textContent = str == null ? '' : String(str)
-    return div.innerHTML
-  }
-
   function daysAgo (dateStr) {
     if (!dateStr) return Infinity
     return (Date.now() - new Date(dateStr).getTime()) / (1000 * 60 * 60 * 24)
