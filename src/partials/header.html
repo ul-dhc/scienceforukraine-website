@@ -2,32 +2,53 @@
   <div class="bar max-width">
     <div class="max-width-inner">
       <a href="/"><img src="/media/ScienceForUkraine-logo-header.png" alt="Science For Ukraine"/></a>
-      <button class="menu-button" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
-        <span class="burger-icon" id="burger-icon"></span>
-      </button>
+      <div class="bar-actions">
+        <button type="button" class="font-size-btn" id="font-size-toggle" aria-label="Change text size" title="Change text size">A+</button>
+        <button class="menu-button" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <span class="burger-icon" id="burger-icon"></span>
+        </button>
+      </div>
     </div>
   </div>
-  <div class="menu max-width" id="menu">
-    <nav class="max-width-inner">
-      <span class="label">Listings</span>
-      <div class="items">
-        <a data-nav="listings" href="/listings">Positions &amp; Support Offers</a>
-        <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSe0a7SOe1BeSbZsI2py43gaC2MgpuaaiAcl5cqmskCxzeuHvg/viewform">Submit Listing</a>
-        <a target="_blank" rel="noopener noreferrer" href="mailto:data@scienceforukraine.eu">Request Changes</a>
-      </div>
-    </nav>
-    <nav class="max-width-inner">
-      <span class="label">More Information</span>
-      <div class="items">
-        <a data-nav="funding-programmes" href="/funding-programmes">Funding Programmes<br>&amp; Further Support</a>
-        <a data-nav="mtg" href="/mtg">Micro Travel Grants</a>
-        <a data-nav="help" href="/help">How You Can Help</a>
-        <a data-nav="donate" href="/donate">Donate</a>
-        <a data-nav="about" href="/about">About Us</a>
-        <a data-nav="news" href="/news">Latest Updates</a>
-        <a data-nav="press" href="/press">Press &amp; Media</a>
-        <a data-nav="partners" href="/partners">Our Partners</a>
-      </div>
-    </nav>
+  <div class="menu" id="menu">
+    <div class="menu-align max-width-inner">
+    <div class="menu-inner">
+      <nav class="menu-group">
+        <div class="menu-group__heading">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>For Ukrainian researchers &amp; students</span>
+        </div>
+        <div class="menu-group__items">
+          <a data-nav="listings" href="/listings">Positions &amp; Support Offers</a>
+          <a data-nav="funding-programmes" href="/funding-programmes">Funding Programmes &amp; Further Support</a>
+          <a data-nav="mtg" href="/mtg">Micro Travel Grants</a>
+        </div>
+      </nav>
+      <nav class="menu-group">
+        <div class="menu-group__heading">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 14h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16"/><path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l3.9-3.9a2 2 0 0 0-2.8-2.8l-3.6 3.6"/><path d="m2 15 6 6"/><path d="M19.5 8.5c.7-.7 1.5-1.6 1.5-2.7A2.73 2.73 0 0 0 18.3 3c-.9 0-1.7.4-2.3 1-.6-.6-1.4-1-2.3-1a2.73 2.73 0 0 0-2.7 2.8c0 1.1.8 2 1.5 2.7l3.5 3.4Z"/></svg>
+          <span>For the international community</span>
+        </div>
+        <div class="menu-group__items">
+          <a data-nav="help" href="/help">How You Can Help</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://docs.google.com/forms/d/e/1FAIpQLSe0a7SOe1BeSbZsI2py43gaC2MgpuaaiAcl5cqmskCxzeuHvg/viewform">Submit a Listing</a>
+          <a target="_blank" rel="noopener noreferrer" href="mailto:data@scienceforukraine.eu">Request Changes</a>
+          <a data-nav="donate" href="/donate">Donate</a>
+        </div>
+      </nav>
+      <nav class="menu-group">
+        <div class="menu-group__heading">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span>About #ScienceForUkraine</span>
+        </div>
+        <div class="menu-group__items">
+          <a data-nav="about" href="/about">About Us</a>
+          <a data-nav="news" href="/news">Latest Updates</a>
+          <a data-nav="press" href="/press">Press &amp; Media</a>
+          <a data-nav="partners" href="/partners">Our Partners</a>
+        </div>
+      </nav>
+    </div>
+    </div>
   </div>
 </div>
