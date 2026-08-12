@@ -1,4 +1,14 @@
 [
+  {
+    "slug": "mtg-july-awardee-august-round-open",
+    "date": "2026-08-12",
+    "title": "July MTG awardee selected and August round now open",
+    "excerpt": "Alina Stupak has been selected as the July 2026 Micro Travel Grant awardee, and applications are now open for the August round.",
+    "body": "We are pleased to announce that **Alina Stupak** has been selected as the July 2026 awardee of the #ScienceForUkraine Micro Travel Grant Programme.\n\nAlina is a researcher at the National Museum of Natural History of the National Academy of Sciences of Ukraine. The grant will support her participation in the XXI UISPP World Congress 2026 in Poznań, Poland, where she will present research on the Upper Palaeolithic site of Buzhanka 2 in the Chernihiv region.\n\nApplications are now open for the **August 2026 round**. The programme supports early-career scholars based in Ukraine with up to EUR 500 in reimbursement for eligible travel, accommodation, and registration costs for in-person international academic conferences, workshops, and symposia.\n\nPlease review the eligibility criteria and submit your application through the MTG page.",
+    "image": "/media/mtg2026.png",
+    "link": "https://scienceforukraine.eu/mtg",
+    "pinned": true
+  },
  {
   "slug": "new-website-search-tools-july-2026",
   "date": "2026-07-20",
@@ -16,7 +26,7 @@
     "body": "A new monthly round of the Micro Travel Grant (MTG) Programme is now open. MTG supports early-career scholars based in Ukraine to participate in international academic conferences, workshops, and symposia in person.\n\nWho can apply: doctoral candidates and researchers within five years of their PhD, based in Ukraine and affiliated with a Ukrainian academic institution, with an accepted in-person conference presentation.\n\nWhat is supported: reimbursement of eligible costs up to EUR 500, covering travel, accommodation, and conference fees.\n\nThe programme is entirely volunteer-run, and 100% of donations go directly to grants supporting young Ukrainian scholars.",
     "image": "/media/mtg2026.png",
     "link": "https://scienceforukraine.eu/mtg",
-    "pinned": true
+    "pinned": false
   },
   {
     "slug": "mtg-2026-awardees",

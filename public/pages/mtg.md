@@ -69,6 +69,10 @@ For any questions or further information, please contact us at:
 
 - **Round 4** (May 2026): **Yaroslavna Kashyrina** (Frantsevich Institute for Problems of Materials Science, NAS of Ukraine) to attend the 31st international conference Applied Physics of Condensed Matter (APCOM 2026) in Štrbské Pleso, Slovakia.
 
+- **Round 5** (June 2026): **Tetiana Harashchenko** (SI "Ukrainian Center of Maternity and Childhood of the National Academy of Medical Sciences of Ukraine") to attend the International Congress of the European Respiratory Society (ERS) 2026 in Barcelona, Spain.
+
+- **Round 6** (July 2026): **Alina Stupak** (National Museum of Natural History, National Academy of Sciences of Ukraine) to attend the XXI UISPP World Congress 2026 in Poznań, Poland.
+
 
 ---
 
