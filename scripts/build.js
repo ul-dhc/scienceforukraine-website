@@ -248,7 +248,8 @@ function newsContentHtml () {
       return `<p>${withLinks}</p>`
     }).join('')
     const bodyImage = item.image ? `<img class="update-card__image" src="${item.image}" alt="">` : ''
-    const readMoreLink = item.link ? `<a class="update-card__external-link" href="${item.link}" target="_blank" rel="noopener">Read more ${icon('arrowRight')}</a>` : ''
+    const linkLabel = item.linkLabel || 'Read more'
+    const readMoreLink = item.link ? `<a class="update-card__external-link" href="${item.link}" target="_blank" rel="noopener">${escapeHtml(linkLabel)} ${icon('arrowRight')}</a>` : ''
     const excerptHtml = item.excerpt ? `<div class="update-card__excerpt">${escapeHtml(item.excerpt)}</div>` : ''
 
     return `
