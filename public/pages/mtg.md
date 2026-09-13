@@ -61,19 +61,19 @@ For any questions or further information, please contact us at:
 
 ### MTG2026 awardees
 
-- **Round 1** (February 2026): **Iryna Chechulina** (Department of Classical Archaeology, The Institute of Archaeology, National Academy of Science of Ukraine) to attend the 32nd Annual Meeting of the European Association of Archaeologists.
-
-- **Round 2** (March 2026): **Marharyta Cherniakova** (Institute of Functional Materials Chemistry of the State Scientific Institution “Institute for Single Crystals” of National Academy of Sciences of Ukraine) to attend Supramol2026: XVII Italian Conference on Supramolecular Chemistry.
-
-- **Round 3** (April 2026): **Yaroslava Bukhonska** (V.P. Kukhar Institute of Bioorganic Chemistry and Petrochemistry of the National Academy of Sciences of Ukraine) to attend SymBioSE: 29th Symposium of Biology Students in Europe.
-
-- **Round 4** (May 2026): **Yaroslavna Kashyrina** (Frantsevich Institute for Problems of Materials Science, NAS of Ukraine) to attend the 31st international conference Applied Physics of Condensed Matter (APCOM 2026) in Štrbské Pleso, Slovakia.
-
-- **Round 5** (June 2026): **Tetiana Harashchenko** (SI "Ukrainian Center of Maternity and Childhood of the National Academy of Medical Sciences of Ukraine") to attend the International Congress of the European Respiratory Society (ERS) 2026 in Barcelona, Spain.
+- **Round 7** (August 2026): **Diana Pidburtna-Kostiv** (Taras Shevchenko National University of Kyiv) to attend the MSA Nordic Conference and Final Conference of the DFF project “Revival of Traumatic Pasts: Decolonizing Memory?” in Odense, Denmark.
 
 - **Round 6** (July 2026): **Alina Stupak** (National Museum of Natural History, National Academy of Sciences of Ukraine) to attend the XXI UISPP World Congress 2026 in Poznań, Poland.
 
-- **Round 7** (August 2026): **Diana Pidburtna-Kostiv** (Taras Shevchenko National University of Kyiv) to attend the MSA Nordic Conference and Final Conference of the DFF project “Revival of Traumatic Pasts: Decolonizing Memory?” in Odense, Denmark.
+- **Round 5** (June 2026): **Tetiana Harashchenko** (SI "Ukrainian Center of Maternity and Childhood of the National Academy of Medical Sciences of Ukraine") to attend the International Congress of the European Respiratory Society (ERS) 2026 in Barcelona, Spain.
+
+- **Round 4** (May 2026): **Yaroslavna Kashyrina** (Frantsevich Institute for Problems of Materials Science, NAS of Ukraine) to attend the 31st international conference Applied Physics of Condensed Matter (APCOM 2026) in Štrbské Pleso, Slovakia.
+
+- **Round 3** (April 2026): **Yaroslava Bukhonska** (V.P. Kukhar Institute of Bioorganic Chemistry and Petrochemistry of the National Academy of Sciences of Ukraine) to attend SymBioSE: 29th Symposium of Biology Students in Europe.
+
+- **Round 2** (March 2026): **Marharyta Cherniakova** (Institute of Functional Materials Chemistry of the State Scientific Institution “Institute for Single Crystals” of National Academy of Sciences of Ukraine) to attend Supramol2026: XVII Italian Conference on Supramolecular Chemistry.
+
+- **Round 1** (February 2026): **Iryna Chechulina** (Department of Classical Archaeology, The Institute of Archaeology, National Academy of Science of Ukraine) to attend the 32nd Annual Meeting of the European Association of Archaeologists.
 
 
 ---
