@@ -73,6 +73,8 @@ For any questions or further information, please contact us at:
 
 - **Round 6** (July 2026): **Alina Stupak** (National Museum of Natural History, National Academy of Sciences of Ukraine) to attend the XXI UISPP World Congress 2026 in Poznań, Poland.
 
+- **Round 7** (August 2026): **Diana Pidburtna-Kostiv** (Taras Shevchenko National University of Kyiv) to attend the MSA Nordic Conference and Final Conference of the DFF project “Revival of Traumatic Pasts: Decolonizing Memory?” in Odense, Denmark.
+
 
 ---
 
