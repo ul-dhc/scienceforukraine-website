@@ -277,8 +277,7 @@ function newsContentHtml () {
         <p class="news-header__subtitle">News and announcements from #ScienceForUkraine.</p>
         <div class="news-toolbar">
           <div class="news-toolbar__buttons">
-            <button type="button" class="news-toolbar__btn" id="expand-all">${icon('chevronDown')} Expand all</button>
-            <button type="button" class="news-toolbar__btn" id="collapse-all">${icon('chevronDown')} Collapse all</button>
+            <button type="button" class="news-toolbar__btn" id="toggle-all" aria-expanded="false">${icon('chevronDown')}<span>Expand all</span></button>
           </div>
         </div>
       </div>

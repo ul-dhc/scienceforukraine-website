@@ -1,13 +1,23 @@
 [
   {
-    "slug": "mtg-july-awardee-august-round-open",
-    "date": "2026-08-12",
-    "title": "July MTG awardee selected and August round now open",
-    "excerpt": "Alina Stupak has been selected as the July 2026 Micro Travel Grant awardee, and applications are now open for the August round.",
-    "body": "We are pleased to announce that **Alina Stupak** has been selected as the July 2026 awardee of the #ScienceForUkraine Micro Travel Grant Programme.\n\nAlina is a researcher at the National Museum of Natural History of the National Academy of Sciences of Ukraine. The grant will support her participation in the XXI UISPP World Congress 2026 in Poznań, Poland, where she will present research on the Upper Palaeolithic site of Buzhanka 2 in the Chernihiv region.\n\nApplications are now open for the **August 2026 round**. The programme supports early-career scholars based in Ukraine with up to EUR 500 in reimbursement for eligible travel, accommodation, and registration costs for in-person international academic conferences, workshops, and symposia.\n\nPlease review the eligibility criteria and submit your application through the MTG page.",
+    "slug": "mtg-august-awardee-selected",
+    "date": "2026-09-13",
+    "title": "August MTG awardee selected",
+    "excerpt": "Diana Pidburtna-Kostiv has been selected as the August 2026 Micro Travel Grant awardee.",
+    "body": "We are pleased to announce that **Diana Pidburtna-Kostiv** has been selected as the August 2026 awardee of the #ScienceForUkraine Micro Travel Grant Programme.\n\nDiana is a PhD student at Taras Shevchenko National University of Kyiv. The grant will support her participation in the MSA Nordic Conference and Final Conference of the DFF project ‘Revival of Traumatic Pasts: Decolonizing Memory?’ in Odense, Denmark.",
     "image": "/media/mtg2026.png",
     "link": "https://scienceforukraine.eu/mtg",
     "pinned": true
+  },
+  {
+    "slug": "mtg-july-awardee-august-round-open",
+    "date": "2026-08-12",
+    "title": "July MTG awardee selected",
+    "excerpt": "Alina Stupak has been selected as the July 2026 Micro Travel Grant awardee.",
+    "body": "We are pleased to announce that **Alina Stupak** has been selected as the July 2026 awardee of the #ScienceForUkraine Micro Travel Grant Programme.\n\nAlina is a researcher at the National Museum of Natural History of the National Academy of Sciences of Ukraine. The grant will support her participation in the XXI UISPP World Congress 2026 in Poznań, Poland, where she will present research on the Upper Palaeolithic site of Buzhanka 2 in the Chernihiv region.",
+    "image": "/media/mtg2026.png",
+    "link": "https://scienceforukraine.eu/mtg",
+    "pinned": false
   },
  {
   "slug": "new-website-search-tools-july-2026",

@@ -48,6 +48,14 @@
   border-color: var(--accent-2);
 }
 
+.news-toolbar__btn .icon {
+  transition: transform var(--transition);
+}
+
+.news-toolbar__btn[aria-expanded="true"] .icon {
+  transform: rotate(180deg);
+}
+
 .news-toolbar__note {
   color: var(--light-text);
   font-size: var(--font-size-s);

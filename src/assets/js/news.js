@@ -1,20 +1,28 @@
 (function () {
-  var expandAllBtn = document.getElementById('expand-all')
-  var collapseAllBtn = document.getElementById('collapse-all')
+  var toggleAllBtn = document.getElementById('toggle-all')
   var items = document.querySelectorAll('.update-card')
 
-  if (expandAllBtn) {
-    expandAllBtn.addEventListener('click', function () {
-      items.forEach(function (el) { el.open = true })
+  function updateToggleAllButton () {
+    if (!toggleAllBtn) return
+
+    var allOpen = items.length > 0 && Array.prototype.every.call(items, function (el) {
+      return el.open
     })
+    toggleAllBtn.setAttribute('aria-expanded', String(allOpen))
+    toggleAllBtn.querySelector('span').textContent = allOpen ? 'Collapse all' : 'Expand all'
   }
 
-  if (collapseAllBtn) {
-    collapseAllBtn.addEventListener('click', function () {
-      items.forEach(function (el) { el.open = false })
+  if (toggleAllBtn) {
+    toggleAllBtn.addEventListener('click', function () {
+      var shouldOpen = toggleAllBtn.getAttribute('aria-expanded') !== 'true'
+      items.forEach(function (el) { el.open = shouldOpen })
+      updateToggleAllButton()
+    })
+
+    items.forEach(function (el) {
+      el.addEventListener('toggle', updateToggleAllButton)
     })
   }
-
 
   document.querySelectorAll('.update-card__copy-link').forEach(function (btn) {
     btn.addEventListener('click', function (e) {
@@ -59,4 +67,6 @@
       target.scrollIntoView({ block: 'start' })
     }
   }
+
+  updateToggleAllButton()
 })()
