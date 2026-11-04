@@ -1,5 +1,16 @@
 [
   {
+    "slug": "mtg-september-awardee-selected",
+    "date": "2026-11-04",
+    "title": "September MTG awardee selected",
+    "excerpt": "Bohdan Hrudka has been selected as the September 2026 Micro Travel Grant awardee.",
+    "body": "We are pleased to announce that **Bohdan Hrudka** has been selected as the September 2026 awardee of the #ScienceForUkraine Micro Travel Grant Programme.\n\nBohdan is a researcher at Odesa National University of Technology. The grant will support his participation in the International Conference on Renewable Energy – El Hierro 2026 in the Canary Islands, Spain.",
+    "image": "/media/mtg2026.png",
+    "link": "https://scienceforukraine.eu/mtg",
+    "linkLabel": "View the MTG programme",
+    "pinned": true
+  },
+  {
     "slug": "mtg-august-awardee-selected",
     "date": "2026-09-13",
     "title": "August MTG awardee selected",
@@ -8,7 +19,7 @@
     "image": "/media/mtg2026.png",
     "link": "https://scienceforukraine.eu/mtg",
     "linkLabel": "View the MTG programme",
-    "pinned": true
+    "pinned": false
   },
   {
     "slug": "mtg-july-awardee-august-round-open",
