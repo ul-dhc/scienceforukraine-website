@@ -80,6 +80,34 @@ For any questions or further information, please contact us at:
 
 ---
 
+### Previous MTG programme – 2024–2025 awardees
+
+<details>
+<summary>View 11 awardees</summary>
+
+The following scholars received grants under the previous MTG programme, before the revised programme launched in February 2026. Awardees are listed from most recent to earliest.
+
+#### 2025
+
+- **February 2025**: **Mytsak Lesia**, Ivano-Frankivsk National Medical University
+- **January 2025**: **Tetiana Miziuk**, Ivano-Frankivsk National Medical University
+
+#### 2024
+
+- **December 2024**: **Yuliia Korobova**, Sumy State University
+- **November 2024**: **Nataliia Letunovska**, Sumy State University
+- **September 2024**: **Tetiana Harashchenko**, Lukyanova Institute of Pediatrics, Obstetrics and Gynecology of the National Academy of Sciences of Ukraine
+- **August 2024**: **Dmytro Kosovan**, National Institute of Cardiovascular Surgery named after M.M. Amosov National Academy of Sciences of Ukraine
+- **July 2024**: **Mariia Voitovych**, I. Krypiakevych Institute of Ukrainian Studies of the National Academy of Sciences of Ukraine
+- **June 2024**: **Mariia Lobanova**, Odesa Archaeological Museum of the National Academy of Sciences of Ukraine
+- **May 2024**: **Pavlo Yeremieiev**, V. N. Karazin Kharkiv National University
+- **April 2024**: **Iuliia Gernego**, Kyiv National Economics University
+- **March 2024**: **Svitlana Gryn**, Taras Shevchenko National University of Kyiv
+
+</details>
+
+---
+
 ## Rules and Procedures
 
 [![Download Rules and Procedures (PDF)](https://img.shields.io/badge/Download-PDF-blue)](https://drive.google.com/file/d/1QFN5tH_E7kcyzTMfP38OGXlCeOFpMgF_/view?usp=sharing)
