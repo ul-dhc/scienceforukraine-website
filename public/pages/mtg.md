@@ -61,6 +61,8 @@ For any questions or further information, please contact us at:
 
 ### MTG2026 awardees
 
+- **Round 9** (October 2026): **Dariia Mykhailyshyna** (Kyiv School of Economics) to attend the European Winter Meeting of the Econometric Society in Warsaw, Poland.
+
 - **Round 8** (September 2026): **Bohdan Hrudka** (Odesa National University of Technology) to attend the International Conference on Renewable Energy – El Hierro 2026 in the Canary Islands, Spain.
 
 - **Round 7** (August 2026): **Diana Pidburtna-Kostiv** (Taras Shevchenko National University of Kyiv) to attend the MSA Nordic Conference and Final Conference of the DFF project “Revival of Traumatic Pasts: Decolonizing Memory?” in Odense, Denmark.
