@@ -220,6 +220,19 @@
   margin-bottom: 4px;
 }
 
+.updates-strip__poster {
+  display: block;
+  max-width: 470px;
+  margin: 8px 0;
+}
+
+.updates-strip__poster img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-l);
+}
+
 .updates-strip__item a.read-more {
   font-size: var(--font-size-s);
   display: inline-flex;

@@ -119,12 +119,14 @@ function actionLink ({ href, iconName, label, external, highlight }) {
 
 function homeContentHtml () {
   const newsByDate = readNewsByDate()
-  const latest = newsByDate.slice(0, 2)
+  const campaign = newsByDate.find(item => item.slug === 'mtg-fundraising-campaign-2026' && item.pinned)
+  const latest = campaign ? [campaign, ...newsByDate.filter(item => item !== campaign)].slice(0, 2) : newsByDate.slice(0, 2)
 
   const updatesHtml = latest.map(item => `
         <div class="updates-strip__item">
           <span class="updates-strip__item-date">${formatDate(item.date)}</span>
           <div class="updates-strip__item-title">${escapeHtml(item.title || '')}</div>
+          ${item === campaign && item.image ? `<a class="updates-strip__poster" href="/news#${item.slug}"><img src="${escapeHtml(item.image)}" alt="Science should not be stopped by war. Support travel grants for Ukrainian researchers."></a>` : ''}
           <a class="read-more" href="/news#${item.slug}">Read more ${icon('arrowRight')}</a>
         </div>`).join('')
 
