@@ -200,11 +200,12 @@
   flex-wrap: wrap;
   gap: var(--spacing-xl);
   flex: 1;
+  min-width: 0;
 }
 
 .updates-strip__item {
-  min-width: 220px;
-  flex: 1;
+  min-width: 0;
+  flex: 1 1 220px;
 }
 
 .updates-strip__item-date {
@@ -222,7 +223,7 @@
 
 .updates-strip__poster {
   display: block;
-  max-width: 470px;
+  max-width: 280px;
   margin: 8px 0;
 }
 

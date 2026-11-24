@@ -126,7 +126,7 @@ function homeContentHtml () {
         <div class="updates-strip__item">
           <span class="updates-strip__item-date">${formatDate(item.date)}</span>
           <div class="updates-strip__item-title">${escapeHtml(item.title || '')}</div>
-          ${item === campaign && item.image ? `<a class="updates-strip__poster" href="/news#${item.slug}"><img src="${escapeHtml(item.image)}" alt="Science should not be stopped by war. Support travel grants for Ukrainian researchers."></a>` : ''}
+          ${item === campaign && item.image ? `<a class="updates-strip__poster" href="/news#${item.slug}"><img src="${escapeHtml(item.image)}" width="280" height="158" alt="Science should not be stopped by war. Support travel grants for Ukrainian researchers."></a>` : ''}
           <a class="read-more" href="/news#${item.slug}">Read more ${icon('arrowRight')}</a>
         </div>`).join('')
 
