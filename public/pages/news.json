@@ -1,5 +1,16 @@
 [
   {
+    "slug": "mtg-fundraising-campaign-2026",
+    "date": "2026-11-24",
+    "title": "New fundraising campaign for Micro Travel Grants",
+    "excerpt": "Science should not be stopped by war. Help fund travel grants for Ukrainian researchers.",
+    "body": "Help Ukrainian researchers share their work and build collaborations at international conferences. **100% of donations to this campaign go to the Micro Travel Grant Programme**, covering travel, accommodation, and conference registration fees.",
+    "image": "/media/mtg-fundraising-campaign-2026.png",
+    "link": "https://scienceforukraine.eu/donate",
+    "linkLabel": "Donate to support travel grants",
+    "pinned": true
+  },
+  {
     "slug": "mtg-september-awardee-selected",
     "date": "2026-11-04",
     "title": "September MTG awardee selected",
